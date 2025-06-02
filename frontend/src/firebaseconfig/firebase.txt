@@ -1,0 +1,536 @@
+import { initializeApp } from 'firebase/app';
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth'; 
+import { getFirestore, doc, setDoc, getDoc, updateDoc, collection, getDocs } from 'firebase/firestore'; 
+
+// Configuración de Firebase
+const firebaseConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
+};
+
+
+// Inicializamos Firebase
+const app = initializeApp(firebaseConfig);
+
+// Inicializamos Auth y Firestore
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+
+// Función para obtener el perfil del usuario desde Firestore
+export const getUserProfileFromFirestore = async () => {
+  const userId = auth.currentUser?.uid;
+  if (userId) {
+    try {
+      const docRef = doc(db, "users", userId);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        return docSnap.data(); 
+      } else {
+        console.warn('El perfil no existe.');
+      }
+    } catch (error) {
+      console.error('Error al obtener los datos del perfil:', error);
+    }
+  }
+  return {};  // Retornamos un objeto vacío si no hay perfil
+};
+
+// Función para obtener el historial de alimentos del usuario desde Firestore
+export const getFoodHistoryFromFirestore = async (userId) => {
+  
+  if (!userId) {
+    console.error('User ID no proporcionado');
+    return [];
+  }
+  try {
+    const userDocRef = doc(db, 'users', userId);  // Refiere al documento del usuario en Firestore
+    const docSnap = await getDoc(userDocRef);
+
+    if (docSnap.exists()) {
+      // Retorna el historial de alimentos o un array vacío si no existe
+      return docSnap.data().foodHistory || [];  
+    } else {
+      console.error('No se encontró el documento del usuario');
+      return [];
+    }
+  } catch (error) {
+    console.error('Error al obtener el historial de alimentos:', error);
+    return [];
+  }
+};
+
+// Función para obtener las calorías consumidas de Firestore
+export const getCaloriesFromFirestore = async (userId) => {
+  if (!userId) {
+    console.error('User ID no proporcionado');
+    return 0;
+  }
+  try {
+    const docRef = doc(db, "users", userId); // Referencia al documento del usuario
+    const docSnap = await getDoc(docRef); // Obtener el documento
+
+    if (docSnap.exists()) {
+      return docSnap.data().caloriesConsumed || 0;  // Retorna las calorías consumidas o 0 si no existe
+    } else {
+      console.error("No se encontró el documento del usuario.");
+      return 0;  // Si no existe el documento, retornamos 0
+    }
+  } catch (error) {
+    console.error("Error al obtener las calorías consumidas:", error);
+    return 0;  // En caso de error, retornar 0
+  }
+};
+
+
+// Función para guardar las calorías consumidas en Firestore
+export const saveCaloriesToFirestore = async (userId, calories) => {
+  try {
+    const docRef = doc(db, "users", userId); // Referencia al documento del usuario
+    await updateDoc(docRef, { caloriesConsumed: calories }); // Actualizamos las calorías en Firestore
+    console.log("Las calorías se han guardado correctamente.");
+  } catch (error) {
+    console.error("Error al guardar las calorías en Firestore:", error);
+  }
+};
+
+
+// Función para escuchar el estado de autenticación
+export const listenAuthState = (auth, callback) => {
+  const unsubscribe = onAuthStateChanged(auth, callback);
+  return unsubscribe; // Retorna la función unsubscribe
+};
+
+// Función para cerrar sesión
+export const logoutUser = async () => {
+  try {
+    await signOut(auth);
+    console.log('Usuario cerrado sesión correctamente');
+  } catch (error) {
+    console.error('Error al cerrar sesión:', error);
+  }
+};
+
+// Función para obtener el saludo personalizado al ingresar
+export const getGreeting = async () => {
+  const userProfile = await getUserProfileFromFirestore();
+  if (userProfile && userProfile.userName) {
+    return `¡Hola, ${userProfile.userName}! Bienvenido de nuevo.`; 
+  } else {
+    return '¡Bienvenido!';
+  }
+};
+
+// Función para guardar o actualizar el historial de alimentos en Firestore
+export const saveFoodHistoryToFirestore = async (userId, foodHistory, caloriesConsumed) => {
+  try {
+    const userDocRef = doc(db, 'users', userId); // Referencia al documento del usuario en Firestore
+
+    // Actualizar el historial de alimentos y las calorías consumidas
+    await updateDoc(userDocRef, {
+      foodHistory: foodHistory,  // Guardamos el historial actualizado
+      caloriesConsumed: caloriesConsumed // Actualizamos las calorías consumidas
+    });
+
+    console.log("Historial de alimentos guardado correctamente.");
+  } catch (error) {
+    console.error("Error al guardar el historial de alimentos:", error);
+  }
+};
+
+
+// Función para guardar o actualizar el perfil del usuario en Firestore
+export const saveUserProfileToFirestore = async (userProfileData) => {
+  try {
+    const userId = auth.currentUser?.uid; // Obtiene el UID directamente desde auth
+    if (!userId) {
+      console.error("No se pudo obtener el usuario autenticado.");
+      return;
+    }
+
+    const userDocRef = doc(db, 'users', userId);
+
+    // Asegúrate de que userProfileData esté definido antes de actualizar
+    if (userProfileData && typeof userProfileData === 'object' && Object.keys(userProfileData).length > 0) {
+      await updateDoc(userDocRef, userProfileData);  // Solo llamamos a updateDoc una vez
+      {/*console.log("Perfil de usuario guardado correctamente.");*/}
+    } else {
+      console.error("Datos del perfil no válidos:", userProfileData);
+    }
+    
+  } catch (error) {
+    console.error("Error al guardar el perfil del usuario:", error);
+  }
+};
+
+// Exportamos las funciones necesarias
+export { 
+  auth, 
+  db, 
+  signInWithEmailAndPassword, 
+  signOut, 
+  doc, 
+  setDoc,
+  getDoc,
+  updateDoc,
+  onAuthStateChanged,
+};
+
+
+
+
+/////
+// Función para resetear calorías y foodHistory del día anterior, solo cuando el usuario inicia sesión
+export const checkAndResetDailyCalories = async (userUid) => {
+  if (!userUid) {
+    console.warn("No se proporcionó UID de usuario.");
+    return;
+  }
+
+  try {
+    const userRef = doc(db, "users", userUid);
+    const userSnap = await getDoc(userRef);
+
+    if (!userSnap.exists()) {
+      console.warn("Usuario no encontrado en Firestore.");
+      return;
+    }
+
+    const userData = userSnap.data();
+    const today = new Date().toISOString().slice(0, 10);
+    const lastReset = userData.lastReset || null;
+
+    console.log("Fecha actual:", today);
+    console.log("Último reset registrado:", lastReset);
+
+    if (lastReset !== today) {
+      await updateDoc(userRef, {
+        caloriesConsumed: 0,
+        foodHistory: [],
+        lastReset: today,
+      });
+      console.log("✅ Calorías y foodHistory reseteados para el usuario:", userUid);
+    } else {
+      console.log("⏩ Ya se hizo el reset hoy. No se realiza ningún cambio.");
+    }
+  } catch (error) {
+    console.error("❌ Error en checkAndResetDailyCalories:", error);
+  }
+};
+////
+
+
+
+/-----firebase con firebase functions----/
+import { initializeApp } from 'firebase/app';
+import { 
+  getAuth,
+  signInWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged } from 'firebase/auth'; 
+import { 
+  getFirestore, 
+  doc, 
+  setDoc, 
+  getDoc, 
+  updateDoc, 
+  } from 'firebase/firestore'; 
+  import { getFunctions, httpsCallable } from 'firebase/functions';
+
+
+// Configuración de Firebase
+const firebaseConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
+};
+
+
+// Inicializamos Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const functions = getFunctions();
+
+
+// Obtener el UID del usuario autenticado
+const getCurrentUserId = () => {
+  return new Promise((resolve) => {
+    onAuthStateChanged(auth, (user) => {
+      resolve(user ? user.uid : null);
+    });
+  });
+};
+
+// Llamar a la función para actualizar las calorías y el historial de alimentos
+export const updateUserCalories = async (userId, foodHistory, caloriesConsumed, goal) => {
+  try {
+    const updateCalories = httpsCallable(functions, 'updateUserCalories');
+    const result = await updateCalories({ userId, foodHistory, caloriesConsumed, goal }); // Ahora se envía el 'goal'
+
+    if (result.data.success) {
+      console.log('Las calorías y el historial de alimentos se han actualizado correctamente.');
+    } else {
+      console.log('Hubo un problema al actualizar los datos.');
+    }
+  } catch (error) {
+    console.error('Error al actualizar las calorías o el historial de alimentos:', error);
+  }
+};
+
+
+
+// Función para obtener el perfil del usuario desde Firestore
+export const getUserProfileFromFirestore = async () => {
+  const userId = await getCurrentUserId();
+  if (!userId) return {};
+  
+  try {
+    const docRef = doc(db, "users", userId);
+    const docSnap = await getDoc(docRef);
+    return docSnap.exists() ? docSnap.data() : {};
+  } catch (error) {
+    console.error('Error al obtener los datos del perfil:', error);
+    return {};
+  }
+};
+
+// Función para obtener el historial de alimentos del usuario desde Firestore
+export const getFoodHistoryFromFirestore = async (userId) => {
+  if (!userId) return [];
+
+  try {
+    const docSnap = await getDoc(doc(db, 'users', userId));
+    return docSnap.exists() ? docSnap.data().foodHistory || [] : [];
+  } catch (error) {
+    console.error('Error al obtener el historial de alimentos:', error);
+    return [];
+  }
+};
+
+// Función para obtener las calorías consumidas de Firestore
+export const getCaloriesFromFirestore = async (userId) => {
+  if (!userId) return 0;
+  
+  try {
+    const docSnap = await getDoc(doc(db, "users", userId));
+    return docSnap.exists() ? docSnap.data().caloriesConsumed || 0 : 0;
+  } catch (error) {
+    console.error("Error al obtener las calorías consumidas:", error);
+    return 0;
+  }
+};
+
+
+// Obtener saludo personalizado
+export const getGreeting = async () => {
+  const userProfile = await getUserProfileFromFirestore();
+  return userProfile?.userName ? `¡Hola, ${userProfile.userName}! Bienvenido de nuevo.` : '¡Bienvenido!';
+};
+
+// Escuchar cambios en el estado de autenticación
+export const listenAuthState = (callback) => {
+  return onAuthStateChanged(auth, callback);
+};
+
+// Cerrar sesión
+export const logoutUser = async () => {
+  try {
+    await signOut(auth);
+    console.log('Usuario cerrado sesión correctamente');
+  } catch (error) {
+    console.error('Error al cerrar sesión:', error);
+  }
+};
+
+
+
+// Exportamos las funciones necesarias
+export { 
+  auth, 
+  db, 
+  signInWithEmailAndPassword, 
+  signOut, 
+  doc, 
+  setDoc,
+  getDoc,
+  updateDoc,
+  onAuthStateChanged,
+};
+
+
+/----firebase con backend nodejs---/
+import { initializeApp } from 'firebase/app';
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth'; 
+import axios from 'axios'; // Usamos axios para hacer peticiones al backend
+import { doc, setDoc } from 'firebase/firestore';  // Importamos para actualizar Firestore
+import { getFirestore } from 'firebase/firestore';
+
+// Configuración de Firebase
+const firebaseConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
+};
+
+
+// Inicializamos Firebase
+const app = initializeApp(firebaseConfig);
+
+// Inicializamos Auth y Firestore
+const auth = getAuth(app);
+const firestore = getFirestore(app);  // Inicializamos Firestore
+
+// URL del backend
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
+
+// Función para obtener el token del usuario autenticado
+const getAuthToken = async () => {
+  const user = auth.currentUser;
+  if (user) {
+    try {
+      const token = await user.getIdToken();  // Obtenemos el token
+      return token;
+    } catch (error) {
+      console.error('Error al obtener el token:', error);
+    }
+  }
+  return null;
+};
+
+// Función para obtener el perfil del usuario desde el backend
+export const getUserProfileFromBackend = async () => {
+  const userId = auth.currentUser?.uid;
+  const token = await getAuthToken();  // Obtenemos el token
+  if (userId && token) {
+    try {
+      const response = await axios.get(`${BACKEND_URL}/api/user/profile/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,  // Incluimos el token en las cabeceras
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error al obtener el perfil desde el backend:", error);
+    }
+  }
+  return {};
+};
+
+
+// Función para guardar las calorías en el backend
+export const saveCaloriesToBackend = async (userId, calories) => {
+  const token = await getAuthToken();  // Obtenemos el token
+  try {
+    await axios.post(`${BACKEND_URL}/api/user/calories/${userId}`, { calories }, {
+      headers: {
+        Authorization: `Bearer ${token}`,  // Incluimos el token en las cabeceras
+      },
+    });
+    console.log("Las calorías se han guardado correctamente.");
+  } catch (error) {
+    console.error("Error al guardar las calorías en el backend:", error);
+  }
+};
+
+
+// Función para guardar el historial de alimentos
+export const saveFoodHistoryToBackend = async (userId, foodHistory, caloriesConsumed) => {
+  const token = await getAuthToken();  // Obtenemos el token
+  try {
+    await axios.post(`${BACKEND_URL}/api/user/food-history/${userId}`, { foodHistory, caloriesConsumed }, {
+      headers: {
+        Authorization: `Bearer ${token}`,  // Incluimos el token en las cabeceras
+      },
+    });
+    console.log("Historial de alimentos guardado correctamente.");
+  } catch (error) {
+    console.error("Error al guardar el historial de alimentos en el backend:", error);
+  }
+};
+
+
+// Función para escuchar el estado de autenticación
+export const listenAuthState = (callback) => {
+  onAuthStateChanged(auth, callback);
+};
+
+
+// Función para cerrar sesión
+export const logoutUser = async () => {
+  try {
+    await signOut(auth);
+    console.log('Usuario cerrado sesión correctamente');
+  } catch (error) {
+    console.error('Error al cerrar sesión:', error);
+  }
+};
+
+// Función para actualizar el perfil en Firestore
+export const updateUserProfileInFirestore = async (userId, updatedProfileData) => {
+  try {
+    const userRef = doc(firestore, 'users', userId);
+    await setDoc(userRef, updatedProfileData, { merge: true });
+    console.log("Perfil actualizado en Firestore.");
+  } catch (error) {
+    console.error("Error al actualizar el perfil en Firestore:", error);
+  }
+};
+
+// Función para actualizar el perfil en el backend
+export const updateUserProfileInBackend = async (userId, updatedProfileData) => {
+  const token = await getAuthToken();  // Obtenemos el token
+  try {
+    await axios.put(`${BACKEND_URL}/api/user/profile/${userId}`, updatedProfileData, {
+      headers: {
+        Authorization: `Bearer ${token}`,  // Incluimos el token en las cabeceras
+      },
+    });
+    console.log("Perfil actualizado en el backend.");
+  } catch (error) {
+    console.error("Error al actualizar el perfil en el backend:", error);
+  }
+};
+
+// Función principal para actualizar el perfil tanto en Firestore como en el backend
+export const updateUserProfile = async (userId, updatedProfileData) => {
+  try {
+    // Actualiza el perfil en Firestore
+    await updateUserProfileInFirestore(userId, updatedProfileData);
+    // Guarda los cambios en el backend
+    await updateUserProfileInBackend(userId, updatedProfileData);
+  } catch (error) {
+    console.error("Error al actualizar el perfil:", error);
+  }
+};
+
+
+// Función para guardar el perfil del usuario en Firestore
+export const saveUserProfileToFirestore = async (profileData, userId) => {
+  try {
+    const userRef = doc(firestore, 'users', userId);
+    await setDoc(userRef, profileData, { merge: true });  // Usamos merge para no sobrescribir datos existentes
+    console.log("Perfil del usuario guardado en Firestore.");
+  } catch (error) {
+    console.error("Error al guardar el perfil en Firestore:", error);
+  }
+};
+
+
+// Exportamos las funciones necesarias
+export { auth, signInWithEmailAndPassword, signOut, onAuthStateChanged, firestore };

@@ -1,0 +1,57 @@
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { auth, getCaloriesFromFirestore, saveCaloriesToFirestore } from '../../../firebaseconfig/firebase';
+
+// Creamos el contexto de calorías
+const CaloriesContext = createContext();
+
+// Proveedor de contexto
+export const CaloriesProvider = ({ children }) => {
+  const [caloriesConsumed, setCaloriesConsumed] = useState(0);
+
+    // Recuperar calorías desde Firestore cuando el componente se monta
+    useEffect(() => {
+      const fetchCalories = async () => {
+        const userId = auth.currentUser?.uid;
+        if (userId) {
+          const storedCalories = await getCaloriesFromFirestore(userId);
+          setCaloriesConsumed(storedCalories);  // Establecemos las calorías recuperadas desde Firestore
+        }
+      };
+      
+      fetchCalories();
+    }, []);  // Solo se ejecuta una vez al montar el componente
+
+
+  // Función para agregar calorías
+  const addCalories = (calories) => {
+    setCaloriesConsumed((prevCalories) => prevCalories + calories);
+  };
+
+  // Función para restar calorías
+  const removeCalories = (calories) => {
+    setCaloriesConsumed((prevCalories) => prevCalories - calories);
+  };
+
+   // Guardar calorías en Firestore cuando el estado cambie
+   useEffect(() => {
+    const saveCalories = async () => {
+      const userId = auth.currentUser?.uid;
+      if (userId && caloriesConsumed !== 0) {  // Solo guardar si hay un cambio y no es 0
+        await saveCaloriesToFirestore(userId, caloriesConsumed);
+      }
+    };
+
+    saveCalories();
+  }, [caloriesConsumed]);  // Solo guarda cuando `caloriesConsumed` cambie
+
+  return (
+    <CaloriesContext.Provider value={{ caloriesConsumed, addCalories, removeCalories }}>
+      {children}
+    </CaloriesContext.Provider>
+  );
+};
+
+// Custom hook para usar el contexto de calorías
+export const useCalories = () => {
+  return useContext(CaloriesContext);
+};

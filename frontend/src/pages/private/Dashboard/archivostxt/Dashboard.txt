@@ -1,0 +1,120 @@
+import  { useState } from "react";
+import { useUserData } from './useUserData.jsx';  // Importa el hook
+import UserProfile from './UserProfile.jsx';
+import Historial from './Historial.jsx';
+import RadialChart from './RadialChart.jsx';
+import './Dashboard.css';
+import { useCalories } from "../home/CaloriesContext.jsx";
+//import { useAuth } from '../../Navbar/authContext';  // Importa el hook de autenticación
+import { getAuth } from 'firebase/auth'; // Importamos getAuth para acceder a la información del usuario
+
+function Dashboard() {
+  const {
+    userData,
+    isEditing,
+    foodHistory,
+   // currentCalories,
+    dailyGoal,
+    //caloriesConsumed,
+    isLoading,
+    setIsEditing,
+    setUserData,  // Añadido para actualizar el userData
+    saveUserProfile,  // Asegúrate de que saveUserProfile está bien definido en tu hook
+    handleAddFoodToHistory
+  } = useUserData(); // Usa el hook
+  
+   // Obtenemos el contexto de calorías
+  const { caloriesConsumed /*addCalories*/ } = useCalories();  // Ya no se usa removeCalories
+  
+  const caloriesToDisplay = Math.round(caloriesConsumed);  // Redondeo de calorías
+
+
+  const [editedData, setEditedData] = useState({
+    age: userData?.age || '',
+    gender: userData?.gender || 'male',
+    goal: userData?.goal || 'lose',
+    weight: userData?.weight || '',
+    height: userData?.height || '',
+    activityLevel: userData?.activityLevel || 'sedentary',
+    calorieAdjustment: userData?.calorieAdjustment || ''
+  });
+  // Obtener datos del usuario desde el contexto de autenticación
+  const [isSaving, setIsSaving] = useState(false); // Estado para manejar el loading del guardado
+  const [saveError, setSaveError] = useState(null); // Para manejar errores de guardado
+
+ // Obtener el uid del usuario autenticado
+ const auth = getAuth();
+ const userUid = auth.currentUser?.uid; // Usamos el UID del usuario en vez del email
+  
+
+  if (!userUid) {
+    return <div>Error: No estás autenticado o no se pudo obtener tu correo electrónico.</div>;
+  }
+
+  // Manejo del envío del perfil editado
+  const handleProfileSubmit = async (e) => {
+    e.preventDefault();
+    setIsSaving(true);  // Muestra el loading
+    setSaveError(null); // Restablecer cualquier error previo
+    
+    try {
+      // Guardamos el perfil editado en Firestore usando el email del usuario
+      await saveUserProfile(editedData, userUid);  // Guardamos los datos en Firestore con el correo del usuario
+      setIsSaving(false);  // Desactiva el loading
+      setIsEditing(false);  // Desactiva el modo de edición
+    } catch (error) {
+      setIsSaving(false);  // En caso de error, desactiva el loading
+      setSaveError("Error al guardar perfil. Intenta nuevamente.");
+      console.error("Error al guardar perfil: ", error);
+    }
+  };
+
+  // Si está cargando los datos
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div className="dashboard container">
+      <div className="dashboard-container">
+        <h1 className="dashboard-container-title">Welcome to your Dashboard</h1>
+        <div className="dashboard-container-descrip">
+          <p className="dashboard-container-number">Goal of the day <strong>{dailyGoal}</strong></p>
+          <p className="dashboard-container-cal">Calories consumed <strong>{Math.round(caloriesToDisplay)}</strong></p>
+        </div>
+      </div>
+
+      <div className="flex-container">
+        <RadialChart
+          caloriesConsumed={caloriesConsumed} 
+          dailyGoal={dailyGoal}
+          protein={userData.protein || 120}  // Suponiendo que el usuario tiene estos datos en su perfil
+          carbs={userData.carbs || 250}
+          fats={userData.fats || 60}
+        />
+
+        <UserProfile
+          userData={userData}
+          setEditedData={setEditedData}
+          isEditing={isEditing}
+          editedData={editedData}
+          setUserData={setUserData}
+          setIsSaving={setIsSaving}
+          setIsEditing={setIsEditing}  // Asegúrate de pasar esta prop
+          handleEditToggle={() => setIsEditing(!isEditing)}
+          handleChange={(e) => setEditedData((prevData) => ({ ...prevData, [e.target.name]: e.target.value }))}
+          handleSubmit={handleProfileSubmit}
+          dailyGoal={dailyGoal}
+          isSaving={isSaving}
+          userUid={userUid}  // Pasamos el estado de isSaving
+        />
+      </div>
+
+      {saveError && <p className="error-message">{saveError}</p>} {/* Muestra un mensaje de error si ocurre */}
+
+      <Historial foodHistory={foodHistory} handleAddFoodToHistory={handleAddFoodToHistory} />
+    </div>
+  );
+}
+
+export default Dashboard;

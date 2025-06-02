@@ -1,0 +1,257 @@
+import { Doughnut } from 'react-chartjs-2';
+import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement, CategoryScale, LinearScale } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels'; // Importamos el plugin
+import PropTypes from 'prop-types';
+import './RadialChart.css'
+import { useState, useEffect, useMemo } from 'react';
+
+
+// Registramos los elementos necesarios, incluyendo el plugin para etiquetas de datos
+ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale, LinearScale, ChartDataLabels);
+
+// Colores personalizados para el gráfico
+const COLORS = {
+  overGoal: '#FF5722',
+  goalAchieved: '#66BB6A',
+  remaining: '#E0E0E0'
+};
+
+// Funciones de cálculo de calorías
+const calculateRemainingCalories = (dailyGoal, caloriesConsumed) => {
+  return dailyGoal - caloriesConsumed;
+};
+
+const calculatePercentageCalories = (dailyGoal, caloriesConsumed) => {
+  return (caloriesConsumed / dailyGoal) * 100;
+};
+
+function RadialChart({ caloriesConsumed, dailyGoal }) {
+  // Calcular las calorías restantes y el porcentaje
+  const remainingCalories = calculateRemainingCalories(dailyGoal, caloriesConsumed);
+  const percentageCalories = calculatePercentageCalories(dailyGoal, caloriesConsumed);
+
+  // Determinamos si el usuario se ha pasado de calorías o si ha cumplido su objetivo
+  const isOverGoal = caloriesConsumed > dailyGoal;
+  const isGoalAchieved = caloriesConsumed === dailyGoal;
+
+  const chartColor = isOverGoal
+  ? COLORS.overGoal
+  : COLORS.goalAchieved;
+
+  // Datos para el gráfico de calorías
+  const caloriesData = useMemo(() => {
+    return {
+      labels: ['Consumed Calories', 'Remaining Calories'],
+      datasets: [{
+        label: 'Calories',
+        data: [caloriesConsumed, isOverGoal ? 0 : remainingCalories],
+        backgroundColor: [chartColor, COLORS.remaining],
+        borderColor: [chartColor, COLORS.remaining],
+        borderWidth: 0.5,
+        cutout: '70%',
+      }],
+    };
+  }, [caloriesConsumed, remainingCalories, isOverGoal]);
+
+  // Opciones para los gráficos
+  const chartOptions = useMemo(() => ({
+    responsive: true,
+    maintainAspectRatio: false, // Esto evita que Chart.js controle el tamaño del canvas
+    plugins: {
+      title: {
+        display: true,
+        text: 'Progress of the Day',
+        font: {
+          family: 'Poppins',
+          size: 'clamp(1.5625rem, 1.4844rem + 0.3906vw, 1.9531rem)',
+          weight: 'bold',
+        },
+      },
+      legend: {
+        labels: {
+          font: {
+            size: 14, // Ajusta el tamaño de la fuente aquí
+          },
+        },
+      },
+      tooltip: {
+        enabled: true,
+        mode: 'nearest',
+        intersect: false,
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        titleFont: {
+          size: 16,
+          weight: 'light',
+          color: '#4F4F4F',
+        },
+        bodyFont: {
+          size: 14,
+          color: '#4F4F4F',
+        },
+        callbacks: {
+          label: function (tooltipItem) {
+            const value = tooltipItem.raw;
+            const label = tooltipItem.label;
+            if (label === 'Calories Consumed') {
+              return `Consumed: ${value} kcal`;
+            }
+            return `${label}: ${value} kcal`;
+          },
+        },
+      },
+      datalabels: {
+        display: false, // Desactivamos las etiquetas dentro del gráfico
+      },
+    },
+
+  }), []);
+  
+
+  
+
+  return (
+    <div className="radial-chart-container">
+      
+     <figure className="radial-chart-content">
+      <div className='radial-chart'
+       role="img"
+       aria-label={`Daily calories progress: ${percentageCalories.toFixed(1)}% completed.`}
+      >
+      <Doughnut  data={caloriesData} options={chartOptions} />
+      </div>
+      
+      <figcaption className='radial-chart-text' aria-live="polite">
+        {isOverGoal ? (
+          <>
+            <p className='radial-chart-goal exced' >¡You've exceeded your limit!</p>
+            {/*<p>{caloriesConsumed} kcal Consumed</p>*/}
+          </>
+        ) : isGoalAchieved ? (
+          <>
+            <p className='radial-chart-goal archived' >¡Goal achieved!</p>
+           {/*} <p>{caloriesConsumed} kcal Consumed</p>*/}
+          </>
+        ) : (
+          <>
+            {percentageCalories.toFixed(1)}% <p> Completed</p>
+          </>
+        )}
+       </figcaption>
+   </figure>
+</div>
+  );
+}
+
+RadialChart.propTypes = {
+  caloriesConsumed:PropTypes.number.isRequired,
+  dailyGoal:PropTypes.number.isRequired,
+};
+
+export default RadialChart;
+
+
+
+
+//// radialchart que hice pero no me convence ////
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
+import PropTypes from 'prop-types';
+import './Chart.css'
+import { useMemo } from 'react';
+
+
+// Colores personalizados para el gráfico
+const COLORS = {
+  overGoal: '#FF5722',
+  goalAchieved: '#66BB6A',
+  remaining: '#E0E0E0'
+};
+
+// Funciones de cálculo de calorías
+const calculateRemainingCalories = (dailyGoal, caloriesConsumed) => {
+  return dailyGoal - caloriesConsumed;
+};
+
+const calculatePercentageCalories = (dailyGoal, caloriesConsumed) => {
+  return (caloriesConsumed / dailyGoal) * 100;
+};
+
+function RadialChart({ caloriesConsumed, dailyGoal }) {
+  // Calcular las calorías restantes y el porcentaje
+  const remainingCalories = calculateRemainingCalories(dailyGoal, caloriesConsumed);
+  const percentageCalories = calculatePercentageCalories(dailyGoal, caloriesConsumed);
+  // Determinamos si el usuario se ha pasado de calorías o si ha cumplido su objetivo
+  const isOverGoal = caloriesConsumed > dailyGoal;
+  const isGoalAchieved = caloriesConsumed === dailyGoal;
+
+  const chartColor = isOverGoal
+  ? COLORS.overGoal
+  : COLORS.goalAchieved;
+
+  // Datos para el gráfico de calorías
+  const caloriesData = useMemo(() => {
+   return [
+      { name: 'Calories Consumed', value: caloriesConsumed },
+      { name: 'Remaining Calories', value: isOverGoal ? 0 : remainingCalories }
+    ];
+  }, [caloriesConsumed, remainingCalories, isOverGoal]);
+
+
+  const COLORS_ARRAY = [chartColor, COLORS.remaining];
+  
+
+  return (
+    <div className="radial-chart-container">
+      <figure className="radial-chart-content">
+         <h1 className='radial-chart-content-title'>Progress of the day</h1>
+        <div
+          className="radial-chart"
+          role="img"
+          aria-label={`Daily calories progress: ${percentageCalories.toFixed(1)}% completed.`}
+        >
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={caloriesData}
+                innerRadius={70}
+                outerRadius={100}
+                paddingAngle={3}
+                dataKey="value"
+                stroke="none"
+              >
+                {caloriesData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS_ARRAY[index]} />
+                ))}
+              </Pie>
+              <Tooltip
+                formatter={(value, name) =>
+                  name === 'Calories Consumed'
+                    ? [`Consumed: ${value} kcal`, 'Calories']
+                    : [`Remaining: ${value} kcal`, 'Calories']
+                }
+              />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+
+        <figcaption className="radial-chart-text" aria-live="polite">
+          {isOverGoal ? (
+            <p className="radial-chart-goal exced">¡You've exceeded your limit!</p>
+          ) : isGoalAchieved ? (
+            <p className="radial-chart-goal archived">¡Goal achieved!</p>
+          ) : (
+            <>
+              {percentageCalories.toFixed(1)}% <p> Completed</p>
+            </>
+          )}
+        </figcaption>
+      </figure>
+    </div>
+  );
+}
+
+RadialChart.propTypes = {
+  caloriesConsumed:PropTypes.number.isRequired,
+  dailyGoal:PropTypes.number.isRequired,
+};
+
+export default RadialChart;

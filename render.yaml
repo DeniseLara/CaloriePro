@@ -1,0 +1,11 @@
+name: caloriecount-backend
+type: web-service
+env: python3
+source:
+  branch: main
+  root: backend
+web:
+  port: 8080
+  commands:
+    start: uvicorn main:app --host 0.0.0.0 --port $PORT
+    build_command: pip install -r requirements.txt

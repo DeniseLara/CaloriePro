@@ -1,0 +1,130 @@
+ <Routes>
+        {/* Rutas públicas */}
+        <Route
+          path="/"
+          element={
+            <>
+              <div id="hero">
+                <Hero openSignUpModal={() => setShowModal(true)} />
+              </div>
+              <div id="benefits">
+                <Card />
+              </div>
+              <Testimonies />
+              <Counter />
+              <div id="howitworks">
+                <HowItWorks />
+              </div>
+              <Start openSignUpModal={() => setShowModal(true)} />
+            </>
+          }
+        />
+  
+     {isAuthenticated ? (
+     <>
+    {/* Rutas protegidas */}
+    <Route path="/home-logged-in" element={<Home />} />
+    <Route path="/dashboard" element={<Dashboard />} />
+    </>
+    ) : (
+    <Navigate to="/" />
+    )}
+      </Routes>
+
+
+/---- APP.JSX ORIGINAL ---/
+import { useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { useAuth } from './components/Navbar/authContext'; // Importamos el contexto de autenticación
+import Navbar from './components/Navbar/Navbar';
+import Footer from './components/PublicPage/Footer/Footer'
+import Modal from './components/Navbar/Modal';
+import Home from './components/Users/home/Home';
+import Dashboard from './components/Users/Dashboard/Dashboard';
+import { ClipLoader } from 'react-spinners';
+import { onAuthStateChanged, auth, getCaloriesFromFirestore } from './components/firebaseconfig/firebase'; 
+import AuthFooter from './components/Users/Authfooter/AuthFooter';
+import PrivateRoute from './PrivateRoute';
+import './index.css'
+import PublicPage from './components/PublicPage/PublicPage';
+
+function App() {
+  const [showModal, setShowModal] = useState(false);
+  const { isAuthenticated, setIsAuthenticated, user } = useAuth(); // Traemos setIsAuthenticated desde el contexto
+  const [loading, setLoading] = useState(true);
+  const [caloriesConsumed, setCaloriesConsumed] = useState(0); //nuevo
+
+  // Verifica el estado de autenticación al cargar la página
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsAuthenticated(true);
+
+      } else {
+        setIsAuthenticated(false);
+      }
+      setLoading(false); // Deja de cargar una vez que el estado se determina
+    });
+
+    return () => unsubscribe();
+  }, []);
+ 
+
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <ClipLoader size={60} color="#4fa94d" loading={loading} />
+        <p>Cargando...</p>
+      </div>
+    );
+  }
+
+
+  return (
+    <div className='app'>
+      <Navbar showModal={showModal} setShowModal={setShowModal} closeModal={() => setShowModal(false)} />
+        <main className='main'>
+      <Routes>
+        {/* Rutas públicas */}
+        <Route
+          path="/"
+          element={
+          <PublicPage openSignUpModal={() => setShowModal(true)} />
+          }
+        />
+
+        {/* Rutas protegidas*/} 
+      <Route 
+      path='/home'
+      element={
+       <PrivateRoute isAuthenticated={isAuthenticated}>
+        <Home/>
+       </PrivateRoute>}
+       />
+
+       <Route 
+      path='/dashboard'
+      element={
+       <PrivateRoute isAuthenticated={isAuthenticated}>
+        <Dashboard caloriesConsumed={caloriesConsumed}/>
+       </PrivateRoute>}
+       />
+       
+      </Routes>
+      </main>
+      {/* Mostrar Footer según autenticación */}
+      {isAuthenticated ? <AuthFooter /> : <Footer />}
+  
+      {/* Mostrar el Modal solo si no está autenticado */}
+      {!isAuthenticated && (
+        <Modal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          closeModal={() => setShowModal(false)}
+        />
+      )}
+  </div>
+  );
+}
+
+export default App;

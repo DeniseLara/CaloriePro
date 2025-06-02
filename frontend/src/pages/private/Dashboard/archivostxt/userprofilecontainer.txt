@@ -1,0 +1,82 @@
+import React, { useState, useEffect } from "react";
+import UserProfile from "./UserProfile";
+import { saveUserProfile, loadUserProfile } from "./firebaseService";
+import { calculateDailyGoal } from "./profileUtils";
+
+const UserProfileContainer = ({ userData, isEditing, handleEditToggle, handleChange, dailyGoal }) => {
+  const [editedData, setEditedData] = useState({
+    age: userData?.age || '',
+    gender: userData?.gender || 'male',
+    goal: userData?.goal || 'lose',
+    weight: userData?.weight || '',
+    height: userData?.height || '',
+    activityLevel: userData?.activityLevel || 'sedentary',
+    calorieAdjustment: userData?.calorieAdjustment || ''
+  });
+
+  const [isSaving, setIsSaving] = useState(false);
+
+  useEffect(() => {
+    // Actualiza editedData si userData cambia
+    setEditedData({
+      age: userData?.age || '',
+      gender: userData?.gender || 'male',
+      goal: userData?.goal || 'lose',
+      weight: userData?.weight || '',
+      height: userData?.height || '',
+      activityLevel: userData?.activityLevel || 'sedentary',
+      calorieAdjustment: userData?.calorieAdjustment || ''
+    });
+  }, [userData]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSaving(true);
+  
+    // Calcular el nuevo dailyGoal
+    const updatedDailyGoal = calculateDailyGoal(editedData);
+  
+    // Actualizar editedData con el nuevo goal calculado
+    const updatedData = {
+      ...editedData,
+      dailyGoal: updatedDailyGoal,
+    };
+  
+    setEditedData(updatedData);
+  
+    try {
+      const userId = auth.currentUser?.uid;  // Obtener el userId
+      const userProfile = await getUserProfileFromFirestore(userId);  // Obtener el perfil del usuario
+  
+      console.log(userProfile); // Puedes usar o verificar el perfil aquí si lo necesitas
+  
+      // Guarda el perfil actualizado en Firestore
+      await saveUserProfileToFirestore(userId, updatedData);
+  
+      setIsSaving(false);
+      handleEditToggle(); // Detener el modo de edición
+  
+      // Actualizar userData si se guardó correctamente
+      await loadUserProfile();  // Cargar el perfil actualizado desde Firestore
+    } catch (error) {
+      setIsSaving(false);
+      console.error("Error al guardar el perfil:", error);
+    }
+  };
+  
+
+  return (
+    <UserProfile
+      userData={userData}
+      isEditing={isEditing}
+      editedData={editedData}
+      handleEditToggle={handleEditToggle}
+      handleChange={handleChange}
+      handleSubmit={handleSubmit}
+      isSaving={isSaving}
+      dailyGoal={dailyGoal || editedData.dailyGoal} // Se pasa el dailyGoal actualizado
+    />
+  );
+};
+
+export default UserProfileContainer;

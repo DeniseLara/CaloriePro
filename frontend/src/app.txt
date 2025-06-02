@@ -1,0 +1,102 @@
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import Navbar from "./components/Navbar/Navbar";
+import Hero from "./components/Hero/Hero";
+import Getstarted from "./components/Getstarted/Getstarted";
+import Card from "./components/Getstarted/Card";
+import Testimonies from "./components/Getstarted/Testimonies";
+import Counter from "./components/Getstarted/Counter";
+import Start from "./components/Getstarted/Start";
+import HowItWorks from "./components/HowItWoks/HowItWorks";
+import Footer from "./components/Footer/Footer";
+import { auth } from "./components/Navbar/firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import Modal from "./components/Navbar/Modal";
+import Home from "./components/Users/Home"; // Página de home para usuarios registrados
+import Dashboard from "./components/Users/Dashboard"; // Importa el componente Dashboard
+
+function App() {
+  const [showModal, setShowModal] = useState(null); // Estado para manejar la visibilidad del modal
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // Estado para saber si el usuario está autenticado
+  const [loading, setLoading] = useState(true); // Estado para manejar la carga de la autenticación
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsAuthenticated(true); // El usuario está autenticado
+      } else {
+        setIsAuthenticated(false); // El usuario no está autenticado
+      }
+      setLoading(false); // Terminamos la carga de autenticación
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const openSignUpModal = () => {
+    setShowModal('signup'); // Abre el modal de registro
+  };
+
+  const closeModal = () => {
+    setShowModal(null); // Cierra el modal
+  };
+
+  if (loading) {
+    return <div>Loading...</div>; // Muestra un mensaje de carga mientras verificamos el estado de autenticación
+  }
+
+  return (
+    <Router>
+      {/* Navbar visible siempre */}
+      <Navbar showModal={showModal} setShowModal={setShowModal} closeModal={closeModal} />
+
+      <Routes>
+        {/* Ruta para el Home genérico (para no autenticados) */}
+        <Route
+          path="/"
+          element={isAuthenticated ? <Navigate to="/home-logged-in" /> : <Hero openSignUpModal={openSignUpModal} />}
+        />
+
+        {/* Ruta para la página personalizada de Home para usuarios autenticados */}
+        <Route
+          path="/home-logged-in"
+          element={isAuthenticated ? <Home /> : <Navigate to="/" />}
+        />
+
+        {/* Otras rutas */}
+        <Route path="/getstarted" element={<Getstarted />} />
+        <Route path="/how-it-works" element={<HowItWorks />} />
+
+        {/* Página privada solo para usuarios autenticados */}
+        <Route
+          path="/dashboard"
+          element={isAuthenticated ? <Dashboard /> : <Navigate to="/" />}
+        />
+      </Routes>
+
+      {/* Estos componentes solo se muestran cuando el usuario no está autenticado */}
+      {!isAuthenticated && (
+        <>
+          <Getstarted />
+          <Card />
+          <Testimonies />
+          <Counter />
+          <HowItWorks />
+          <Start openSignUpModal={openSignUpModal} />
+        </>
+      )}
+
+      {/* Footer visible siempre */}
+      <Footer />
+
+      {/* Modal de registro y login */}
+      <Modal showModal={showModal} setShowModal={setShowModal} closeModal={closeModal} />
+    </Router>
+  );
+}
+
+export default App;
+
+
+//publicpage
+  {/*openSignUpModal={() => setShowModal(true)}*/}

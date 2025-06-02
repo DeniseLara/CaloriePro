@@ -1,0 +1,204 @@
+import  { useState, useEffect } from "react";
+import './CaloriesResults.css';
+//import { useRef } from "react";
+import { Doughnut } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { useCalories } from "../context/CaloriesContext.jsx";
+import { db, auth, doc, getDoc, updateDoc } from '../../../firebaseconfig/firebase.jsx'
+import PropTypes from "prop-types";
+//import { error } from "firebase-functions/logger";
+
+ChartJS.register(ArcElement, Tooltip, Legend);
+
+function CaloriesResults({ nutritionData, error }) {
+  const [caloriesAction, setCaloriesAction] = useState(null); // Estado para la acción (agregado/eliminado)
+  const { caloriesConsumed, addCalories /*caloriesTarget*/ } = useCalories(); // Obtenemos el contexto de calorías
+  const [foodHistory, setFoodHistory] = useState([]);  // Para almacenar el historial de alimentos
+  const user = auth.currentUser;  // Obtener el usuario autenticado
+
+
+  // Función para obtener la fecha actual en formato "YYYY-MM-DD"
+  const getCurrentDate = () => {
+    const date = new Date();
+    return date.toISOString().split('T')[0]; // Devuelve la fecha en formato "YYYY-MM-DD"
+  };
+
+  // Función para cargar el historial de alimentos desde Firestore
+  const loadFoodHistory = async () => {
+    if (user) {
+      const foodHistoryRef = doc(db, 'users', user.uid);  // Refiere al documento del usuario en Firestore
+      const docSnapshot = await getDoc(foodHistoryRef);
+
+      if (docSnapshot.exists()) {
+        setFoodHistory(docSnapshot.data().foodHistory || []);  // Cargar historial si existe
+      }
+    }
+  };
+
+  // Cargar el historial al montar el componente
+  useEffect(() => {
+    if (user) {
+      loadFoodHistory();  // Solo cargar si hay un usuario autenticado
+    }
+  }, [user]);
+
+  // Comprobamos si el alimento ya fue agregado al cargar el componente
+  useEffect(() => {
+    if (nutritionData) {
+      const foodName = nutritionData?.ingredients || "Desconocido"; // Verifica la existencia de ingredients
+      if (foodHistory.some(item => item.name === foodName)) {
+        setCaloriesAction("added"); // El alimento ya ha sido agregado
+      } else {
+        setCaloriesAction(null);  // Solo muestra el botón si no está agregado
+      }
+    }
+  }, [nutritionData, foodHistory]);  // Se ejecuta cuando nutritionData o foodHistory cambia
+
+  if (error) {
+    return <p className="error-message">{error}</p>;
+  }
+
+  if (!nutritionData) {
+    return null;
+  }
+
+  const { totalNutrients } = nutritionData;
+  const calories = totalNutrients?.ENERC_KCAL?.quantity || 0;
+
+  const chartData = {
+    labels: ['Proteins', 'Fats', 'Carbohydrates', 'Others'],
+    datasets: [{
+      data: [
+        (totalNutrients?.PROCNT?.quantity || 0).toFixed(1),
+        (totalNutrients?.FAT?.quantity || 0).toFixed(1),
+        (totalNutrients?.CHOCDF?.quantity || 0).toFixed(1),
+        (
+          (totalNutrients?.ENERC_KCAL?.quantity || 0) - 
+          (totalNutrients?.PROCNT?.quantity || 0 + 
+           totalNutrients?.FAT?.quantity || 0 + 
+           totalNutrients?.CHOCDF?.quantity || 0)
+        ).toFixed(1),
+      ],
+      backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56', '#FF9F40'],
+      hoverOffset: 4
+    }]
+  };
+
+  // Función para agregar calorías al historial en Firestore
+  const handleAdd = async () => {
+    if (user) {
+      const foodName = nutritionData?.ingredients || "Desconocido";
+      const foodCalories = calories;
+      const currentDate = getCurrentDate();  // Obtén la fecha actual
+  
+      // Verificar si el alimento ya está agregado
+      const foodExists = foodHistory.some(item => item.name === foodName);
+  
+      if (!foodExists) {
+        // Crear un objeto con el nombre, calorías y fecha
+        const newFood = { 
+          name: foodName, 
+          calories: foodCalories, 
+          date: currentDate 
+        };
+  
+        // Agregar el nuevo alimento al historial
+        const updatedFoodHistory = [...foodHistory, newFood];
+  
+        // Guardar el historial actualizado en Firestore
+        const foodHistoryRef = doc(db, 'users', user.uid);
+        await updateDoc(foodHistoryRef, {
+          foodHistory: updatedFoodHistory,
+          caloriesConsumed: caloriesConsumed + foodCalories // Actualizamos las calorías consumidas
+        });
+  
+        // Actualizar el estado de la acción
+        setCaloriesAction("added");
+        setFoodHistory(updatedFoodHistory);  // Actualizar el historial localmente
+  
+        // Actualizar las calorías consumidas en el contexto global (para mostrar en el dashboard)
+        addCalories(foodCalories); // Aquí estamos sumando las calorías al estado global
+  
+      } else {
+        // Si el alimento ya está agregado, no hacer nada
+        setCaloriesAction("already_added");
+      }
+    } else {
+      console.error('Usuario no autenticado');
+    }
+  };
+  
+
+  return (
+    <div className="results-container container">
+      <div className="results-content">
+
+      <div className="heading-container">
+        <h3 className="heading-title">Nutrition facts</h3>
+        <p className="heading-description">
+          <strong>Food:</strong> {nutritionData?.ingredients || "No disponible"}
+          </p>
+
+        <p className="heading-description">
+          <strong>Calories:</strong> {calories.toFixed(1)} kcal
+          </p>
+      </div>
+
+      {/* Gráfico Circular */}
+      <div className="chart-container">
+        <Doughnut
+          data={chartData}
+          options={{
+            responsive: true,
+            maintainAspectRatio: false, // Permite que el gráfico se ajuste mejor
+            aspectRatio: 1, // Ajusta la relación de aspecto si es necesario
+            plugins: {
+              legend: { position: 'bottom' },
+              tooltip: {
+                enabled: true,
+                callbacks: {
+                  label: function(tooltipItem) {
+                    const value = tooltipItem.raw;
+                    const label = tooltipItem.label;
+                    return `${label}: ${value}`; // Eliminamos las unidades de "g" o "kcal"
+                  }
+                }
+              },
+              datalabels: {
+                display: false, // Esto oculta los valores dentro del gráfico
+              }
+            }
+          }}
+        />
+      </div>
+      {/* Detalles Nutricionales */}
+      <div className="nutrient-details">
+        <div className="nutrient"><strong>Proteins:</strong> {(totalNutrients?.PROCNT?.quantity || 0).toFixed(1)} g</div>
+        <div className="nutrient"><strong>Fats:</strong> {(totalNutrients?.FAT?.quantity || 0).toFixed(1)} g</div>
+        <div className="nutrient"><strong>Carbohydrates:</strong> {(totalNutrients?.CHOCDF?.quantity || 0).toFixed(1)} g</div>
+      </div>
+      </div>
+
+           {/* Mostrar el botón de agregar, o mensaje si ya fue agregado */}
+     {caloriesAction === null ? (
+      <button className="nutrient-add-btn" onClick={handleAdd}>Add calories</button>
+    ) : caloriesAction === "added" ? (
+      <p className="success-message">¡Food added!</p>
+    ) : (
+      <p className="error-message">¡This food has already been added!</p>
+    )}
+
+    
+    </div>
+
+  );
+} 
+
+
+// Validación de las props
+CaloriesResults.propTypes = {
+  nutritionData: PropTypes.object.isRequired,  // Asegúrate de que openSignUpModal sea una función requerida
+  error: PropTypes.string.isRequired,
+};
+
+export default CaloriesResults;

@@ -1,0 +1,8 @@
+name: caloriecount-frontend
+type: static-site
+source:
+  branch: main
+  root: frontend
+static-build-command: npm run build
+publish:
+  directory: dist

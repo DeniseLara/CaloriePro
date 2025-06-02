@@ -1,0 +1,87 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+:root{
+  --fx-xs: clamp(0.64rem, 0.608rem + 0.16vw, 0.8rem);
+  --fs-sm: clamp(0.8rem, 0.76rem + 0.2vw, 1rem);
+  --fs-base: clamp(1rem, 0.95rem + 0.25vw, 1.25rem);
+  --fs-md: clamp(1.25rem, 1.1875rem + 0.3125vw, 1.5625rem);
+  --fs-lg: clamp(1.5625rem, 1.4844rem + 0.3906vw, 1.9531rem);
+  --fs-xl: clamp(1.9531rem, 1.8555rem + 0.4883vw, 2.4414rem);
+  --fs-2xl: clamp(2.4414rem, 2.3193rem + 0.6104vw, 3.0518rem);
+  --fs-3xl: clamp(3.0518rem, 2.8992rem + 0.7629vw, 3.8147rem);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", serif;
+}
+
+/*nuevo*/
+.app{
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main{
+  flex: 1;
+}
+
+
+body{
+  /*background: #f7f3ed;*/
+  background-color: #FDFBF5;
+}
+
+Link{
+  -webkit-tap-highlight-color: transparent; /* quita el flash azul en móviles */
+}
+
+a{
+  text-decoration: none;
+  color: #ffffff;
+  cursor: pointer;
+  line-height: 1;
+  -webkit-tap-highlight-color: transparent; /* quita el flash azul en móviles */
+}
+
+button{
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent; /* quita el flash azul en móviles */
+}
+
+ul{
+  list-style: none;
+}
+
+/*todos los componentes tendrán una clase container las cuales 
+tendrán este padding*/
+.container{
+  padding-left: 8%;
+  padding-right: 8%;
+}
+
+
+/* Estilo para el contenedor de carga */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f4; /* Color de fondo claro */
+}
+
+.loading-container p {
+  margin-top: 20px;
+  font-size: 18px;
+  color: #4fa94d; /* Color del texto */
+  font-weight: bold;
+}

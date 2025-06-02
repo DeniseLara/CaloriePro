@@ -1,0 +1,41 @@
+import './Card.css'
+import React from 'react';
+import { FaUtensils, FaChartPie, FaClipboardList } from "react-icons/fa";
+
+
+const Card = React.memo(() =>{
+    return(
+        <div className="card container">
+            <div className="card-content">
+            <h3 className='card-title'>
+                <FaUtensils style={{ color: "#005FA8", marginRight: "8px" }} />
+                Calorie tracker
+                </h3>
+                <p className='card-description'>Keep precise track of your daily calorie intake with just a few clicks.</p>
+            </div>
+            
+            
+            <div className='card-content'>
+                    <h3 className='card-title'>
+                    <FaChartPie style={{ color: "#005FA8", marginRight: "8px" }} />
+                    Personalized Dashboard
+                    </h3>
+                    <p className='card-description'>View your progress and set goals easily.</p>
+            </div>
+            
+            
+            <div className='card-content'>
+                <h3 className='card-title'>
+                    <FaClipboardList style={{ color: "#005FA8", marginRight: "8px" }} />
+                    Food History
+                </h3>
+                <p className='card-description'>
+                Review all the foods you've logged and track your calorie intake.                
+                </p>
+            </div>
+
+        </div>
+    );
+});
+
+export default Card;

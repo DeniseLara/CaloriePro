@@ -1,0 +1,183 @@
+// src/CaloriesChart.jsx
+import React from "react";
+import { Line } from "react-chartjs-2"; // Line chart from react-chartjs-2
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+
+// Registering necessary chart elements
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
+function CaloriesChart({ data }) {
+  // Chart data setup
+  const chartData = {
+    labels: data.labels,  // Labels for the x-axis (days of the week)
+    datasets: [
+      {
+        label: "Calories Consumed",  // Label for the first dataset (calories consumed)
+        data: data.consumed,  // Calories consumed data for each day
+        borderColor: "#4BC0C0",  // Line color for calories consumed
+        backgroundColor: "rgba(75, 192, 192, 0.2)",  // Light background color under the line
+        fill: true,  // Fill the area under the line
+        tension: 0.4,  // Smooth curve for the line
+        borderWidth: 2,  // Border width of the line
+        pointRadius: 5,  // Radius of the points on the line
+        pointBackgroundColor: "#fff",  // Color of the points
+        pointBorderColor: "#4BC0C0",  // Border color for the points
+      },
+      {
+        label: "Target Calories",  // Label for the second dataset (target calories)
+        data: data.target,  // Target calories for each day
+        borderColor: "#FF5733",  // Line color for target calories
+        backgroundColor: "rgba(255, 87, 51, 0.2)",  // Light background color under the line
+        fill: true,  // Fill the area under the line
+        tension: 0.4,  // Smooth curve for the line
+        borderWidth: 2,  // Border width of the line
+        pointRadius: 5,  // Radius of the points on the line
+        pointBackgroundColor: "#fff",  // Color of the points
+        pointBorderColor: "#FF5733",  // Border color for the points
+      },
+    ],
+  };
+
+  // Chart options for a more professional look
+  const options = {
+    responsive: true,
+    plugins: {
+      title: {
+        display: true,
+        text: 'Weekly Calorie Consumption',  // Title of the chart (in English)
+        font: {
+          size: 18,
+          weight: 'bold',
+        },
+      },
+      tooltip: {
+        mode: 'index',  // Tooltip will display info for the closest item
+        intersect: false,  // Allow tooltips for different lines at the same time
+        callbacks: {
+          label: function (tooltipItem) {
+            return `${tooltipItem.dataset.label}: ${tooltipItem.raw} kcal`;  // Custom tooltip label format (in English)
+          },
+        },
+      },
+      legend: {
+        position: 'top',  // Position the legend at the top
+        labels: {
+          font: {
+            size: 14,
+            weight: 'bold',
+          },
+        },
+      },
+    },
+    scales: {
+      x: {
+        grid: {
+          display: false,  // Hide grid lines on the x-axis
+        },
+        title: {
+          display: true,
+          text: 'Days of the Week',  // X-axis label (in English)
+        },
+      },
+      y: {
+        beginAtZero: true,  // Start the y-axis at 0
+        ticks: {
+          stepSize: 500,  // Step size for y-axis (every 500 kcal)
+          max: 2500,  // Maximum value on the y-axis
+        },
+        grid: {
+          borderColor: '#ccc',  // Color of grid lines
+          borderWidth: 1,  // Border width for grid lines
+          color: '#eee',  // Color for the grid lines
+        },
+        title: {
+          display: true,
+          text: 'Calories (kcal)',  // Y-axis label (in English)
+        },
+      },
+    },
+  };
+
+  return (
+    <div className="chart-container container" style={{ maxWidth: "95%", margin: "1rem auto", padding: "2rem" }}>
+      <Line  data={chartData} options={options} />
+    </div>
+  );
+}
+
+export default CaloriesChart;
+
+
+
+ // Datos para el gráfico de calorías
+  const caloriesData = {
+    labels: [
+      'Calories Consumed', 'Calories left'
+    ],
+    datasets: [
+      {
+        label: 'Calorías',
+        data: isOverGoal ? [caloriesConsumed, 0] : isGoalAchieved ? [caloriesConsumed, 0] : [caloriesConsumed, remainingCalories],
+        backgroundColor: isOverGoal
+          ? [COLORS.overGoal, COLORS.remaining] // Rojo si se excede
+          : isGoalAchieved
+          ? [COLORS.goalAchieved, COLORS.remaining] // Verde completo si se cumple el objetivo
+          : [COLORS.goalAchieved, COLORS.remaining], // Verde y gris si está dentro del objetivo
+        borderColor: isOverGoal
+          ? [COLORS.overGoal, COLORS.remaining]
+          : isGoalAchieved
+          ? [COLORS.goalAchieved, COLORS.remaining]
+          : [COLORS.goalAchieved, COLORS.remaining],
+        borderWidth: 0.5,
+        cutout: '70%', // Hace el gráfico más "hueco" en el centro para hacer que se vea como un donut
+      },
+    ],
+  };
+
+
+
+   useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+  
+      if (width >= 1024) {
+        // Pantallas grandes (1024px en adelante)
+        setChartOptions((prevOptions) => ({
+          ...prevOptions,
+          aspectRatio: 0,
+        }));
+      } else if (width >= 768) {
+        // Tabletas (768px - 1023px)
+        setChartOptions((prevOptions) => ({
+          ...prevOptions,
+          aspectRatio: 1.5,
+        }));
+      } else {
+        // Pantallas pequeñas (340px - 767px)
+        setChartOptions((prevOptions) => ({
+          ...prevOptions,
+          aspectRatio: 1,
+        }));
+      }
+    };
+  
+    // Agregar el listener al evento resize
+    window.addEventListener('resize', handleResize);
+  
+    // Llamar a la función inicialmente para configurar el tamaño
+    handleResize();
+  
+    // Limpiar el listener cuando el componente se desmonte
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
+
+

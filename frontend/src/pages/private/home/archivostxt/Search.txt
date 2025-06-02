@@ -1,0 +1,93 @@
+import { useState } from "react";
+import { useEdamamApi } from "./api/EdamamApi.jsx";
+//import EdamamApi from "./api/EdamamApi.jsx";  // Importas tu API de Edamam
+import CaloriesResults from "./CaloriesResults.jsx"; // Importas el componente de resultados de calorías
+import { FaSearch } from 'react-icons/fa';  // Importa el icono de búsqueda
+import { ClipLoader } from 'react-spinners'; // Importamos el ClipLoader para el loading
+import './Search.css';  // Si es que necesitas el archivo CSS
+
+// Importamos el hook para el contexto de calorías
+import { useCalories } from "../context/CaloriesContext.jsx";
+
+function Search() {  
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");  // Para manejar mensajes de error
+  const { nutritionData, error: nutritionError, analyzeNutrition } = useEdamamApi();
+
+  // Obtenemos el contexto de calorías
+  const { addCalories, removeCalories } = useCalories();
+
+  // Manejo de la búsqueda
+  const handleSearch = async (e) => {
+    e.preventDefault();  // Para evitar la recarga de la página
+
+    if (!searchQuery.trim()) {
+      setErrorMessage("Por favor, ingresa un término de búsqueda.");
+      return;
+    }
+
+    setIsLoading(true);
+    setErrorMessage("");  // Limpiamos el mensaje de error al hacer una nueva búsqueda
+
+    try {
+      // Solo se busca calorías de un alimento
+      await analyzeNutrition(searchQuery);
+
+      // Guardar el alimento buscado en el historial (en localStorage)
+      const currentHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
+      if (!currentHistory.includes(searchQuery)) {
+        currentHistory.push(searchQuery);  // Solo lo agrega si no está ya en el historial
+        localStorage.setItem("searchHistory", JSON.stringify(currentHistory));
+      }
+    } catch (error) {
+      setErrorMessage("Hubo un problema al obtener la información nutricional. Intenta de nuevo.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="search-container">
+      <form className="search-input-container" onSubmit={handleSearch}>
+        <div className="input-wrapper">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Enter a food name (50g bread, 1 apple, 2 eggs...)"
+            onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(e) }}  // Ejecutar búsqueda con "Enter"
+          />
+          <button type="submit" className="search-btn">
+            <FaSearch className="search-icon" />
+          </button>
+        </div>
+      </form>
+
+      {/* Mostrar el spinner de loading cuando isLoading es true */}
+      {isLoading && (
+        <div className="loading-container">
+          <ClipLoader color={"#4D7CFE"} size={50} />
+        </div>
+      )}
+
+      {/* Mostramos el mensaje de error si lo hay */}
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
+
+      {/* Mostramos los resultados de las calorías y pasamos onAddCalories y onRemoveCalories como props */}
+      <div className="search-results">
+        {nutritionData && !nutritionError && (
+          <CaloriesResults 
+            nutritionData={nutritionData} 
+            error={nutritionError} 
+            onAddCalories={addCalories}  // Pasamos addCalories del contexto
+            onRemoveCalories={removeCalories} // Pasamos removeCalories del contexto
+          />
+        )}
+        {nutritionError && <p className="error-message">{nutritionError}</p>}
+      </div>
+    </div>
+  );
+}
+
+export default Search;
