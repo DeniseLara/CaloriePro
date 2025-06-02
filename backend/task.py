@@ -1,5 +1,4 @@
 import os
-#from google.cloud import storage
 import json
 from firebase_admin import credentials, firestore, initialize_app
 from google.cloud.exceptions import NotFound
@@ -9,7 +8,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 firebase_creds_json = os.getenv('GOOGLE_APPLICATION_CREDENTIALS_JSON')
 
 if not firebase_creds_json:
-    raise Exception("No se encontró la variable de entorno FIREBASE_CREDENTIALS")
+    raise Exception("No se encontró la variable de entorno GOOGLE_APPLICATION_CREDENTIALS_JSON")
 
 # Parsear el string JSON a diccionario
 cred_dict = json.loads(firebase_creds_json)
