@@ -33,9 +33,8 @@ export const CaloriesProvider = ({ children }) => {
   
   // Función para agregar calorías
   const addCalories = async (calories) => {
-    const roundedCalories = Math.round(calories); 
     setCaloriesConsumed((prev) => {
-      const newCalories = prev + roundedCalories;
+      const newCalories = prev + calories;
 
      if (user) {
       const userDoc = doc(db, 'users', user.uid);
