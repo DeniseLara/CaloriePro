@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 
 function HistorialItem({ item, index }) {
-  const roundedCalories = Math.ceil(item.calories);
+  const roundedCalories = Math.round(item.calories);
 
   return (
     <li 
