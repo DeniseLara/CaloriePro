@@ -94,7 +94,7 @@ function Dashboard() {
         <h1 tabIndex={-1} className="dashboard-container-title">Welcome to your Dashboard</h1>
         <section className="dashboard-container-descrip" aria-label="Resume of your goals and daily consume of calories">
           <p className="dashboard-container-number">Goal of the day <strong>{dailyGoal}</strong></p>
-          <p className="dashboard-container-cal">Calories consumed <strong>{Math.round(caloriesToDisplay)}</strong></p>
+          <p className="dashboard-container-cal">Calories consumed <strong>{caloriesToDisplay}</strong></p>
         </section>
       </header>
 
