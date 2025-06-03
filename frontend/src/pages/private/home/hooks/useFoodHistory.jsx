@@ -48,7 +48,8 @@ const getCurrentDate = () => {
     }
 
     const foodName = nutritionData?.ingredients || "Desconocido";
-    const calories = nutritionData?.totalNutrients?.ENERC_KCAL?.quantity || 0;
+    const rawCalories = nutritionData?.totalNutrients?.ENERC_KCAL?.quantity || 0;
+    const calories = Math.round(rawCalories);
     const currentDate = getCurrentDate();
 
     if (!foodHistory.some(item => item.name === foodName)) {
