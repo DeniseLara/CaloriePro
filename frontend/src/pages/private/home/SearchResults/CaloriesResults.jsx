@@ -22,7 +22,7 @@ function CaloriesResults({ nutritionData, error }) {
   }
 
   const { totalNutrients } = nutritionData;
-  const calories = totalNutrients?.ENERC_KCAL?.quantity || 0;
+  const calories = Math.round(totalNutrients?.ENERC_KCAL?.quantity || 0);
   
 
   return (
