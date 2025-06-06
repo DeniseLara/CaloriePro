@@ -2,7 +2,7 @@
 
 **CaloriePro** es una aplicación web hecha para ayudarte a llevar un control diario de tus calorías consumidas y alcanzar tus objetivos personales de salud. Está construida con **React**, **Vite**, **CSS** y **FastAPI**, y utiliza **Firebase** para el manejo de usuarios y almacenamiento de datos.
 
-
+---
 
 ## 📌 Características principales
 
@@ -28,15 +28,14 @@ Estas calorías se suman al total diario y se guardan en el historial del usuari
 
 
 ### 🕛 Tarea programada automática:
-Cada día a la medianoche, una tarea programada con Python + FastAPI, desplegada en Google Cloud Functions, se encarga de:
+Cada día a la medianoche, una tarea programada con **Cloud Scheduler** hace una petición HTTP al backend desarrollado con **FastAPI** (y desplegado en **Render**), el cual accede a Firestore para:
 
 - Resetear el total de calorías consumidas (caloriesConsumed).
 - Limpiar el historial de alimentos del día (foodHistory).
 
-
+---
 
 ## 🛠️ Tecnologías utilizadas
-
 
 ### Frontend
 - React
@@ -51,42 +50,43 @@ Cada día a la medianoche, una tarea programada con Python + FastAPI, desplegada
 - Uvicorn (servidor ASGI)
 - firebase-admin
 
-
+---
 
 ## ⚙️ Funcionalidades
 - Autenticación de usuarios con Firebase (registro y login).
 - Perfil editable: los usuarios pueden definir sus datos (edad, peso, objetivo, etc.).
 - Consumo de calorías en tiempo real: al buscar y agregar alimentos, se actualiza el total diario.
 - Historial de alimentos consumidos con fecha.
-- Reset automático diario del total de calorías y limpieza del historial, programado con FastAPI y Google Cloud Functions.
+- Reset automático diario del total de calorías y limpieza del historial, usando Cloud Scheduler + FastAPI.
 
+---
 
+## 🗓️ Automatización diaria
+La tarea de reseteo de calorías y limpieza del historial se ejecuta automáticamente todos los días a la medianoche gracias a:
+- **Cloud Scheduler**, que programa la ejecución.
+- **FastAPI**, que gestiona la lógica.
+- **Render**, donde está desplegado el backend.
+- **Firebase Firestore**, donde se almacenan y actualizan los datos de los usuarios.
 
-## 🗓️ Tarea programada
-La tarea diaria de reseteo de calorías se ejecuta automáticamente usando FastAPI y está desplegada en Google Cloud Functions. Esta función accede a Firestore y:
-
-- Resetea caloriesConsumed a 0.
-
-- Limpia el foodHistory de cada usuario.
-
-
+---
 
 ## 🔐 Autenticación y base de datos
 **Firebase Authentication** para registrar, loguear y gestionar usuarios.
 
 **Firebase Firestore** para guardar:
-
 - Calorías consumidas
 - Historial de alimentos
 - Perfil del usuario
 
-
+---
 
 ## 🚀 Despliegue
-Este proyecto está desplegado completamente en producción usando **Render** (frontend y backend) y **Google Cloud Functions** (para tareas automatizadas).
+El frontend y backend están desplegados en producción usando **Render**.  
+La tarea automática diaria es gestionada por **Cloud Scheduler** de Google Cloud, que invoca una ruta del backend desplegado.
 
 
 ---
+
 ✨ **Autor**  
 Proyecto desarrollado por **Denise Lara** — *Frontend Developer*.  
 Forma parte de mi portafolio personal. ¡Gracias por visitarlo!
