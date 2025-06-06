@@ -28,8 +28,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/", StaticFiles(directory=Path("../frontend/dist").resolve(), html=True), name="static")
-
 
 @app.get("/reset_calories")
 async def scheduled_task():
@@ -43,6 +41,7 @@ async def scheduled_task():
         logging.error(f"Error en el reseteo de calorías: {e}")
         return {"error": f"Error al ejecutar el reseteo de calorías: {e}"}
 
+app.mount("/", StaticFiles(directory=Path("../frontend/dist").resolve(), html=True), name="static")
 
 # Captura cualquier otra ruta y sirve index.html
 @app.get("/{full_path:path}")
@@ -54,6 +53,8 @@ async def catch_all(full_path: str):
     logging.error(f"No se encontró index.html en: {index_path}")
     return {"error": "Página no encontrada"}
 
+
 if __name__ == "__main__":
     port = os.getenv("PORT", 8080)  # Usar el puerto proporcionado por Render
     uvicorn.run(app, host="0.0.0.0", port=int(port))
+

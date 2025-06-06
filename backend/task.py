@@ -4,28 +4,25 @@ from firebase_admin import credentials, firestore, initialize_app
 from google.cloud.exceptions import NotFound
 
 # Obtén la ruta absoluta del archivo caloriepro.json
-current_dir = os.path.dirname(os.path.abspath(__file__))
 firebase_creds_json = os.getenv('GOOGLE_APPLICATION_CREDENTIALS_JSON')
 
-if not firebase_creds_json:
-    raise Exception("No se encontró la variable de entorno GOOGLE_APPLICATION_CREDENTIALS_JSON")
-
-# Parsear el string JSON a diccionario
-cred_dict = json.loads(firebase_creds_json)
-
-# Inicializa Firebase con las credenciales
-cred = credentials.Certificate(cred_dict)
-initialize_app(cred)
-db = firestore.client()
+if firebase_creds_json:
+    cred_dict = json.loads(firebase_creds_json)
+    cred = credentials.Certificate(cred_dict)
+    initialize_app(cred)
+    db = firestore.client()
+else:
+    db = None  # No hay conexión a Firebase
 
 
 # Función que resetea las calorías y limpia el historial
 def reset_calories():
+    if not db:
+        raise Exception("No hay conexión a Firebase. No se encontraron credenciales.")
     """Función HTTP para resetear calorías y limpiar historial."""
     try:
         users_ref = db.collection('users')
         for user in users_ref.stream():            
-            user_data = user.to_dict()
             user_ref = users_ref.document(user.id)
             user_ref.update({
                 'caloriesConsumed': 0,
@@ -40,3 +37,6 @@ def reset_calories():
 if __name__ == "__main__":
     result, status_code = reset_calories()
     print(result)
+
+
+
