@@ -1,19 +1,27 @@
 import os
 import json
-from firebase_admin import credentials, firestore, initialize_app
+from firebase_admin import credentials, firestore, initialize_app, get_app
 from google.cloud.exceptions import NotFound
 
 # Obtén la ruta absoluta del archivo caloriepro.json
 firebase_creds_json = os.getenv('GOOGLE_APPLICATION_CREDENTIALS_JSON')
 
+db = None
+
 if firebase_creds_json:
     cred_dict = json.loads(firebase_creds_json)
-    cred = credentials.Certificate(cred_dict)
-    initialize_app(cred)
+      
+    try:
+        # Intentamos obtener la app ya inicializada
+        app = get_app()
+    except ValueError:
+        # Si no está inicializada, la inicializamos con las credenciales
+        cred = credentials.Certificate(cred_dict)
+        initialize_app(cred)
+    # Ya con la app inicializada, obtenemos el cliente de Firestore
     db = firestore.client()
 else:
     db = None  # No hay conexión a Firebase
-
 
 # Función que resetea las calorías y limpia el historial
 def reset_calories():
