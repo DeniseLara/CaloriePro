@@ -10,11 +10,15 @@ node_modules
 dist-ssr
 *.local
 index.txt
+task.txt
+main.txt
 
 #ocultar archivo .env
 backend/venv/
 .env
-/backend/caloriepro.json
+backend/__pycache__/
+backend/caloriepro.json
+backend/.env
 google-cloud-sdk.tar.gz
 
 # Editor directories and files
