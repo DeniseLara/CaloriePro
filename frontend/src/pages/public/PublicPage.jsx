@@ -1,12 +1,13 @@
-import Hero from "./Hero/Hero";
-import Card from "./Getstarted/Card";
-import Testimonies from "./Getstarted/Testimonies";
-import Counter from "./Getstarted/Counter";
-import HowItWorks from "./HowItWoks/HowItWorks";
-import Start from "./Getstarted/Start";
 import { useRef } from "react";
 
-function PublicPage({ openSignUpModal }){
+import Hero from "../../components/homepublic/Hero";
+import Card from "../../components/homepublic/Card";
+import Testimonies from "../../components/homepublic/Testimonies";
+import Counter from "../../components/homepublic/Counter";
+import HowItWorks from "../../components/homepublic/HowItWorks";
+import Start from "../../components/homepublic/Start";
+
+const PublicPage = ({ openSignUpModal }) => {
   const benefitsRef = useRef();
 
   return (

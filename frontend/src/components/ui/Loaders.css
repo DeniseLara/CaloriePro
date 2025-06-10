@@ -1,0 +1,14 @@
+/* Estilo para el contenedor de carga Loader */
+.loading-container {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    background-color: #f4f4f4; 
+}
+
+.loading-container p {
+  margin-top: 1rem;
+  font-size: var(--fs-base);
+  color: #4fa94d; 
+  font-weight: bold;
+}

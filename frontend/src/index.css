@@ -30,13 +30,12 @@ html {
   min-height: 100vh;
 }
 
-.main{
+/*.main{
   flex: 1;
-}
+}*/
 
 
 body{
-  /*background: #f7f3ed;*/
   background-color: #FDFBF5;
 }
 
@@ -49,12 +48,12 @@ a{
   color: #ffffff;
   cursor: pointer;
   line-height: 1;
-  -webkit-tap-highlight-color: transparent; /* quita el flash azul en móviles */
+  -webkit-tap-highlight-color: transparent; 
 }
 
 button{
   cursor: pointer;
-  -webkit-tap-highlight-color: transparent; /* quita el flash azul en móviles */
+  -webkit-tap-highlight-color: transparent; 
 }
 
 ul{
@@ -69,19 +68,4 @@ tendrán este padding*/
 }
 
 
-/* Estilo para el contenedor de carga */
-.loading-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f4f4f4; /* Color de fondo claro */
-}
 
-.loading-container p {
-  margin-top: 20px;
-  font-size: 18px;
-  color: #4fa94d; /* Color del texto */
-  font-weight: bold;
-}

@@ -1,0 +1,82 @@
+.how-it-works {
+  padding-top: 1rem;
+  background-color: #FDFBF5; 
+  text-align: center;
+  margin-bottom: 4rem;
+}
+  
+.how-title h2 {
+  font-size: var(--fs-2xl);
+  color: #4A4A4A;
+  margin-bottom: 1rem;
+}
+  
+.how-title p {
+  font-size: var(--fs-base);
+  color: #6A6A6A;
+  margin-bottom: 3rem;
+}
+  
+.how-steps {
+  display: grid;
+  grid-template-columns:
+  repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  justify-content: center;
+}
+  
+.step {
+  background-color: #FFFFFF;
+  border-radius: 0.5rem;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+  
+.step-icon {
+  font-size: var(--fs-3xl);
+  color: #7BBE4A;
+  margin-bottom: 1rem;
+}
+  
+.step h3 {
+  font-size: var(--fs-md);
+  color: #4A4A4A;
+  margin-bottom: 0.5rem;
+}
+  
+.step p {
+  font-size: var(--fs-sm);
+  color: #6A6A6A;
+}
+
+
+@media (min-width:1024px){
+  .how-it-works{
+    margin-bottom: 6rem;
+  }
+}
+
+
+@media (min-width:1280px){
+  .step{
+    padding: 2rem 2rem;
+  }
+
+  .how-steps{
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+}
+
+
+@media (min-width: 1920px){
+  .step{
+    padding: 2.5rem 2rem;
+  }
+
+  .how-steps{
+    gap: 2.5rem;
+  }
+}
+  

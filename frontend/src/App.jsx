@@ -1,21 +1,22 @@
+import './index.css'
 import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useAuth } from './context/authContext'
-import Navbar from './components/Navbar/Navbar';
-import Footer from './pages/public/Footer/Footer'
-import Modal from './components/Modal/Modal';
-import Home from './pages/private/home/Home'
-import Dashboard from './pages/private/Dashboard/Dashboard'
-import { ClipLoader } from 'react-spinners';
 import { onAuthStateChanged, auth} from './firebaseconfig/firebase'; 
-import AuthFooter from './pages/private/AuthFooter';
-import PrivateRoute from './PrivateRoute';
-import './index.css'
-import PublicPage from './pages/public/PublicPage';
 
-function App() {
+import Navbar from './components/layout/navbar/Navbar';
+import Footer from './components/layout/footer/Footer'
+import Modal from './components/auth/Modal';
+import Home from './pages/private/Home'
+import Dashboard from './pages/private/Dashboard'
+import AuthFooter from './components/layout/footer/AuthFooter';
+import PrivateRoute from './PrivateRoute';
+import PublicPage from './pages/public/PublicPage';
+import Loader from './components/ui/Loader';
+
+const App = () => {
   const [showModal, setShowModal] = useState(false);
-  const { isAuthenticated, setIsAuthenticated, user } = useAuth(); // Traemos setIsAuthenticated desde el contexto
+  const { isAuthenticated, setIsAuthenticated } = useAuth(); // Traemos setIsAuthenticated desde el contexto
   const [loading, setLoading] = useState(true);
 
  // Verifica el estado de autenticación al cargar la página
@@ -36,10 +37,7 @@ function App() {
 
   if (loading) {
     return (
-      <div className="loading-container">
-        <ClipLoader size={60} color="#4fa94d" loading={loading} />
-        <p>Cargando...</p>
-      </div>
+      <Loader/>
     );
   }
 
@@ -47,7 +45,8 @@ function App() {
   return (
     <div className='app'>
       <Navbar showModal={showModal} setShowModal={setShowModal} closeModal={() => setShowModal(false)} />
-        <main className='main'>
+
+    <main className='main'>
       <Routes>
         {/* Rutas públicas */}
         <Route
@@ -72,13 +71,13 @@ function App() {
        <PrivateRoute isAuthenticated={isAuthenticated}>
         <Dashboard/>
        </PrivateRoute>}
-       />
-       
+       /> 
       </Routes>
-      </main>
+    </main>
+
       {/* Mostrar Footer según autenticación */}
       {isAuthenticated ? <AuthFooter /> : <Footer />}
-  
+    
       {/* Mostrar el Modal solo si no está autenticado */}
       {!isAuthenticated && (
         <Modal

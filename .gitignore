@@ -20,6 +20,7 @@ backend/__pycache__/
 backend/caloriepro.json
 backend/.env
 google-cloud-sdk.tar.gz
+txt/
 
 # Editor directories and files
 .vscode/*

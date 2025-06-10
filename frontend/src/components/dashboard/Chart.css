@@ -1,0 +1,94 @@
+/* Layout general */
+.radial-chart-container {
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  height: auto;
+  justify-content: center;
+  align-items: center;
+  overflow-y: hidden;
+  overflow-x:hidden;
+  box-sizing: border-box;
+  margin-bottom: 1rem;
+  border-radius: 2rem;
+  background-color: #ffffff;
+  box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+}
+
+.radial-chart-content-title{
+  margin: 0;
+  text-align: center;
+}
+
+.radial-chart-content {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  gap: 0rem;
+  margin: 0;
+}
+
+/* Contenedor del gráfico */
+.radial-chart {
+  width: 100%;
+  position: relative;
+  height: 16rem;
+  max-width: 20rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Texto central debajo del gráfico */
+.radial-chart-text {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  width: 60%;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: var(--fs-base);
+  color: #4F4F4F;
+}
+
+.radial-chart-goal {
+  font-weight: 600;
+  margin-top: 0.25rem;
+}
+
+/* Meta lograda */
+.radial-chart-goal.archived {
+  color: var(--clr-success);
+}
+
+/* Meta excedida */
+.radial-chart-goal.exced {
+  color: var(--clr-warning);
+}
+
+
+
+@media (min-width: 768px) {
+  .radial-chart-content {
+    flex-direction: column;
+  }
+
+  .radial-chart {
+    max-width: 22rem;
+  }
+}
+
+
+@media (min-width: 1280px) {
+  .radial-chart {
+    max-width: 24rem;
+  }
+}
