@@ -1,4 +1,3 @@
-import os
 from firebase_admin import credentials, firestore, initialize_app, get_app
 from google.cloud.exceptions import NotFound
 
@@ -35,9 +34,7 @@ def reset_calories():
     except Exception as e:
         return f"Error al resetear las calorías: {e}", 500
 
-if __name__ == "__main__":
-    result, status_code = reset_calories()
-    print(result)
+
 
 
 

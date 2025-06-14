@@ -35,7 +35,7 @@ async def scheduled_task():
     Endpoint HTTP para ejecutar la tarea de reseteo.
     """
     try:
-        reset_calories()  # Mantienes la función de reseteo de Google Cloud Functions
+        reset_calories()  
         return {"message": "Reseteo de calorías completado"}
     except Exception as e:
         logging.error(f"Error en el reseteo de calorías: {e}")

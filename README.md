@@ -28,7 +28,7 @@ Estas calorías se suman al total diario y se guardan en el historial del usuari
 
 
 ### 🕛 Tarea programada automática:
-Cada día a la medianoche, una tarea programada con **Cloud Scheduler** hace una petición HTTP al backend desarrollado con **FastAPI** (y desplegado en **Render**), el cual accede a Firestore para:
+Cada día a la medianoche, una tarea programada externa hace una petición HTTP al backend desarrollado con FastAPI (y desplegado en Render), el cual accede a Firestore para:
 
 - Resetear el total de calorías consumidas (caloriesConsumed).
 - Limpiar el historial de alimentos del día (foodHistory).
@@ -57,13 +57,13 @@ Cada día a la medianoche, una tarea programada con **Cloud Scheduler** hace una
 - Perfil editable: los usuarios pueden definir sus datos (edad, peso, objetivo, etc.).
 - Consumo de calorías en tiempo real: al buscar y agregar alimentos, se actualiza el total diario.
 - Historial de alimentos consumidos con fecha.
-- Reset automático diario del total de calorías y limpieza del historial, usando Cloud Scheduler + FastAPI.
+- Reset automático diario del total de calorías y limpieza del historial, usando una tarea programada externa + FastAPI.
 
 ---
 
 ## 🗓️ Automatización diaria
 La tarea de reseteo de calorías y limpieza del historial se ejecuta automáticamente todos los días a la medianoche gracias a:
-- **Cloud Scheduler**, que programa la ejecución.
+- **cron-job.org**, que programa la ejecución periódica y hace la petición HTTP al backend.
 - **FastAPI**, que gestiona la lógica.
 - **Render**, donde está desplegado el backend.
 - **Firebase Firestore**, donde se almacenan y actualizan los datos de los usuarios.
@@ -82,7 +82,8 @@ La tarea de reseteo de calorías y limpieza del historial se ejecuta automática
 
 ## 🚀 Despliegue
 El frontend y backend están desplegados en producción usando **Render**.  
-La tarea automática diaria es gestionada por **Cloud Scheduler** de Google Cloud, que invoca una ruta del backend desplegado.
+La tarea automática diaria es gestionada por **cron-job.org**, que invoca una ruta del backend desplegado.
+
 
 
 ---
