@@ -42,10 +42,8 @@ export const getUserProfileFromFirestore = async (userUid) => {
       if (docSnap.exists()) {
         return docSnap.data(); 
       } else {
-        console.warn('El perfil no existe.');
       }
     } catch (error) {
-      console.error('Error al obtener los datos del perfil:', error);
     }
   
   return {};  // Retornamos un objeto vacío si no hay perfil
@@ -56,7 +54,6 @@ export const getUserProfileFromFirestore = async (userUid) => {
 // Función para obtener las calorías consumidas de Firestore
 export const getCaloriesFromFirestore = async (userUid) => {
   if (!userUid) {
-    console.error('User ID no proporcionado');
     return 0;
   }
   try {
@@ -66,11 +63,9 @@ export const getCaloriesFromFirestore = async (userUid) => {
     if (docSnap.exists()) {
       return docSnap.data().caloriesConsumed || 0;  // Retorna las calorías consumidas o 0 si no existe
     } else {
-      console.error("No se encontró el documento del usuario.");
       return 0;  // Si no existe el documento, retornamos 0
     }
   } catch (error) {
-    console.error("Error al obtener las calorías consumidas:", error);
     return 0;  // En caso de error, retornar 0
   }
 };
@@ -82,7 +77,6 @@ export const saveCaloriesToFirestore = async (userUid, calories) => {
     const docRef = doc(db, "users", userUid); // Referencia al documento del usuario
     await updateDoc(docRef, { caloriesConsumed: calories }); // Actualizamos las calorías en Firestore
   } catch (error) {
-    console.error("Error al guardar las calorías en Firestore:", error);
   }
 };
 
@@ -107,7 +101,6 @@ export const getGreeting = async () => {
 
 export const getFoodHistoryFromFirestore = async (userUid) => {
   if (!userUid) {
-    console.error('User ID no proporcionado');
     return [];
   }
 
@@ -123,7 +116,6 @@ export const getFoodHistoryFromFirestore = async (userUid) => {
 
     return foodHistory;
   } catch (error) {
-    console.error('Error al obtener el historial de alimentos:', error);
     return [];
   }
 };
@@ -144,7 +136,6 @@ export const addFoodItemToHistory = async (userUid, newFoodItem, caloriesConsume
     });
 
   } catch (error) {
-    console.error("Error al agregar alimento al historial:", error);
   }
 };
 
@@ -154,7 +145,6 @@ export const saveUserProfileToFirestore = async (userProfileData) => {
   try {
     const userUid = auth.currentUser?.uid; // Obtiene el UID directamente desde auth
     if (!userUid) {
-      console.error("No se pudo obtener el usuario autenticado.");
       return;
     }
 
@@ -163,11 +153,9 @@ export const saveUserProfileToFirestore = async (userProfileData) => {
     if (userProfileData && typeof userProfileData === 'object' && Object.keys(userProfileData).length > 0) {
       await updateDoc(userDocRef, userProfileData);  // Solo llamamos a updateDoc una vez
     } else {
-      console.error("Datos del perfil no válidos:", userProfileData);
     }
     
   } catch (error) {
-    console.error("Error al guardar el perfil del usuario:", error);
   }
 };
 

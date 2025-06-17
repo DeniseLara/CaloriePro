@@ -32,7 +32,6 @@ export function useNavbar() {
       await logout();       
       navigate("/");          
     } catch (err) {
-      console.error("Error al cerrar sesión: ", err.message);
     }
   };
 

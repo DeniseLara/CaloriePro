@@ -24,7 +24,6 @@ export function useFoodHistory(user) {
         const history = await getFoodHistoryFromFirestore(user.uid);
         setFoodHistory(history); 
       } catch (error) {
-        console.error("Error al cargar historial:", error);
       }
     };
 
@@ -34,7 +33,6 @@ export function useFoodHistory(user) {
 
   const handleAdd = async (nutritionData) => {
     if (!user) {
-      console.error('Usuario no autenticado');
       return;
     }
 
@@ -61,7 +59,6 @@ export function useFoodHistory(user) {
 
         const updatedHistory = await getFoodHistoryFromFirestore(user.uid);
         setFoodHistory(updatedHistory);      } catch (error) {
-        console.error("Error al agregar alimento:", error);
       }
     } else {
       setCaloriesAction("already_added");

@@ -42,7 +42,6 @@ export const AuthProvider = ({ children }) => {
         sessionStorage.removeItem('userName');
       }
     } catch (error) {
-      console.error('Error al obtener el nombre del usuario:', error);
     }
   };
 

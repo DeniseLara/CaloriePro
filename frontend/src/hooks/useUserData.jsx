@@ -66,7 +66,6 @@ export const useUserData = () => {
       // Mostrar el modal de éxito
       setShowModalUser(true); // Activar el modal
     } catch (error) {
-      console.error("Error al guardar el perfil:", error);
     }
   };
 

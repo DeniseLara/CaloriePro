@@ -45,7 +45,6 @@ export const CaloriesProvider = ({ children }) => {
           caloriesConsumed: newCalories,
       });
     } catch (error) {
-      console.error("Error al actualizar calorías:", error)
     }
   }
 }  

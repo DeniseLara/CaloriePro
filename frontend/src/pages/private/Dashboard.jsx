@@ -65,7 +65,6 @@ function Dashboard() {
     } catch (error) {
       setIsSaving(false);  // En caso de error
       setSaveError("Error al guardar perfil. Intenta nuevamente.");
-      console.error("Error al guardar perfil: ", error);
     }
   }, [editedData, saveUserProfile, setIsEditing, user.uid]);
 
