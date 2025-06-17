@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
+import { Timestamp } from 'firebase/firestore';
 
 import {  getFoodHistoryFromFirestore, addFoodItemToHistory } from '../firebaseconfig/firebase';
 import { useCalories } from '../context/CaloriesContext'
@@ -13,10 +14,6 @@ export function useFoodHistory(user) {
   const [foodHistory, setFoodHistory] = useState([]);
   const [caloriesAction, setCaloriesAction] = useState(null);
   const { caloriesConsumed, addCalories } = useCalories();
-
-const getCurrentDate = () => {
-  return dayjs().tz('America/Argentina/Buenos_Aires').toISOString();
- };
 
 // Escuchar cambios en tiempo real en foodHistory
   useEffect(() => {
@@ -44,10 +41,10 @@ const getCurrentDate = () => {
     const foodName = nutritionData?.ingredients || "Desconocido";
     const rawCalories = nutritionData?.totalNutrients?.ENERC_KCAL?.quantity || 0;
     const calories = Math.round(rawCalories);
-    const currentDate = getCurrentDate();
+    const currentDate = Timestamp.now();
     
     const alreadyAddedToday = foodHistory.some(
-      (item) => item.name === foodName && dayjs(item.date).isSame(dayjs(), 'day')
+      (item) => item.name === foodName &&     dayjs(item.date.toDate()).isSame(dayjs(), 'day')
     );
 
     if (!alreadyAddedToday) {
@@ -62,8 +59,8 @@ const getCurrentDate = () => {
         setCaloriesAction("added");
         addCalories(calories);
 
-        setFoodHistory(prev => [...prev, newFoodItem]);
-      } catch (error) {
+        const updatedHistory = await getFoodHistoryFromFirestore(user.uid);
+        setFoodHistory(updatedHistory);      } catch (error) {
         console.error("Error al agregar alimento:", error);
       }
     } else {
