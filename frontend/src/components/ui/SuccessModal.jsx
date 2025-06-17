@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import  { useEffect } from 'react';
 import { IoCloseOutline } from "react-icons/io5";
 
-const SuccessModal = ({ message, onClose }) => {
+function SuccessModal({ message, onClose }) {
   useEffect(() => {
     // Cerrar el modal después de 3 segundos
     const timer = setTimeout(() => {

@@ -8,7 +8,7 @@ import {
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const NutritionChart = ({ totalNutrients }) => {
+function NutritionChart({ totalNutrients }) {
   
   const chartData = {
     labels: ['Proteins', 'Fats', 'Carbohydrates', 'Others'],

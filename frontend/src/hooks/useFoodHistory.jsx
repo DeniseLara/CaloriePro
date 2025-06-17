@@ -1,47 +1,41 @@
 import { useState, useEffect } from 'react';
-import { db, doc, getDoc, updateDoc } from '../firebaseconfig/firebase'
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 
+import {  getFoodHistoryFromFirestore, addFoodItemToHistory } from '../firebaseconfig/firebase';
+import { useCalories } from '../context/CaloriesContext'
+
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-export function useFoodHistory(user, caloriesConsumed, addCalories, nutritionData) {
+export function useFoodHistory(user) {
   const [foodHistory, setFoodHistory] = useState([]);
   const [caloriesAction, setCaloriesAction] = useState(null);
+  const { caloriesConsumed, addCalories } = useCalories();
 
 const getCurrentDate = () => {
-  // Reemplazá "America/Argentina/Buenos_Aires" por tu zona si es otra
   return dayjs().tz('America/Argentina/Buenos_Aires').toISOString();
  };
 
-  const loadFoodHistory = async () => {
-    if (user) {
-      const foodHistoryRef = doc(db, 'users', user.uid);
-      const docSnapshot = await getDoc(foodHistoryRef);
-      if (docSnapshot.exists()) {
-        setFoodHistory(docSnapshot.data().foodHistory || []);
-      }
-    }
-  };
-
+// Escuchar cambios en tiempo real en foodHistory
   useEffect(() => {
-    if (user) loadFoodHistory();
+    const loadHistory = async () => {
+    if (!user) return;
+
+    try {
+        const history = await getFoodHistoryFromFirestore(user.uid);
+        setFoodHistory(history); 
+      } catch (error) {
+        console.error("Error al cargar historial:", error);
+      }
+    };
+
+    loadHistory();
   }, [user]);
 
-  useEffect(() => {
-    if (nutritionData) {
-      const foodName = nutritionData?.ingredients || "Desconocido";
-      if (foodHistory.some(item => item.name === foodName)) {
-        setCaloriesAction("added");
-      } else {
-        setCaloriesAction(null);
-      }
-    }
-  }, [nutritionData, foodHistory]);
 
-  const handleAdd = async () => {
+  const handleAdd = async (nutritionData) => {
     if (!user) {
       console.error('Usuario no autenticado');
       return;
@@ -51,18 +45,27 @@ const getCurrentDate = () => {
     const rawCalories = nutritionData?.totalNutrients?.ENERC_KCAL?.quantity || 0;
     const calories = Math.round(rawCalories);
     const currentDate = getCurrentDate();
+    
+    const alreadyAddedToday = foodHistory.some(
+      (item) => item.name === foodName && dayjs(item.date).isSame(dayjs(), 'day')
+    );
 
-    if (!foodHistory.some(item => item.name === foodName)) {
-      const newFood = { name: foodName, calories, date: currentDate };
-      const updatedFoodHistory = [...foodHistory, newFood];
-      const foodHistoryRef = doc(db, 'users', user.uid);
-      await updateDoc(foodHistoryRef, {
-        foodHistory: updatedFoodHistory,
-        caloriesConsumed: caloriesConsumed + calories,
-      });
-      setFoodHistory(updatedFoodHistory);
-      setCaloriesAction("added");
-      addCalories(calories);
+    if (!alreadyAddedToday) {
+      const newFoodItem = {
+        name: foodName,
+        calories,
+        date: currentDate,
+    };
+
+    try {
+        await addFoodItemToHistory(user.uid, newFoodItem, caloriesConsumed + calories);
+        setCaloriesAction("added");
+        addCalories(calories);
+
+        setFoodHistory(prev => [...prev, newFoodItem]);
+      } catch (error) {
+        console.error("Error al agregar alimento:", error);
+      }
     } else {
       setCaloriesAction("already_added");
     }

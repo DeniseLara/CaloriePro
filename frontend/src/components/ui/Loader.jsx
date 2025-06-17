@@ -1,7 +1,7 @@
 import { ClipLoader } from 'react-spinners';
 import './Loaders.css'
 
-const Loader = ({size = 60, color = "#4fa94d", text="Loading..."}) => {
+function Loader({size = 60, color = "#4fa94d", text="Loading..."}) {
   return (
     <div 
       className="loading-container"

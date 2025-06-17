@@ -1,6 +1,6 @@
 import './RadialChart.css'
 import PropTypes from 'prop-types';
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement, CategoryScale, LinearScale } from 'chart.js';
@@ -11,124 +11,138 @@ ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale, LinearScale,
 
 // Colores personalizados para el gráfico
 const COLORS = {
-  overGoal: '#FF5722',
-  goalAchieved: '#66BB6A',
+  over: '#FF5722',
+  achieved: '#66BB6A',
   remaining: '#E0E0E0'
 };
 
-// Funciones de cálculo de calorías
-const calculateRemainingCalories = (dailyGoal, caloriesConsumed) => {
-  return dailyGoal - caloriesConsumed;
+// Utilidades
+const getStatus = (goal, consumed) => {
+  if (consumed > goal) return 'over';
+  if (consumed === goal) return 'achieved';
+  return 'inProgress';
 };
 
-const calculatePercentageCalories = (dailyGoal, caloriesConsumed) => {
-  return (caloriesConsumed / dailyGoal) * 100;
+const getMessage = (status, percent) => {
+  switch (status) {
+    case 'over':
+      return "¡You've exceeded your limit!";
+    case 'achieved':
+      return '¡Goal achieved!';
+    default:
+      return `${percent.toFixed(1)}% Completed`;
+  }
 };
 
-const RadialChart = ({ caloriesConsumed, dailyGoal }) => {
-  // Calcular las calorías restantes y el porcentaje
-  const remainingCalories = calculateRemainingCalories(dailyGoal, caloriesConsumed);
-  const percentageCalories = calculatePercentageCalories(dailyGoal, caloriesConsumed);
 
-  // Determinamos si el usuario se ha pasado de calorías o si ha cumplido su objetivo
-  const isOverGoal = caloriesConsumed > dailyGoal;
-  const isGoalAchieved = caloriesConsumed === dailyGoal;
+function RadialChart({ caloriesConsumed, dailyGoal }) {
+  const status = getStatus(dailyGoal, caloriesConsumed);
+  const remaining = Math.max(dailyGoal - caloriesConsumed, 0);
+  const percentage = (caloriesConsumed / dailyGoal) * 100;
 
-  // Datos para el gráfico de calorías
-  const caloriesData = useMemo(() => {
+   // Si aún no hay datos, mostrar gráfico predeterminado
+  const chartData = useMemo(() => {
+  if (!dailyGoal || dailyGoal <= 0) {
     return {
-      labels: ['Calories Consumed', 'Calories left'],
-      datasets: [{
-        label: 'Calorías',
-        data: isOverGoal ? [caloriesConsumed, 0] : isGoalAchieved ? [caloriesConsumed, 0] : [caloriesConsumed, remainingCalories],
-        backgroundColor: isOverGoal ? [COLORS.overGoal, COLORS.remaining] : isGoalAchieved ? [COLORS.goalAchieved, COLORS.remaining] : [COLORS.goalAchieved, COLORS.remaining],
-        borderColor: isOverGoal ? [COLORS.overGoal, COLORS.remaining] : isGoalAchieved ? [COLORS.goalAchieved, COLORS.remaining] : [COLORS.goalAchieved, COLORS.remaining],
-        borderWidth: 0.5,
-        cutout: '70%',
-      }],
+        labels: ['No data'],
+        datasets: [
+          {
+            label: 'Calories',
+            data: [1],
+            backgroundColor: [COLORS.remaining],
+            borderWidth: 0.5,
+            cutout: '70%',
+          },
+        ],
+      };
+    }
+    
+    return {
+      labels: ['Calories Consumed', 'Calories Left'],
+      datasets: [
+        {
+          label: 'Calories',
+          data: status === 'over' ? [caloriesConsumed, 0] : [caloriesConsumed, remaining],
+          backgroundColor: [
+            status === 'over' ? COLORS.over : COLORS.achieved,
+            COLORS.remaining,
+          ],
+          borderColor: [
+            status === 'over' ? COLORS.over : COLORS.achieved,
+            COLORS.remaining,
+          ],
+          borderWidth: 0.5,
+          cutout: '70%',
+        },
+      ],
     };
-  }, [caloriesConsumed, dailyGoal, isOverGoal, isGoalAchieved, remainingCalories]);
+  }, [dailyGoal, caloriesConsumed, status, remaining]);
 
-  // Opciones para los gráficos
-  const [chartOptions, setChartOptions] = useState( {
-    responsive: true,
-    maintainAspectRatio: false, // Esto evita que Chart.js controle el tamaño del canvas
-    plugins: {
-      title: {
-        display: true,
-        text: 'Progress of the Day',
-        font: {
-          family: 'Poppins',
-          size: 24,
-          weight: 'bold',
-        },
-      },
-      legend: {
-        labels: {
-          font: {
-            size: 14, // Ajusta el tamaño de la fuente aquí
-          },
-        },
-      },
+    const chartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+     plugins: {
+      legend: { display: false },
+      title: { display: false },
+      datalabels: { display: false },
       tooltip: {
-        enabled: true,
-        mode: 'nearest',
-        intersect: false,
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
-        titleFont: {
-          size: 16,
-          weight: 'light',
-          color: '#4F4F4F',
-        },
-        bodyFont: {
-          size: 14,
-          color: '#4F4F4F',
-        },
+        enabled: dailyGoal > 0,
         callbacks: {
-          label: function (tooltipItem) {
-            const value = tooltipItem.raw;
-            const label = tooltipItem.label;
-            if (label === 'Calories Consumed') {
-              return `Consumed: ${value} kcal`;
-            }
-            return `${label}: ${value} kcal`;
+          label: (tooltipItem) => {
+            const { raw, label } = tooltipItem;
+            return label === 'Calories Consumed'
+              ? `Consumed: ${raw} kcal`
+              : `${label}: ${raw} kcal`;
           },
         },
-      },
-      datalabels: {
-        display: false, 
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        bodyFont: { size: 14, color: '#4F4F4F' },
+        titleFont: { size: 16, weight: 'light', color: '#4F4F4F' },
       },
     },
+  };
 
-  });
+   return (
+    <section className="radial-chart-container">
+      <h2 className="radial-title">Progress of the Day</h2>
 
-  
+      {dailyGoal > 0 && (
+        <figure className="radial-chart-wrapper">
+          <figcaption className="radial-chart-legend">
+            <ul>
+              <li className="legend-item">
+                <span
+                  className="legend-color"
+                  style={{ backgroundColor: status === 'over' ? COLORS.over : COLORS.achieved }}
+                />
+                <span className="legend-label">Calories Consumed</span>
+              </li>
+              <li className="legend-item">
+                <span className="legend-color" style={{ backgroundColor: COLORS.remaining }} />
+                <span className="legend-label">Calories Left</span>
+              </li>
+            </ul>
+          </figcaption>
+        </figure>
+      )}
 
-  return (
-    <div className="radial-chart-container">
-
-      {/* Gráfico Circular */}
-      <div className='radial-chart'>
-      <Doughnut  data={caloriesData} options={chartOptions} />
+      <div className="radial-chart">
+        <Doughnut data={chartData} options={chartOptions} />
+        <div className="radial-chart-text">
+          {dailyGoal > 0 ? (
+      <p
+        className={`radial-chart-goal ${
+          status === 'over' ? 'exced' : status === 'achieved' ? 'archived' : ''
+        }`}
+      >
+        {getMessage(status, percentage)}
+      </p>
+    ) : (
+      <p className="radial-chart-goal no-data">Please complete your profile to start tracking.</p>
+    )}
+        </div>
       </div>
-      
-      {/* Número de calorías en el centro */}
-      <div className='radial-chart-text'>
-        {isOverGoal ? (
-          <>
-            <p className='radial-chart-goal exced' >¡You've exceeded your limit!</p>
-          </>
-        ) : isGoalAchieved ? (
-          <>
-            <p className='radial-chart-goal archived' >¡Goal achieved!</p>
-          </>
-        ) : (
-          <>
-            {percentageCalories.toFixed(1)}% <p> Completed</p>
-          </>
-        )}
-      </div>
-      </div>
+    </section>
   );
 }
 

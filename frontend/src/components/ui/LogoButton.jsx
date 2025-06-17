@@ -1,6 +1,6 @@
 import { GiBodyBalance } from "react-icons/gi";
 
-const LogoButton = ({ onClick }) => {
+function LogoButton({ onClick }) {
   return (
     <button
       className="logo-name"

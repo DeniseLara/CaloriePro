@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 
-const HistorialItem = ({ item, index }) => {
+function HistorialItem({ item, index }) {
   const roundedCalories = Math.round(item.calories);
 
   return (

@@ -1,6 +1,6 @@
 import './Footer.css'
 
-const AuthFooter = () => {
+function AuthFooter() {
 
   return (
     <footer className="footer container">

@@ -1,24 +1,14 @@
 import './Historial.css';
-import { useUserData } from '../../hooks/useUserData';
 import { useState } from 'react';
-import { useAuth } from '../../context/authContext';
 
 import Loader from '../ui/Loader';
 import HistorialList from './HistorialList';
 import ToggleButton from '../ui/ToggleButton';
 
 
-const Historial = () => {
-  const { isAuthenticated } = useAuth();
-  // Llamar al hook useUserData para obtener los datos del usuario, incluido el historial de alimentos
-  const { userData, loading, error } = useUserData(); 
+function Historial({ foodHistory = [], loading = false, error = null }) {
   const [visibleItems, setVisibleItems] = useState(5); // Inicialmente se mostrarán 5 elementos
   const [showAll, setShowAll] = useState(false); // Estado para controlar si mostrar todos los elementos
-
-
-  if (!isAuthenticated) {
-    return <p>No estás autenticado. Por favor, inicia sesión.</p>;
-  }
   
   if (error) {
     return <p>Error al cargar el historial de alimentos: {error.message}</p>;
@@ -32,10 +22,7 @@ const Historial = () => {
     }
     setShowAll(!showAll); // Cambia el estado de mostrar todo a mostrar menos
   };
-
-  // Asegurarse de que el historial de alimentos esté presente
-  const foodHistory = userData?.foodHistory || [];
-
+  
 
   return (
     <section className="historial-container" aria-labelledby="history-title">

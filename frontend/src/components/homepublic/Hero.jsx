@@ -1,7 +1,7 @@
 import './Hero.css'
 import PropTypes from 'prop-types';
 
-const Hero = ({openSignUpModal, benefitsRef}) => {
+function Hero({openSignUpModal, benefitsRef}) {
 
   const handleGetStartedClick = () => {
     openSignUpModal(); 

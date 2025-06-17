@@ -1,4 +1,4 @@
-const UserProfileView = ({ userData, dailyGoal, handleEditToggle }) => {
+function UserProfileView({ userData, dailyGoal, handleEditToggle }) {
   
   return (
     <div className="userprofile-info">

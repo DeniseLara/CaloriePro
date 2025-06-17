@@ -1,8 +1,6 @@
-import './index.css'
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { useAuth } from './context/authContext'
-import { onAuthStateChanged, auth} from './firebaseconfig/firebase'; 
+import { useAuth } from './context/AuthContext'
 
 import Navbar from './components/layout/navbar/Navbar';
 import Footer from './components/layout/footer/Footer'
@@ -14,26 +12,9 @@ import PrivateRoute from './PrivateRoute';
 import PublicPage from './pages/public/PublicPage';
 import Loader from './components/ui/Loader';
 
-const App = () => {
+function App() {
   const [showModal, setShowModal] = useState(false);
-  const { isAuthenticated, setIsAuthenticated } = useAuth(); // Traemos setIsAuthenticated desde el contexto
-  const [loading, setLoading] = useState(true);
-
- // Verifica el estado de autenticación al cargar la página
- useEffect(() => {
-  const unsubscribe = onAuthStateChanged(auth, (user) => {
-    if (user) {
-      setIsAuthenticated(true);
-
-    } else {
-      setIsAuthenticated(false);
-    }
-    setLoading(false); // Deja de cargar una vez que el estado se determina
-  });
-
-  return () => unsubscribe();
-}, []);
-
+  const { isAuthenticated, loading } = useAuth(); // Traemos setIsAuthenticated desde el contexto
 
   if (loading) {
     return (
@@ -60,7 +41,7 @@ const App = () => {
       <Route 
       path='/home'
       element={
-       <PrivateRoute isAuthenticated={isAuthenticated}>
+       <PrivateRoute>
         <Home/>
        </PrivateRoute>}
        />
@@ -68,7 +49,7 @@ const App = () => {
        <Route 
       path='/dashboard'
       element={
-       <PrivateRoute isAuthenticated={isAuthenticated}>
+       <PrivateRoute>
         <Dashboard/>
        </PrivateRoute>}
        /> 

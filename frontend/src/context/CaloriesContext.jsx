@@ -1,9 +1,8 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { getFirestore, doc, getDoc, updateDoc } from 'firebase/firestore';
-import { useAuth } from './authContext';
+import { useAuth } from './AuthContext';
 
-// Creamos un contexto
 const CaloriesContext = createContext();
 
 // Componente que proporciona el contexto de calorías a toda la aplicación
@@ -12,6 +11,9 @@ export const CaloriesProvider = ({ children }) => {
   const [caloriesConsumed, setCaloriesConsumed] = useState(0);
   const { user } = useAuth();
   const db = getFirestore();
+
+  const pendingCalories = useRef(0);
+  const timeoutId = useRef(null);
 
   // Cargar calorías desde Firestore cuando el usuario esté autenticado
   useEffect(() => {
@@ -32,21 +34,22 @@ export const CaloriesProvider = ({ children }) => {
 
   
   // Función para agregar calorías
-  const addCalories = async (calories) => {
-    setCaloriesConsumed((prev) => {
-      const newCalories = prev + calories;
+  const addCalories = async(calories) => {
+    const newCalories = caloriesConsumed + calories;
+    setCaloriesConsumed(newCalories);
 
-     if (user) {
+    if (user) {
       const userDoc = doc(db, 'users', user.uid);
-      updateDoc(userDoc, {
-        caloriesConsumed: newCalories,
+      try {
+        await updateDoc(userDoc, {
+          caloriesConsumed: newCalories,
       });
+    } catch (error) {
+      console.error("Error al actualizar calorías:", error)
     }
-
-    return newCalories;
-  });
-};
-
+  }
+}  
+       
 
   // Exportamos el contexto con los valores necesarios
   return (

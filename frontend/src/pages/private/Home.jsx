@@ -1,15 +1,15 @@
 import './Home.css';
 import { useState } from "react";
 import { useCalories } from "../../context/CaloriesContext";
-import { useAuth } from "../../context/authContext";
+import { useAuth } from "../../context/AuthContext";
 import { useEdamamApi } from "../../api/EdamamApi";
 import { useSearchHandler } from "../../hooks/useSearchHandler";
 
 import Search from "../../components/homeauth/Search"; 
 import CaloriesResults from '../../components/homeauth/CaloriesResults'; 
 
-const Home = () => {
-  const { user, userName, isAuthenticated } = useAuth();
+function Home() {
+  const { userName } = useAuth();
   const { caloriesConsumed, addCalories} = useCalories();
   const [searchQuery, setSearchQuery] = useState("");
   const {nutritionData, analyzeNutrition, nutritionError} = useEdamamApi();
@@ -26,7 +26,6 @@ const Home = () => {
         </p>
       )}
 
-      {isAuthenticated ? (
         <section>
           <Search 
           searchQuery={searchQuery} 
@@ -50,10 +49,6 @@ const Home = () => {
             </p>
           )}
         </section>
-      ) : (
-        <p className="status" role="status">Por favor, completa tu perfil en el Dashboard.</p>
-      )}
-
       
       {errorMessage && 
       <p className="error-message" role="alert">

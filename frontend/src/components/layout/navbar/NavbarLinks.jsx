@@ -1,13 +1,13 @@
 import { Link } from 'react-scroll';
 import { Link as RouterLink } from 'react-router-dom';
 
-const NavbarLinks = ({ 
+function NavbarLinks({ 
   isAuthenticated, 
   getLinkClass, 
   closeMenu, 
   setShowModal, 
   handleLogout 
-}) => {
+}) {
 
   return (
     <>

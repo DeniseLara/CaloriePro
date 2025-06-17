@@ -37,6 +37,12 @@ html {
 
 body{
   background-color: #FDFBF5;
+  height: 100%;
+  margin: 0;
+}
+
+.main{
+  flex: 1;
 }
 
 Link{

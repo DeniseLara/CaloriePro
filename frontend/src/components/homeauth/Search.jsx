@@ -4,7 +4,7 @@ import { FaSearch } from 'react-icons/fa';
 import LoaderSearch from '../ui/LoaderSearch'
 
 
-const Search = ({ searchQuery, setSearchQuery, isLoading, errorMessage, handleSearch }) => {  
+function Search({ searchQuery, setSearchQuery, isLoading, errorMessage, handleSearch }) {  
   
   return (
     <div className="search-container">

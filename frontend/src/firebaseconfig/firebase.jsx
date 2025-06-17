@@ -1,6 +1,18 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth'; 
-import { getFirestore, doc, setDoc, getDoc, updateDoc, collection, getDocs } from 'firebase/firestore'; 
+import { 
+  getFirestore, 
+  doc, 
+  setDoc, 
+  getDoc, 
+  updateDoc, 
+  collection, 
+  onSnapshot, 
+  getDocs,
+  query, 
+  limit,
+  addDoc,
+  orderBy } from 'firebase/firestore'; 
 
 // Configuración de Firebase
 const firebaseConfig = {
@@ -15,17 +27,15 @@ const firebaseConfig = {
 
 // Inicializamos Firebase
 const app = initializeApp(firebaseConfig);
-
-// Inicializamos Auth y Firestore
 const auth = getAuth(app);
 const db = getFirestore(app);
 
 
 // Función para obtener el perfil del usuario desde Firestore
-export const getUserProfileFromFirestore = async () => {
-  const userUid = auth.currentUser?.uid;
-  if (userUid) {
-    try {
+export const getUserProfileFromFirestore = async (userUid) => {
+  if (!userUid) return {};
+
+  try {
       const docRef = doc(db, "users", userUid);
       const docSnap = await getDoc(docRef);
 
@@ -37,33 +47,11 @@ export const getUserProfileFromFirestore = async () => {
     } catch (error) {
       console.error('Error al obtener los datos del perfil:', error);
     }
-  }
-  return {};  // Retornamos un objeto vacío si no hay perfil
-};
-
-// Función para obtener el historial de alimentos del usuario desde Firestore
-export const getFoodHistoryFromFirestore = async (userUid) => {
   
-  if (!userUid) {
-    console.error('User ID no proporcionado');
-    return [];
-  }
-  try {
-    const userDocRef = doc(db, 'users', userUid);  // Refiere al documento del usuario en Firestore
-    const docSnap = await getDoc(userDocRef);
+  return {};  // Retornamos un objeto vacío si no hay perfil
 
-    if (docSnap.exists()) {
-      // Retorna el historial de alimentos o un array vacío si no existe
-      return docSnap.data().foodHistory || [];  
-    } else {
-      console.error('No se encontró el documento del usuario');
-      return [];
-    }
-  } catch (error) {
-    console.error('Error al obtener el historial de alimentos:', error);
-    return [];
-  }
 };
+
 
 // Función para obtener las calorías consumidas de Firestore
 export const getCaloriesFromFirestore = async (userUid) => {
@@ -105,14 +93,6 @@ export const listenAuthState = (auth, callback) => {
   return unsubscribe; // Retorna la función unsubscribe
 };
 
-// Función para cerrar sesión
-export const logoutUser = async () => {
-  try {
-    await signOut(auth);
-  } catch (error) {
-    console.error('Error al cerrar sesión:', error);
-  }
-};
 
 // Función para obtener el saludo personalizado al ingresar
 export const getGreeting = async () => {
@@ -124,19 +104,47 @@ export const getGreeting = async () => {
   }
 };
 
-// Función para guardar o actualizar el historial de alimentos en Firestore
-export const saveFoodHistoryToFirestore = async (userUid, foodHistory, caloriesConsumed) => {
-  try {
-    const userDocRef = doc(db, 'users', userUid); // Referencia al documento del usuario en Firestore
 
-    // Actualizar el historial de alimentos y las calorías consumidas
+export const getFoodHistoryFromFirestore = async (userUid) => {
+  if (!userUid) {
+    console.error('User ID no proporcionado');
+    return [];
+  }
+
+  try {
+    const foodHistoryRef = collection(db, 'users', userUid, 'foodHistory');
+    const q = query(foodHistoryRef, orderBy('date', 'desc'), limit(20));
+    const snapshot = await getDocs(q);
+
+    const foodHistory = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    return foodHistory;
+  } catch (error) {
+    console.error('Error al obtener el historial de alimentos:', error);
+    return [];
+  }
+};
+
+
+export const addFoodItemToHistory = async (userUid, newFoodItem, caloriesConsumed) => {
+  try {
+    // Referencia a la subcolección foodHistory dentro del usuario
+    const foodHistoryCollectionRef = collection(db, 'users', userUid, 'foodHistory');
+
+    // Agregar nuevo documento con el alimento consumido
+    await addDoc(foodHistoryCollectionRef, newFoodItem);
+
+    // Actualizar total de calorías en documento usuario
+    const userDocRef = doc(db, 'users', userUid);
     await updateDoc(userDocRef, {
-      foodHistory: foodHistory,  // Guardamos el historial actualizado
-      caloriesConsumed: caloriesConsumed // Actualizamos las calorías consumidas
+      caloriesConsumed: caloriesConsumed,
     });
 
   } catch (error) {
-    console.error("Error al guardar el historial de alimentos:", error);
+    console.error("Error al agregar alimento al historial:", error);
   }
 };
 
@@ -174,5 +182,12 @@ export {
   setDoc,
   getDoc,
   updateDoc,
+  collection,
+  onSnapshot,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  addDoc,
   onAuthStateChanged,
 };

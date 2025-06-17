@@ -2,12 +2,10 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import { onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebaseconfig/firebase';
 import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';  // Importamos Firestore
-import { useNavigate } from 'react-router-dom';
 
 // Inicializamos Firestore
 const db = getFirestore();
 
-// Creamos el contexto de autenticación
 const AuthContext = createContext();
 
 // Hook personalizado para usar la autenticación
@@ -20,9 +18,33 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);  // Añadimos el estado de error
-  const [userName, setUserName] = useState(null);  // Nuevo estado para guardar el nombre de usuario
-  const navigate = useNavigate();
-
+  const [userName, setUserName] = useState(() => {
+    // Intentar obtener userName cacheado en sessionStorage al iniciar (evita lectura)
+    return sessionStorage.getItem('userName') || null;
+  });  
+  const [loading, setLoading] = useState(true);
+  
+  // Función para obtener el nombre de usuario desde Firestore
+  const fetchUserName = async (userId) => {
+     if (sessionStorage.getItem('userName')) {
+      // Ya lo tenemos cacheado, no hacer nada
+      return;
+    }
+    try {
+      const docRef = doc(db, "users", userId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const name = docSnap.data().userName;
+        setUserName(name);  // Establece el nombre del usuario en el estado
+        sessionStorage.setItem('userName', name); // Guardar en cache
+       } else {
+        setUserName(null);
+        sessionStorage.removeItem('userName');
+      }
+    } catch (error) {
+      console.error('Error al obtener el nombre del usuario:', error);
+    }
+  };
 
   // Función para iniciar sesión
   const login = async (email, password) => {
@@ -31,18 +53,16 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(true);
       setUser(userCredential.user); // Guardamos al usuario autenticado
       setError(null);  // Limpiamos el error
-
-      // Ahora obtenemos el nombre de usuario desde Firestore
-      await fetchUserName(userCredential.user.uid);  // Llamamos para obtener el nombre
-      navigate('/dashboard'); // Redirige al dashboard después de iniciar sesión
-
+      await fetchUserName(userCredential.user.uid);
+      return userCredential.user;
     } catch (err) {
-      setError("Error al iniciar sesión: contraseña o correo electrónico incorrecto " /*+ err.message*/); // Guardamos el mensaje de error
+      setError("Error al iniciar sesión: contraseña o correo electrónico incorrecto " /*+ err.message*/); 
       setIsAuthenticated(false);
+      throw err;
     }
   };
 
-   //Función para registrar un nuevo usuario
+  //Función para registrar un nuevo usuario
   const signUp = async (email, password, userName) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -56,26 +76,15 @@ export const AuthProvider = ({ children }) => {
         email: userCredential.user.email
       });
 
-      // Después de registrar, obtenemos el nombre del usuario
-      await fetchUserName(userCredential.user.uid);  // Llamamos para obtener el nombre
-      navigate('/dashboard'); // Redirige al dashboard después de registrarse
-
+      setUserName(userName);
+      sessionStorage.setItem('userName', userName);
+      
+      return userCredential;
+      
     } catch (err) {
       setError("Error al registrarse: " + err.message); // Guardamos el mensaje de error
       setIsAuthenticated(false);
-    }
-  };
-
-  // Función para obtener el nombre de usuario desde Firestore
-  const fetchUserName = async (userId) => {
-    try {
-      const docRef = doc(db, "users", userId);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setUserName(docSnap.data().userName);  // Establece el nombre del usuario en el estado
-      }
-    } catch (error) {
-      console.error('Error al obtener el nombre del usuario:', error);
+      throw err;
     }
   };
 
@@ -86,6 +95,7 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(false);
       setUser(null);  // Elimina el usuario
       setUserName(null);  // Elimina el nombre del usuario
+      sessionStorage.removeItem('userName'); // Limpieza explícita
     } catch (err) {
       setError("Error al cerrar sesión: " + err.message);
     }
@@ -96,21 +106,22 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        setIsAuthenticated(true);
         setUser(user);  // Guarda el usuario si está autenticado
         await fetchUserName(user.uid);
+        setIsAuthenticated(true);
       } else {
-        setIsAuthenticated(false);
         setUser(null);  // Elimina el usuario si no está autenticado
         setUserName(null);  // Elimina el nombre del usuario
+        setIsAuthenticated(false);
       }
+      setLoading(false);
     });
 
     return () => unsubscribe();  // Limpiar el listener al desmontar el componente
   }, []);
 
 
-  // limpia el error automáticamente
+// limpia el error automáticamente
 useEffect(() => {
   if (error) {
     const timer = setTimeout(() => {
@@ -131,8 +142,7 @@ useEffect(() => {
       signUp, 
       logout, 
       error, 
-      setError, 
-      setIsAuthenticated }}>
+      loading }}>
       {children}
     </AuthContext.Provider>
   );

@@ -3,25 +3,25 @@ import  { useState, useCallback } from "react";
 
 import { useUserData } from "../../hooks/useUserData.jsx";
 import { useCalories } from "../../context/CaloriesContext.jsx";
-import { useAuth } from "../../context/authContext.jsx";
+import { useAuth } from "../../context/AuthContext.jsx";
+import { useFoodHistory } from '../../hooks/useFoodHistory.jsx';
 
 import UserProfile from '../../components/dashboard/UserProfile.jsx';
 import Historial from '../../components/dashboard/Historial.jsx';
 import RadialChart from '../../components/dashboard/RadialChart.jsx'
 
 
-const Dashboard = () => {
-    const {
+function Dashboard() {
+  const { user } = useAuth();
+  const {
     userData,
     isEditing,
-    foodHistory,
     dailyGoal,
     isLoading,
     setIsEditing,
-    setUserData,  
     saveUserProfile,  
-    handleAddFoodToHistory
   } = useUserData(); 
+  const { foodHistory, handleAdd} = useFoodHistory(user);
 
   const [editedData, setEditedData] = useState({
     age: userData?.age || '',
@@ -34,8 +34,7 @@ const Dashboard = () => {
   });
   const [isSaving, setIsSaving] = useState(false); // Estado para manejar el loading del guardado
   const [saveError, setSaveError] = useState(null); // Para manejar errores de guardado
-  
-  const { user } = useAuth();
+  const [showModalUser, setShowModalUser] = useState(false);
   // Obtenemos el contexto de calorías
   const { caloriesConsumed } = useCalories(); 
   const caloriesToDisplay = Math.round(caloriesConsumed); 
@@ -59,10 +58,10 @@ const Dashboard = () => {
     setSaveError(null); // Restablecer cualquier error previo
     
     try {
-      // Guardamos el perfil editado en Firestore usando el email del usuario
-      await saveUserProfile(editedData, user.uid);  // Guardamos los datos en Firestore con el correo del usuario
+      await saveUserProfile(editedData, user.uid); 
       setIsSaving(false);  // Desactiva el loading
       setIsEditing(false);  // Desactiva el modo de edición
+      setShowModalUser(true); // Mostrar modal al guardar exitosamente
     } catch (error) {
       setIsSaving(false);  // En caso de error
       setSaveError("Error al guardar perfil. Intenta nuevamente.");
@@ -79,11 +78,16 @@ const Dashboard = () => {
   // Toggle modo edición
   const toggleEditing = useCallback(() => setIsEditing(prev => !prev), [setIsEditing]);
 
+  // Función para cerrar el modal
+  const handleCloseModal = useCallback(() => {
+    setShowModalUser(false);
+  }, []);
+
   // Si está cargando los datos
   if (isLoading) {
     return (
      <div aria-busy="true" aria-live="polite" className="loading-message">
-        <p>Cargando...</p>
+        <p>Loading...</p>
       </div>
     );
   }
@@ -112,15 +116,15 @@ const Dashboard = () => {
           setEditedData={setEditedData}
           isEditing={isEditing}
           editedData={editedData}
-          setUserData={setUserData}
           setIsSaving={setIsSaving}
-          setIsEditing={setIsEditing} 
           handleEditToggle={toggleEditing}
           handleChange={handleChange}
           handleSubmit={handleProfileSubmit}
           dailyGoal={dailyGoal}
           isSaving={isSaving}
           userUid={user.uid}
+          showModalUser={showModalUser}
+          onCloseModal={handleCloseModal}
         />
       </section>
 
@@ -131,7 +135,12 @@ const Dashboard = () => {
       } 
       
       <section aria-label="Food history">
-      <Historial foodHistory={foodHistory} handleAddFoodToHistory={handleAddFoodToHistory} />
+      <Historial 
+      foodHistory={foodHistory} 
+      handleAdd={handleAdd} 
+      loading={isLoading}
+      error={null}
+      />
     </section>
   </section>
   );

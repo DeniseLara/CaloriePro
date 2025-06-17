@@ -6,7 +6,7 @@ import {
 } from "react-icons/ri";
 
 
-const Footer = () => {
+function Footer() {
   
   return (
       <footer className="footer container" role="contentinfo">

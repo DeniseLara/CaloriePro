@@ -6,7 +6,7 @@ import SignUpForm from "./SignUpForm";
 import LoginForm from "./LoginForm";
 import LoadingOverlay from '../ui/LoadingOverlay'
 
-const ModalContainer = ({ showModal, closeModal, step, loading, error, formProps }) => {
+function ModalContainer({ showModal, closeModal, step, loading, error, formProps }) {
   const modalVariants = {
     hidden: { opacity: 0, scale: 0.8 },
     visible: { opacity: 1, scale: 1, transition: { duration: 0.4 } },
@@ -17,6 +17,19 @@ const ModalContainer = ({ showModal, closeModal, step, loading, error, formProps
     hidden: { opacity: 0, y: -30 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
   };
+
+  function renderStep() {
+  if (loading) return <LoadingOverlay />
+  switch (step) {
+    case 1:
+      return <SignUpForm {...formProps} error={error} />
+    case 2:
+      return <LoginForm {...formProps} error={error} />
+    default:
+      return null
+    }
+  }
+
 
   return (
     <AnimatePresence>
@@ -39,20 +52,17 @@ const ModalContainer = ({ showModal, closeModal, step, loading, error, formProps
           <motion.div
             className="modal-content"
             id="get-started"
+            role="dialog"
             variants={contentVariants}
             aria-modal="true"
+            aria-labelledby="modal-title"
+            aria-describedby="modal-desc"
           >
             <span className="close" onClick={closeModal}>
               &times;
             </span>
 
-            {loading ? (
-              <LoadingOverlay/>
-            ) : step === 1 ? (
-              <SignUpForm {...formProps} error={error} />
-            ) : step === 2 ? (
-              <LoginForm {...formProps} error={error} />
-            ) : null}
+            {renderStep()}
           </motion.div>
         </motion.div>
       )}
@@ -64,7 +74,7 @@ ModalContainer.propTypes = {
   showModal: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
   step: PropTypes.number.isRequired,
-  loading: PropTypes.bool.isRequired,
+  loading: PropTypes.bool,
   error: PropTypes.string,
   formProps: PropTypes.object.isRequired,
 };

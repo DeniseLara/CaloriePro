@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '../context/authContext';
-import { signOut } from 'firebase/auth';
-import { auth } from '../firebaseconfig/firebase';
+import { useAuth } from '../context/AuthContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 export function useNavbar() {
-  const { isAuthenticated, setIsAuthenticated } = useAuth();
+  const { isAuthenticated, setIsAuthenticated, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [activeLink, setActiveLink] = useState("hero");
@@ -31,9 +29,8 @@ export function useNavbar() {
 
   const handleLogout = async () => {
     try {
-      await signOut(auth);
-      setIsAuthenticated(false);
-      navigate("/");
+      await logout();       
+      navigate("/");          
     } catch (err) {
       console.error("Error al cerrar sesión: ", err.message);
     }

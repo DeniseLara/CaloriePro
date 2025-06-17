@@ -1,7 +1,7 @@
 import './Start.css'; 
 import PropTypes from 'prop-types'; 
 
-const Start = ({ openSignUpModal }) => {
+function Start({ openSignUpModal }) {
   return (
     <section className="cta">
       <div className="cta-content container">
@@ -14,7 +14,7 @@ const Start = ({ openSignUpModal }) => {
         type='button'
         aria-label='go to sign up form'
         >
-  <span className="cta-button-text">START NOW</span>
+      <span className="cta-button-text">START NOW</span>
         </button>
       </div>
     </section>

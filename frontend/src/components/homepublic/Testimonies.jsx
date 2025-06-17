@@ -9,7 +9,7 @@ import Juan from '../../assets/juan.jpg';
 import Luis from '../../assets/luis.jpg';
 
 
-const Testimonies = () => {
+function Testimonies() {
   const testimonials = [
     {
       text: "CaloriePro helped me stay on track with my weight goals! It's incredibly easy to use.",

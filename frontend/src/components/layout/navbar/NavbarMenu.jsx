@@ -1,14 +1,14 @@
 import { IoMdClose } from "react-icons/io";
 import NavbarLinks from './NavbarLinks';
 
-const NavbarMenu = ({
+function NavbarMenu({
   menuOpen,
   closeMenu,
   isAuthenticated,
   getLinkClass,
   setShowModal,
   handleLogout
-}) => {
+}) {
   
   return (
     <div className={`navbar-menu ${menuOpen ? 'show' : ''}`}>

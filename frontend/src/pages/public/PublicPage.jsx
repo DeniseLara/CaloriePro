@@ -7,7 +7,7 @@ import Counter from "../../components/homepublic/Counter";
 import HowItWorks from "../../components/homepublic/HowItWorks";
 import Start from "../../components/homepublic/Start";
 
-const PublicPage = ({ openSignUpModal }) => {
+function PublicPage({ openSignUpModal }) {
   const benefitsRef = useRef();
 
   return (

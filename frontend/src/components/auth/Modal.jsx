@@ -1,27 +1,25 @@
 import "./Modal.css";
 import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";  // Para redirigir al dashboard
 import { useAuthForm } from '../../hooks/useAuthForm'
 
 import ModalContainer from "./ModalContainer";
 
-const Modal = ({ closeModal, showModal }) => {
-  const navigate = useNavigate();  // Usamos useNavigate para redirigir al dashboard
+function Modal({ closeModal, showModal }) {
   const {
     email, setEmail,
     password, setPassword,
-    userName, setUserName,
+    formUserName, setFormUserName,
     step, setStep,
     loading,
     error,
     handleSignUp,
     handleLogin
-  } = useAuthForm({ closeModal, navigate });
+  } = useAuthForm({ closeModal });
 
   const formProps = {
     email, setEmail,
     password, setPassword,
-    userName, setUserName,
+    formUserName, setFormUserName,
     handleSignUp,
     handleLogin,
     setStep

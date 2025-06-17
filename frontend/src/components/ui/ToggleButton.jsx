@@ -1,4 +1,4 @@
-const ToggleButton = ({ showAll, onToggle }) => {
+function ToggleButton({ showAll, onToggle }) {
   
   return (
     <button 

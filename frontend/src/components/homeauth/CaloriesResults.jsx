@@ -1,17 +1,15 @@
 import './CaloriesResults.css';
 import PropTypes from "prop-types";
 
-import { useCalories } from "../../context/CaloriesContext.jsx";
-import { useAuth } from "../../context/authContext.jsx";
+import { useAuth } from "../../context/AuthContext.jsx";
 import { useFoodHistory } from '../../hooks/useFoodHistory.jsx';
 
 import NutritionChart from "./NutritionChart.jsx";
 
 
-const CaloriesResults = ({ nutritionData, error }) => {
+function CaloriesResults({ nutritionData, error }) {
   const { user } = useAuth();
-  const { caloriesConsumed, addCalories } = useCalories(); // Obtenemos el contexto de calorías
-  const { foodHistory, caloriesAction, handleAdd } = useFoodHistory(user, caloriesConsumed, addCalories, nutritionData);
+  const { caloriesAction, handleAdd } = useFoodHistory(user);
 
 
    if (error) {
@@ -56,7 +54,7 @@ const CaloriesResults = ({ nutritionData, error }) => {
 
      {/* Mostrar el botón de agregar, o mensaje si ya fue agregado */}
      {caloriesAction === null ? (
-      <button className="nutrient-add-btn" onClick={handleAdd}>Add calories</button>
+      <button className="nutrient-add-btn" onClick={() => handleAdd(nutritionData)}>Add calories</button>
     ) : caloriesAction === "added" ? (
       <p className="success-message">¡Food added!</p>
     ) : (

@@ -8,12 +8,11 @@ import LogoButton from '../../ui/LogoButton';
 import NavbarMenu from './NavbarMenu';
 import NavbarToggleButtons from './NavbarToggleButtons';
 
-const Navbar = () => {
-   const {
+function Navbar() {
+  const {
     menuOpen,
     showModal,
     isAuthenticated,
-    activeLink,
     toggleMenu,
     closeMenu,
     setShowModal,
@@ -65,16 +64,19 @@ const Navbar = () => {
         handleLogout={handleLogout}
       />
       
-      {/* ✅ Aquí va el overlay */}
+      {/*Aquí va el overlay */}
       <div className={`menu-overlay ${menuOpen ? 'visible' : ''}`} onClick={closeMenu}></div>
 
       <NavbarToggleButtons
         toggleMenu={toggleMenu}
       />
-
+      
+    {showModal && (
       <Modal 
       showModal={showModal} 
-      closeModal={() => setShowModal(false)} />
+      closeModal={() => setShowModal(false)} 
+      />
+    )}
     </nav>
   );
 }

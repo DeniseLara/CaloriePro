@@ -1,7 +1,7 @@
 import './HowItWorks.css'
 import { RiUserAddLine, RiSearchEyeLine, RiBarChartBoxLine } from 'react-icons/ri';
 
-const HowItWorks = () => {
+function HowItWorks() {
   
   return(
   <section className="how-it-works container">

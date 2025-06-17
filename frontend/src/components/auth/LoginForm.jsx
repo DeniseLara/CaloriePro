@@ -1,7 +1,17 @@
-const LoginForm = ({ email, setEmail, password, setPassword, handleLogin, setStep, error }) => {
+import PropTypes from "prop-types";
+
+function LoginForm({ 
+  email, 
+  setEmail, 
+  password, 
+  setPassword, 
+  handleLogin, 
+  setStep, 
+  error }) {
+
   return (
     <div>
-      <h2 className="modal-title login">Login to CaloriePro</h2>
+      <h2 className="modal-title login" id="modal-title">Login to CaloriePro</h2>
       <form className="modal-form" onSubmit={handleLogin}>
         <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
         <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
@@ -15,4 +25,15 @@ const LoginForm = ({ email, setEmail, password, setPassword, handleLogin, setSte
     </div>
   );
 }
+
+LoginForm.propTypes = {
+  email: PropTypes.string.isRequired,
+  setEmail: PropTypes.func.isRequired,
+  password: PropTypes.string.isRequired,
+  setPassword: PropTypes.func.isRequired,
+  handleLogin: PropTypes.func.isRequired,
+  setStep: PropTypes.func.isRequired,
+  error: PropTypes.string,
+};
+
 export default LoginForm;

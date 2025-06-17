@@ -1,12 +1,12 @@
 import { ClipLoader } from 'react-spinners';
 
-const UserProfileForm = ({
+function UserProfileForm({
   editedData,
   handleInputChange,
   handleProfileSubmit,
   isSaving,
   handleEditToggle
-}) => {
+}) {
   
   return (
     <form className="userprofile-form" onSubmit={handleProfileSubmit}>

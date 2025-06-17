@@ -1,6 +1,6 @@
 import { RiMenu3Fill } from "react-icons/ri";
 
-const NavbarToggleButtons = ({ toggleMenu }) => {
+function NavbarToggleButtons({ toggleMenu }) {
   
   return (
     <button 

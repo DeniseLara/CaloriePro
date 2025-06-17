@@ -20,7 +20,7 @@ const features = [
 ];
 
 
-const Card = () => {
+function Card() {
 
     return(
     <div className="card container">
