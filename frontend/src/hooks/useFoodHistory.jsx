@@ -22,7 +22,15 @@ export function useFoodHistory(user) {
 
     try {
         const history = await getFoodHistoryFromFirestore(user.uid);
-        setFoodHistory(history); 
+
+        // hacemos la conversión de Timestamp a Date para cada item
+        const historyWithDates = history.map(item => ({
+          ...item,
+          date: item.date instanceof Timestamp ? item.date.toDate() : item.date, 
+        // por si acaso date ya está convertido, chequeamos antes
+        }));
+
+        setFoodHistory(historyWithDates); 
       } catch (error) {
       }
     };
@@ -42,7 +50,7 @@ export function useFoodHistory(user) {
     const currentDate = Timestamp.now();
     
     const alreadyAddedToday = foodHistory.some(
-      (item) => item.name === foodName &&     dayjs(item.date.toDate()).isSame(dayjs(), 'day')
+      (item) => item.name === foodName && dayjs(item.date).isSame(dayjs(), 'day')
     );
 
     if (!alreadyAddedToday) {
@@ -57,7 +65,14 @@ export function useFoodHistory(user) {
         setCaloriesAction("added");
         addCalories(calories);
 
-        const updatedHistory = await getFoodHistoryFromFirestore(user.uid);
+        const updatedHistoryRaw = await getFoodHistoryFromFirestore(user.uid);
+
+        // Aplicar conversión al actualizar el estado también
+        const updatedHistory = updatedHistoryRaw.map(item => ({
+          ...item,
+          date: item.date instanceof Timestamp ? item.date.toDate() : item.date,
+        }));
+        
         setFoodHistory(updatedHistory);      } catch (error) {
       }
     } else {
