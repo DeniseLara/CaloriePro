@@ -19,7 +19,7 @@
 
 .dashboard-container{
     margin-bottom: 1rem;
-    color: #4A4A4A;
+    color: var(--color-text);
     border-radius: 2rem;
     box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;       
     background: linear-gradient(135deg, #D1E6A1, #A8E085, #D4D9B2);
@@ -47,7 +47,7 @@
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
     border: 1px solid #A8E085;
     border-radius: 0.5rem;
-    background-color: #ffffff;
+    background-color: var(--color-base);
 }
 
 .dashboard-container-number,
@@ -63,7 +63,7 @@
 
 .loading-message p {
    font-size: var(--fs-sm); 
-   color: #4A4A4A;
+   color: var(--color-text);
 }
 
 
@@ -101,7 +101,7 @@
         box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
         border: 1px solid #A8E085;
         border-radius: 0.5rem;
-        background-color: #ffffff;
+        background-color: var(--color-base);
     }
   
     .user-historial-container{
@@ -131,7 +131,7 @@
         max-width: 100%;
         overflow-y: auto;
         border-radius: 2rem;
-        background-color: #ffffff;
+        background-color: var(--color-base);
         box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;       
     }
   

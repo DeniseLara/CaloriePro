@@ -7,7 +7,7 @@
   
 .how-title h2 {
   font-size: var(--fs-2xl);
-  color: #4A4A4A;
+  color: var(--color-text);
   margin-bottom: 1rem;
 }
   
@@ -26,7 +26,7 @@
 }
   
 .step {
-  background-color: #FFFFFF;
+  background-color: var(--color-base);
   border-radius: 0.5rem;
   padding: 1.5rem 2rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -35,13 +35,13 @@
   
 .step-icon {
   font-size: var(--fs-3xl);
-  color: #7BBE4A;
+  color: var(--color-surface);
   margin-bottom: 1rem;
 }
   
 .step h3 {
   font-size: var(--fs-md);
-  color: #4A4A4A;
+  color: var(--color-text);
   margin-bottom: 0.5rem;
 }
   

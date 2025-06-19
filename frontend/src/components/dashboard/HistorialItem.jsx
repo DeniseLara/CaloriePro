@@ -1,9 +1,12 @@
-import { format } from 'date-fns';
+import { format, isValid } from 'date-fns';
 
 function HistorialItem({ item, index }) {
   const roundedCalories = Math.round(item.calories);
-  const formattedDate = format(item.date, 'dd/MM/yyyy');
-
+  let formattedDate = 'Fecha no disponible';
+  if (item.date instanceof Date && isValid(item.date)) {
+    formattedDate = format(item.date, 'dd/MM/yyyy');
+  }
+  
   return (
     <li 
       className="historial-item"

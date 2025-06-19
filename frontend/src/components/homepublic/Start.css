@@ -8,7 +8,7 @@
   
 .cta h2 {
   font-size: var(--fs-xl);
-  color: #4A4A4A; 
+  color: var(--color-text); 
   margin-bottom: 1.5rem;
   animation: fadeIn 1s ease-out;
 }
@@ -26,7 +26,7 @@
   
 .cta p {
   font-size: var(--fs-base);
-  color: #4A4A4A; 
+  color: var(--color-text); 
   margin-bottom: 2rem;
   text-wrap: pretty;
 }
@@ -38,8 +38,8 @@
   backface-visibility: hidden;
   transform-style: preserve-3d;
   will-change: transform, box-shadow, background-color;
-  background-color: #7BBE4A;
-  color: #ffffff;
+  background-color: var(--color-surface);
+  color: var(--color-base);
   transform: scale(1); 
   padding: 1rem 2.5rem;
   border: none;

@@ -1,5 +1,5 @@
 .footer {
-  background-color: #4A4A4A; 
+  background-color: var(--color-text); 
   color: #FDFBF5; 
   padding: 1.5rem 1rem 2.5rem;
   display: flex;
@@ -25,7 +25,7 @@
   
 .footer-section h3,
 .footer-section h4 {
-  color: #7BBE4A; 
+  color: var(--color-surface); 
   margin-bottom: 1rem;
 }
   
@@ -51,7 +51,7 @@
 }
   
 .footer-links a:hover {
-  color: #7BBE4A; 
+  color: var(--color-surface); 
 }
   
 .social-icons {
@@ -68,7 +68,7 @@
 }
   
 .social-icons a:hover {
-  color: #7BBE4A; 
+  color: var(--color-surface); 
   transform: scale(1.2);
 }
   

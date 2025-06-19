@@ -26,8 +26,11 @@ export function useFoodHistory(user) {
         // hacemos la conversión de Timestamp a Date para cada item
         const historyWithDates = history.map(item => ({
           ...item,
-          date: item.date instanceof Timestamp ? item.date.toDate() : item.date, 
-        // por si acaso date ya está convertido, chequeamos antes
+          date: item.date instanceof Timestamp
+            ? item.date.toDate()
+            : item.date instanceof Date
+            ? item.date
+            : null, // si no es válido, deja null
         }));
 
         setFoodHistory(historyWithDates); 

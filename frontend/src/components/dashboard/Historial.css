@@ -35,8 +35,9 @@
 
 .historial-container{
   padding: 1.5rem;
-  background-color: #ffffff;
-  box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;        color: #4A4A4A;
+  background-color: var(--color-base);
+  box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;        
+  color: var(--color-text);
   padding-bottom: 1rem;
   margin-bottom: 2rem;
   border-radius: 2rem;

@@ -93,14 +93,14 @@
   background-color: transparent;
   font-weight: 700;
   font-size: var(--fs-lg);
-  color: #4A4A4A;
+  color: var(--color-text);
   outline: none;
   border: none;
   cursor: pointer;
 }
 
 .logo-img{
-  color: #7BBE4A;
+  color: var(--color-surface);
 }
 
 .link {
@@ -108,7 +108,7 @@
   font-weight: 500;
   position: relative;
   transition: color 0.3s ease;
-  color: #4A4A4A;
+  color: var(--color-text);
 }
 
 .link:hover::after {
@@ -116,11 +116,11 @@
 }
 
 .link:hover {
-  color: #7BBE4A;
+  color: var(--color-surface);
 }
 
 .link.active {
-  color: #7BBE4A;
+  color: var(--color-surface);
   font-weight: bold;
 }
 
@@ -132,7 +132,7 @@
   width: 0%;
   height: 2px;
   transition: width 0.3s ease;
-  background-color: #7BBE4A;
+  background-color: var(--color-surface);
 }
 
 .link:hover::after {
@@ -150,12 +150,12 @@
   font-size: var(--fs-base);
   cursor: pointer;
   border-radius: 4rem;
-  color: #fff;
+  color: var(--color-base);
   padding: 0.8rem 1.5rem;
 }
 
 .btn-outline {
-  background-color: #7BBE4A;
+  background-color: var(--color-surface);
   font-weight: 500;
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
@@ -179,7 +179,7 @@
   height: 100vh;
   z-index: 20;
   padding:8rem 4rem 0;
-  background-color: #fff;
+  background-color: var(--color-base);
   transition: right 0.4s ease-in-out;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 

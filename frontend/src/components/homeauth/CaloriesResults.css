@@ -103,8 +103,8 @@
   border: none;
   font-weight: 500;
   font-size: var(--fs-base);  
-  background-color: #7BBE4A;
-  color: #ffffff;
+  background-color: var(--color-surface);
+  color: var(--color-base);
   border-radius: 0.6rem;
   transition: background-color .4s;
 }
@@ -146,8 +146,8 @@
     justify-self: end;
     border: none;
     font-weight: 500;
-    background-color: #7BBE4A;
-    color: #ffffff;
+    background-color: var(--color-surface);
+    color: var(--color-base);
     border-radius: 0.6rem;
     transition: background-color .4s;
   }

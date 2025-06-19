@@ -11,13 +11,13 @@
   overflow-x:hidden;
   /*min-height: 50%;*/
   border-radius: 2rem;
-  background-color: #ffffff;
+  background-color: var(--color-base);
   box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
 }
 
 .radial-title{
   font-size: var(--fs-lg);
-  color: #4A4A4A;
+  color: var(--color-text);
   margin-bottom: 1rem;
 }
 

@@ -39,8 +39,8 @@
 
 .input-wrapper input:focus {
   outline: none;
-  border-color: #7BBE4A;
-  background-color: #fff;
+  border-color: var(--color-surface);
+  background-color: var(--color-base);
   box-shadow: 0 0 0 3px rgba(123, 190, 74, 0.25);
 }
 
@@ -57,7 +57,7 @@
 
 .search-icon {
   font-size: var(--fs-lg);
-  color: #7BBE4A;
+  color: var(--color-surface);
 }
 
 .select-wrapper {
@@ -69,7 +69,7 @@
   width: 100%;
   border-radius: 1rem;
   border: 1px solid #ccc;
-  background-color: #fff;
+  background-color: var(--color-base);
   font-size: 1rem;
 }
 
