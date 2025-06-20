@@ -3,21 +3,20 @@
   align-items: center;
   justify-content: center;
   padding: 1rem;
-  /*position: relative;*/
   display: flex;
   flex-direction: column;
   margin-bottom: 1rem;
   overflow-y: hidden;
   overflow-x:hidden;
-  /*min-height: 50%;*/
   border-radius: 2rem;
   background-color: var(--color-base);
-  box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+  box-shadow: var(--shadow-container);
 }
 
 .radial-title{
-  font-size: var(--fs-lg);
   color: var(--color-text);
+  font-size: var(--fs-lg);
+  /*color: var(--color-text);*/
   margin-bottom: 1rem;
 }
 
@@ -33,7 +32,8 @@
   font-size: var(--fs-sm);
   align-items: center;
   gap: 1rem;
-  color: #7A7570;
+  /*color: #7A7570;*/
+  color: var(--color-text);
   margin-bottom: 0.5rem;
 }
 
@@ -56,20 +56,9 @@
 }
 
 .radial-chart-text {
-  /*position: absolute;
-  top: 65%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  text-align: center;
-  width: 60%;*/
   font-family: 'Poppins', sans-serif;
   font-weight: 600;
-  /*font-size: var(--fs-base);*/
-  color: #4F4F4F;
+  color: var(--color-text);
 }
 
 .radial-chart-goal {
@@ -81,33 +70,12 @@
   flex-direction: column;
   align-items: center;
   transform: translate(-50%, -50%);
-  /*width: 50%;
-  max-width: 100%;*/
   font-size: var(--fs-base);
-  /*padding: 1rem; /* Espaciado menor para evitar que se corte */
 }
 
 .radial-chart-goal.no-data{
   font-size: var(--fs-sm);
 }
-
-/*.radial-chart-percentage{
-  position: absolute;
-  top: 60%;
-  font-size: var(--fs-base);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  left: 50%;
-  right: 50%;
-}*/
-  
-/*.radial-chart-goal.archived,
-.radial-chart-goal.exced{
-  padding: 1rem;
-  padding: 0.5rem 0.8rem;
-}*/
   
 /* Colores según el estado del objetivo */
 .radial-chart-goal.exced {
@@ -142,22 +110,10 @@
   .radial-chart-container{
     padding: 2rem;
   } 
-
-  /*.radial-chart-goal{
-    width: 30%;
-  }*/
-
-  /*.radial-chart-text{
-    top: 63%;
-  }*/
 }
 
 
 @media (min-width:1024px){
-  /*.radial-chart-text{
-    top: 62%;
-  }*/
-
   .radial-chart-legend,
   .legend-item{
     margin-bottom: 0rem;
@@ -171,10 +127,6 @@
     gap: 0.5rem;
   }
 
-  /*.radial-chart-goal{
-    width: 50%;
-  }*/
-
   .radial-chart-container{
     padding: 1.5rem;
   } 
@@ -182,24 +134,9 @@
 
 
 @media (min-width:1280px){
-   /*.radial-chart-text{
-    top: 59%;
-  }*/
-
-  /*.radial-chart-goal{
-    padding: 2rem;
-  }*/
-
   .radial-chart{
     max-width: 16rem;
   }
-}
-
-
-@media (min-width:1366px){
-  /*.radial-chart-goal{
-    padding: 2.5rem;
-  }*/
 }
 
 
@@ -207,13 +144,5 @@
   .radial-chart{
     max-width: 20rem;
   }
-
-  /*.radial-chart-goal{
-    padding: 4rem;
-  }*/
-
-  /*.radial-chart-text {
-    top: 56%;
-  }*/
 }
   

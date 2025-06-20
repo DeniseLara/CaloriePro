@@ -12,7 +12,9 @@ ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale, LinearScale,
 // Colores personalizados para el gráfico
 const COLORS = {
   over: '#FF5722',
-  achieved: '#66BB6A',
+  /*achieved: '#66BB6A',*/
+  achieved: '#4FA94D',
+  inProgress: '#81C784',
   remaining: '#E0E0E0'
 };
 
@@ -64,12 +66,20 @@ function RadialChart({ caloriesConsumed, dailyGoal }) {
           label: 'Calories',
           data: status === 'over' ? [caloriesConsumed, 0] : [caloriesConsumed, remaining],
           backgroundColor: [
-            status === 'over' ? COLORS.over : COLORS.achieved,
-            COLORS.remaining,
+          status === 'over' 
+            ? COLORS.over 
+            : status === 'achieved'
+            ? COLORS.achieved
+            : COLORS.inProgress,
+          COLORS.remaining,
           ],
           borderColor: [
-            status === 'over' ? COLORS.over : COLORS.achieved,
-            COLORS.remaining,
+            status === 'over' 
+            ? COLORS.over
+            : status === 'achieved' 
+            ? COLORS.achieved
+            : COLORS.inProgress,
+          COLORS.remaining,
           ],
           borderWidth: 0.5,
           cutout: '70%',
@@ -113,7 +123,12 @@ function RadialChart({ caloriesConsumed, dailyGoal }) {
               <li className="legend-item">
                 <span
                   className="legend-color"
-                  style={{ backgroundColor: status === 'over' ? COLORS.over : COLORS.achieved }}
+                  style={{ backgroundColor: 
+                    status === 'over' 
+                    ? COLORS.over 
+                    : status === 'achieved'
+                    ? COLORS.achieved
+                    : COLORS.inProgress }}
                 />
                 <span className="legend-label">Calories Consumed</span>
               </li>

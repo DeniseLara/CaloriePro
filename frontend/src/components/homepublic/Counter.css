@@ -44,7 +44,7 @@
 
 .counter-card p {
   font-size: var(--fs-sm); 
-  color: #555555;
+  color: var(--color-text);
 }
 
 

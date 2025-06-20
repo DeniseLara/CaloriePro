@@ -33,12 +33,13 @@
 .hero-subtitle{
   font-size: var(--fs-base);
   max-width: 80vw;
-  color: #D1D1D1;   
+  /*color: #D1D1D1;*/
+  color: rgba(255,255,255,0.75);   
   margin-bottom: 1.5rem;
   font-weight: 500;
   display: flex;
   justify-self: center;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .hero-buttons{
@@ -66,6 +67,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.8rem;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6); 
   position: relative;
   overflow: hidden;
   border: none;

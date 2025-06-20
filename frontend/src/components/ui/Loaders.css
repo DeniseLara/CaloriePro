@@ -9,6 +9,6 @@
 .loading-container p {
   margin-top: 1rem;
   font-size: var(--fs-base);
-  color: #4fa94d; 
+  color: var(--color-success); 
   font-weight: bold;
 }
