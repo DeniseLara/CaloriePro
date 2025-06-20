@@ -50,10 +50,10 @@ function App() {
         <Dashboard/>
        </PrivateRoute>}
        />
-      </Route> 
 
       {/* Ruta para páginas no encontradas */}
-      <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<NotFound />} />
+      </Route> 
       </Routes>
   );
 }
