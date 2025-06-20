@@ -5,7 +5,6 @@ import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/static/',
   plugins: [
     react(),
     {
@@ -24,9 +23,8 @@ export default defineConfig({
   },
   build: {
     chunkSizeWarningLimit: 2000, 
-    outDir: path.resolve(__dirname, '../backend/dist/static'),
+    outDir: 'dist',
     sourcemap: true, // Habilita sourcemaps
-    emptyOutDir: true,
   },
   server: {
     hmr: {

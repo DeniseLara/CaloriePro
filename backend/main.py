@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from task import reset_calories
-from fastapi.responses import FileResponse, PlainTextResponse
+from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
@@ -41,25 +41,16 @@ async def scheduled_task():
         logging.error(f"Error en el reseteo de calorías: {e}")
         return {"error": f"Error al ejecutar el reseteo de calorías: {e}"}
 
-frontend_path = Path("dist").resolve()
+app.mount("/", StaticFiles(directory=Path("../frontend/dist").resolve(), html=True), name="static")
 
-app.mount("/static", StaticFiles(directory=frontend_path / "static"), name="static")
-
-# Captura cualquier otra ruta y sirve index.html
-@app.get("/", response_class=FileResponse)
-async def root():
-    index_path = frontend_path / "index.html"
+@app.get("/{full_path:path}")
+async def catch_all(full_path: str):
+    index_path = Path("../frontend/dist/index.html").resolve()
     if index_path.exists():
         logging.debug(f"index.html encontrado en: {index_path}")
         return FileResponse(index_path)
-    return PlainTextResponse("Página no encontrada", status_code=404)
-
-@app.get("/{full_path:path}", response_class=FileResponse)
-async def catch_all(full_path: str):
-    index_path = frontend_path / "index.html"
-    if index_path.exists():
-        return FileResponse(index_path)
-    return PlainTextResponse("Página no encontrada", status_code=404)
+    logging.error(f"No se encontró index.html en: {index_path}")
+    return {"error": "Página no encontrada"}
 
 
 if __name__ == "__main__":

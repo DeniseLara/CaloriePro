@@ -21,7 +21,7 @@ backend/caloriepro.json
 backend/.env
 google-cloud-sdk.tar.gz
 txt/
-dist/
+frontend/dist
 
 # Editor directories and files
 .vscode/*
