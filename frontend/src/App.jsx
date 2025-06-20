@@ -1,29 +1,19 @@
 import { useState } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { useAuth } from './context/AuthContext'
 
-import Navbar from './components/layout/navbar/Navbar';
-import Footer from './components/layout/footer/Footer'
-import Modal from './components/auth/Modal';
+import MainLayout from './components/layout/MainLayout';
 import Home from './pages/private/Home'
 import Dashboard from './pages/private/Dashboard'
-import AuthFooter from './components/layout/footer/AuthFooter';
 import PublicPage from './pages/public/PublicPage';
 import Loader from './components/ui/Loader';
 import PrivateRoute from './PrivateRoute';
-import NotFound from './Notfound'
+import NotFound from './pages/public/Notfound';
 
 
 function App() {
   const [showModal, setShowModal] = useState(false);
-  const { isAuthenticated, loading } = useAuth(); // Traemos setIsAuthenticated desde el contexto
-  const location = useLocation();
-  
-  // Rutas válidas
-  const validPaths = ['/', '/home', '/dashboard'];
-
-  // Si es una ruta 404
-  const isNotFound = !validPaths.includes(location.pathname);
+  const { loading } = useAuth(); // Traemos setIsAuthenticated desde el contexto
 
   if (loading) {
     return (
@@ -33,12 +23,9 @@ function App() {
 
 
   return (
-    <div className='app'>
-    {!isNotFound && (
-      <Navbar showModal={showModal} setShowModal={setShowModal} closeModal={() => setShowModal(false)} />
-    )}
-    <main className='main'>
       <Routes>
+        <Route element={<MainLayout showModal={showModal} setShowModal={setShowModal} />}>
+
         {/* Rutas públicas */}
         <Route
           path="/"
@@ -62,25 +49,12 @@ function App() {
        <PrivateRoute>
         <Dashboard/>
        </PrivateRoute>}
-       /> 
+       />
+      </Route> 
 
       {/* Ruta para páginas no encontradas */}
       <Route path="*" element={<NotFound />} />
       </Routes>
-    </main>
-
-      {/* Mostrar Footer según autenticación */}
-      {!isNotFound && (isAuthenticated ? <AuthFooter /> : <Footer />)}
-    
-      {/* Mostrar el Modal solo si no está autenticado */}
-      {!isNotFound && !isAuthenticated && (
-        <Modal
-          showModal={showModal}
-          setShowModal={setShowModal}
-          closeModal={() => setShowModal(false)}
-        />
-      )}
-  </div>
   );
 }
 
