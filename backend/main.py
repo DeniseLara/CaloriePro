@@ -41,12 +41,14 @@ async def scheduled_task():
         logging.error(f"Error en el reseteo de calorías: {e}")
         return {"error": f"Error al ejecutar el reseteo de calorías: {e}"}
 
-app.mount("/", StaticFiles(directory=Path("../frontend/dist").resolve(), html=True), name="static")
+frontend_path = Path("dist").resolve()
+
+app.mount("/", StaticFiles(directory=frontend_path, html=True), name="static")
 
 # Captura cualquier otra ruta y sirve index.html
 @app.get("/{full_path:path}")
 async def catch_all(full_path: str):
-    index_path = Path("../frontend/dist/index.html").resolve()
+    index_path = frontend_path / "index.html"
     if index_path.exists():
         logging.debug(f"index.html encontrado en: {index_path}")
         return FileResponse(index_path)
