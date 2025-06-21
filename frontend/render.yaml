@@ -6,3 +6,7 @@ source:
 static-build-command: npm run build
 publish:
   directory: dist
+routes:
+  - type: rewrite
+    source: /*
+    destination: /index.html
