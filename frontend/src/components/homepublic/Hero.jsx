@@ -1,5 +1,6 @@
 import './Hero.css'
 import PropTypes from 'prop-types';
+import FadeInSection from "../ui/FadeInSection";
 
 function Hero({openSignUpModal, benefitsRef}) {
 
@@ -14,6 +15,7 @@ function Hero({openSignUpModal, benefitsRef}) {
   
   return (
     <div className='hero container'>
+      <FadeInSection>
       <div className="hero-text">
         <h1 className="hero-title">Keep track of your calorie intake</h1>
         <p className="hero-subtitle">
@@ -41,6 +43,7 @@ function Hero({openSignUpModal, benefitsRef}) {
 
         </div>
       </div>
+      </FadeInSection>
     </div>
   );
 }

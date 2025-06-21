@@ -9,6 +9,7 @@ import { useFoodHistory } from '../../hooks/useFoodHistory.jsx';
 import UserProfile from '../../components/dashboard/UserProfile.jsx';
 import Historial from '../../components/dashboard/Historial.jsx';
 import RadialChart from '../../components/dashboard/RadialChart.jsx'
+import SkeletonDashboard from '../../components/ui/Skeleton.jsx'
 
 
 function Dashboard() {
@@ -85,9 +86,9 @@ function Dashboard() {
   // Si está cargando los datos
   if (isLoading) {
     return (
-     <div aria-busy="true" aria-live="polite" className="loading-message">
-        <p>Loading...</p>
-      </div>
+      <section className="dashboard container" aria-busy="true" aria-live="polite">
+        <SkeletonDashboard/>
+      </section>
     );
   }
 

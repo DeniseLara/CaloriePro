@@ -120,5 +120,12 @@
 }
 
 
+@media (min-width:1280px){
+  .footer{
+    margin: 1rem 1.5rem;
+  }
+}
+
+
 
   
