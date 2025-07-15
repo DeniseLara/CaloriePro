@@ -29,7 +29,6 @@
   background: transparent;
   border: none;
   color: var(--color-base);
-  /*font-size: 1rem;*/
   font-size: var(--fx-xs);
   margin-left: 10px;
   cursor: pointer;
@@ -51,26 +50,4 @@
   }
 }
 
-
-
-/*@media (min-width:1280px){
-  .modal-content-user{
-    font-size: 1.2rem;
-  }
-
-  .close-btn{
-    font-size: 1.2rem;
-  }
-}
-
-
-@media (min-width:1920px){
-  .modal-content-user{
-    font-size: 1.5rem;
-  }
-
-  .close-btn{
-   font-size: 1.5rem;
-  }
-}*/
   

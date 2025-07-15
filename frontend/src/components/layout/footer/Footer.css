@@ -1,6 +1,6 @@
 .footer {
   background-color: var(--color-text); 
-  color: #FDFBF5; 
+  color: var(--gray-offwhite); 
   padding: 1.5rem 1rem 2.5rem;
   display: flex;
   flex-direction: column;
@@ -45,7 +45,7 @@
   
 .footer-links li a {
   font-size: var(--fs-sm);
-  color: #FDFBF5;
+  color: var(--gray-offwhite);
   text-decoration: none;
   transition: color 0.3s ease;
 }
@@ -63,7 +63,7 @@
   
 .social-icons a {
   font-size: var(--fs-lg);
-  color: #FDFBF5;
+  color: var(--gray-offwhite);
   transition: color 0.3s ease, transform 0.3s ease;
 }
   
@@ -81,7 +81,7 @@
 .footer-bottom p {
   font-size: var(--fx-xs);
   text-align: center;
-  color: #FDFBF5;
+  color: var(--gray-offwhite);
 }
 
 

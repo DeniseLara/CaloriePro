@@ -1,9 +1,8 @@
-/* Estilo para el contenedor de carga Loader */
 .loading-container {
-    display: grid;
-    place-items: center;
-    min-height: 100vh;
-    background-color: #f4f4f4; 
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  background-color: var(--gray-lighter); 
 }
 
 .loading-container p {

@@ -33,19 +33,19 @@
   z-index: 30;
   max-width: clamp(18rem, 8rem + 10vw, 40rem);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  position: relative; /* Aseguramos que el close se posicione dentro de este contenedor */
+  position: relative; 
   animation: scaleUp 0.3s ease-in-out;
 }
 
 .modal-title{
   font-size: var(--fs-lg);
-  color: #2C2F36;
+  color: var(--color-text-dark);
   text-align: center;
   margin-bottom: 0.5rem;
 }
 
 .modal-description{
-  color: #5C667B;
+  color: var(--color-text-secondary);
   margin-bottom: 1.5rem;
 }
 
@@ -54,13 +54,12 @@
   font-size: var(--fs-sm);
 }
 
-
 .loading-overlay {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  min-height: 100%; /* Asegura que ocupe todo el alto del modal */
+  min-height: 100%; 
 }
   
 .loading-overlay p {
@@ -69,8 +68,6 @@
   color: var(--color-success);
 }
   
-  
-/* Animación para el modal */
 @keyframes scaleUp {
   from {
     transform: scale(0.95);
@@ -89,7 +86,7 @@
   border: 1.4px solid #CED4DA;
   border-radius: 0.5rem;
   background-color: #f9fafb;
-  color: #2D3748;
+  color: var(--color-text-dark);
   box-shadow: 0 1px 2px rgba(0,0,0,0.05);
   font-size: var(--fs-base);
   transition: all .3s ease-in-out;
@@ -103,13 +100,13 @@
 
 .modal-form input::placeholder{
   font-size: var(--fs-sm);
-  color: #6B7280;
+  color: var(--color-text-tertiary);
   font-weight: 500;
 }
   
 .modal-content .btn {
   background-color: var(--color-surface);
-  color: white;
+  color: var(--color-base);
   padding: 0.8rem 1.5rem;
   border: none;
   border-radius: 30px;
@@ -121,7 +118,7 @@
 }
   
 .modal-content .btn:hover {
-  background-color: #6a9e3d;
+  background-color: var(--color-surface-hover);
 }
   
 /* Botón Close dentro del modal */

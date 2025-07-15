@@ -1,6 +1,6 @@
 .how-it-works {
   padding-top: 1rem;
-  background-color: #FDFBF5; 
+  background-color: var(--gray-offwhite); 
   text-align: center;
   margin-bottom: 4rem;
 }
@@ -13,7 +13,7 @@
   
 .how-title p {
   font-size: var(--fs-base);
-  color: #6A6A6A;
+  color: var(--color-text-tertiary);
   margin-bottom: 3rem;
 }
   
@@ -47,7 +47,7 @@
   
 .step p {
   font-size: var(--fs-sm);
-  color: #6A6A6A;
+  color: var(--color-text-tertiary);
 }
 
 

@@ -15,7 +15,6 @@
 
 .dashboard-container{
     margin-bottom: 1rem;
-    /*color: var(--color-text);*/ /*color antiguo*/
     border-radius: 2rem;
     box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;       
     background: linear-gradient(135deg, #D1E6A1, #A8E085, #D4D9B2);
@@ -94,13 +93,6 @@
 
     .dashboard-container-descrip p{
         padding:  0.8rem 2rem;
-        display: flex;
-        flex-direction: column;
-        gap: 0.4rem;
-        box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
-        border: 1px solid #A8E085;
-        border-radius: 0.5rem;
-        background-color: var(--color-base);
     }
   
     .user-historial-container{
@@ -150,10 +142,7 @@
     }  
 
     .flex-container{
-        display: grid;
-        gap: 1rem;
         grid-auto-rows: 34rem;
-        grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
     }
 }
 

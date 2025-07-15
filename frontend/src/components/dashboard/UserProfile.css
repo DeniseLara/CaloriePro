@@ -4,7 +4,6 @@
   border-radius: 2rem;
   padding: 1.5rem;
   margin-bottom: 1rem;
-  /*color: var(--color-text);*/
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -37,7 +36,7 @@
   font-weight: 500;
   justify-content: space-between;
   align-items: center;
-  color: #7A7570;
+  color: var(--color-text-tertiary);
 }
   
 .userprofile-label input,
@@ -48,7 +47,7 @@
   border-radius: 0.8rem;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
   color: var(--color-text);
-  background: #FDFBF5;
+  background: var(--gray-offwhite);
   border: 1.5px solid var(--color-surface);
 }
   
@@ -107,7 +106,7 @@
 }
   
 .userprofile-btn.save:hover {
-  background-color: #6a9e3d;
+  background-color: var(--color-surface-hover);
 }
 
 .userprofile-btn.edit{
@@ -115,7 +114,7 @@
 }
 
 .userprofile-btn.edit:hover {
-  background-color: #6a9e3d;
+  background-color: var(--color-surface-hover);
 }
 
   
@@ -149,7 +148,7 @@
 
   .userprofile-content{
     padding: 2rem;
-    max-height: 100%; /* Fijamos una altura máxima para el contenedor */
+    max-height: 100%; 
   }
   
   .userprofile-description {
@@ -195,10 +194,10 @@
 
   .userprofile-container{
     scrollbar-width: thin;  /* Firefox: scrollbar fino */
-    scrollbar-color: #B0B0B0 #F4F4F4;  /* Gris claro para el thumb y track */
+    scrollbar-color: #B0B0B0 var(--gray-lighter); 
     max-width: 100%;
     grid-column: span 2;
-    max-height: 96.8%; /* Fijamos una altura máxima para el contenedor */
+    max-height: 96.8%; 
   }
 
   .userprofile-container::-webkit-scrollbar {
@@ -206,14 +205,14 @@
   }
 
   .userprofile-container::-webkit-scrollbar-track {
-    background: #F4F4F4;  /* Color de fondo del track */
+    background: var(--gray-lighter);  /* Color de fondo del track */
     border-radius: 2rem;
   }
 
   .userprofile-container::-webkit-scrollbar-thumb {
     background: #B0B0B0;  
     border-radius: 1rem;
-    border: 2px solid #F4F4F4;  
+    border: 2px solid var(--gray-lighter);  
   }
 
   .userprofile-container::-webkit-scrollbar-thumb:hover {
@@ -222,7 +221,6 @@
 
   .userprofile-btn.edit{
     margin-bottom: 1rem;
-
   }
 
   .userprofile-buttons{

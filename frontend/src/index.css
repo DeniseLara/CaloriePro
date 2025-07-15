@@ -8,12 +8,13 @@
   --color-text-secondary: #555555;
   --color-text-tertiary: #777777;
 
-  --gray-light: #E0E0E0;       /* bordes, líneas */
-  --gray-lighter: #F4F4F4;     /* fondos suaves */
-  --gray-offwhite: #FDFBF5;    /* fondos o secciones muy claras */
+  --gray-light: #E0E0E0;   
+  --gray-lighter: #F4F4F4;
+  --gray-offwhite: #FDFBF5; 
    
   --color-surface: #7BBE4A;
   --color-success: #4fa94d;
+  --color-surface-hover:#6a9e3d;
   --shadow-container: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;  
 
   --fx-xs: clamp(0.64rem, 0.608rem + 0.16vw, 0.8rem);
