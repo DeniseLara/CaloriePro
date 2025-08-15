@@ -1,6 +1,5 @@
 import './Counter.css'
 
-
 function Counter() {
   const foodCount = 1000;
   const userCount = 500;

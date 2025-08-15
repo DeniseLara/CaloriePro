@@ -1,10 +1,16 @@
 import './RadialChart.css'
 import PropTypes from 'prop-types';
 import { useMemo } from 'react';
-
 import { Doughnut } from 'react-chartjs-2';
-import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement, CategoryScale, LinearScale } from 'chart.js';
-
+import { 
+  Chart as ChartJS, 
+  Title, 
+  Tooltip, 
+  Legend, 
+  ArcElement, 
+  CategoryScale, 
+  LinearScale 
+} from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels'; 
 
 ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale, LinearScale, ChartDataLabels);
@@ -12,7 +18,6 @@ ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale, LinearScale,
 // Colores personalizados para el gráfico
 const COLORS = {
   over: '#FF5722',
-  /*achieved: '#66BB6A',*/
   achieved: '#4FA94D',
   inProgress: '#81C784',
   remaining: '#E0E0E0'
@@ -42,7 +47,7 @@ function RadialChart({ caloriesConsumed, dailyGoal }) {
   const remaining = Math.max(dailyGoal - caloriesConsumed, 0);
   const percentage = (caloriesConsumed / dailyGoal) * 100;
 
-   // Si aún no hay datos, mostrar gráfico predeterminado
+  // Si aún no hay datos, mostrar gráfico predeterminado
   const chartData = useMemo(() => {
   if (!dailyGoal || dailyGoal <= 0) {
     return {
@@ -91,7 +96,7 @@ function RadialChart({ caloriesConsumed, dailyGoal }) {
     const chartOptions = {
       responsive: true,
       maintainAspectRatio: false,
-     plugins: {
+    plugins: {
       legend: { display: false },
       title: { display: false },
       datalabels: { display: false },
@@ -133,7 +138,7 @@ function RadialChart({ caloriesConsumed, dailyGoal }) {
                 <span className="legend-label">Calories Consumed</span>
               </li>
               <li className="legend-item">
-                <span className="legend-color" style={{ backgroundColor: COLORS.remaining }} />
+                <span className="legend-color" style={{ backgroundColor: COLORS.remaining }}/>
                 <span className="legend-label">Calories Left</span>
               </li>
             </ul>
@@ -153,7 +158,9 @@ function RadialChart({ caloriesConsumed, dailyGoal }) {
         {getMessage(status, percentage)}
       </p>
     ) : (
-      <p className="radial-chart-goal no-data">Please complete your profile to start tracking.</p>
+      <p className="radial-chart-goal no-data">
+        Please complete your profile to start tracking.
+      </p>
     )}
         </div>
       </div>

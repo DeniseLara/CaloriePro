@@ -34,7 +34,7 @@ export function useAuthForm({ closeModal }) {
   const [password, setPassword] = useState("");
   const [formUserName, setFormUserName] = useState("");
   const [step, setStep] = useState(1);
-  const [error, setError] = useState(""); // Error local
+  const [error, setError] = useState("");
   
   const validateSignUp = useCallback(() => {
     if (!isValidEmail(email)) return "Por favor, introduce un email válido.";
@@ -45,8 +45,8 @@ export function useAuthForm({ closeModal }) {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-    setError(""); // Limpiar el error
-    setLoading(true); // Inicia el estado de carga
+    setError(""); 
+    setLoading(true); 
 
     const validationError = validateSignUp();
     if (validationError) {
@@ -58,22 +58,21 @@ export function useAuthForm({ closeModal }) {
     try {
       const userCredential = await signUp(email, password, formUserName); // Usamos el servicio de registro
       if (userCredential) {
-        closeModal(); // Cerrar el modal
-        // Al registrar al usuario, redirigir directamente al Dashboard
+        closeModal();
         navigate("/dashboard"); 
       }
     } catch (err) {
       setError(getErrorMessage(err.code));
     } finally {
-      setLoading(false); // Detenemos el estado de carga
+      setLoading(false); 
     }
   };
 
   // Manejo del inicio de sesión
   const handleLogin = async (e) => {
-    e.preventDefault(); // Prevenimos la recarga de la página
-    setError(""); // Limpiar error previo
-    setLoading(true); // Inicia el estado de carga
+    e.preventDefault(); 
+    setError(""); 
+    setLoading(true); 
 
     if (!email || !password) {
       setError("Por favor, ingrese su correo y contraseña");
@@ -90,7 +89,7 @@ export function useAuthForm({ closeModal }) {
     } catch (err) {
       setError(getErrorMessage(err.code));
     } finally {
-      setLoading(false); // Detenemos el estado de carga
+      setLoading(false); 
     }
   };
 

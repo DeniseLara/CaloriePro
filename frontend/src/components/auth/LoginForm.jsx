@@ -11,7 +11,9 @@ function LoginForm({
 
   return (
     <div>
-      <h2 className="modal-title login" id="modal-title">Login to CaloriePro</h2>
+      <h2 className="modal-title login" id="modal-title">
+        Login to CaloriePro
+        </h2>
       <form className="modal-form" onSubmit={handleLogin}>
         <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
         <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />

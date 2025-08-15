@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import SignUpForm from "./SignUpForm";
 import LoginForm from "./LoginForm";
-import LoadingOverlay from '../ui/LoadingOverlay'
+import LoadingOverlay from "../ui/Loader/LoadingOverlay";
 
 function ModalContainer({ showModal, closeModal, step, loading, error, formProps }) {
   const modalVariants = {
@@ -18,7 +18,7 @@ function ModalContainer({ showModal, closeModal, step, loading, error, formProps
     visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
   };
 
-  function renderStep() {
+  const renderStep = () => {
   if (loading) return <LoadingOverlay />
   switch (step) {
     case 1:

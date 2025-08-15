@@ -9,8 +9,8 @@ function Loader({size = 60, color = "#4fa94d", text="Loading..."}) {
       aria-live="polite"
       aria-busy="true"
     >
-    <ClipLoader size={size} color={color} loading={true} />
-     <p>{text}</p>
+      <ClipLoader size={size} color={color} loading={true} />
+      <p>{text}</p>
     </div>
   );
 }

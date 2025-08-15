@@ -1,14 +1,14 @@
-import './Home.css';
+import './HomeAuthenticated.css';
 import { useState } from "react";
-import { useCalories } from "../../context/CaloriesContext";
-import { useAuth } from "../../context/AuthContext";
-import { useEdamamApi } from "../../api/EdamamApi";
-import { useSearchHandler } from "../../hooks/useSearchHandler";
+import { useCalories } from "../../../context/CaloriesContext";
+import { useAuth } from "../../../context/AuthContext";
+import { useEdamamApi } from "../../../api/EdamamApi";
+import { useSearchHandler } from "../../../hooks/useSearchHandler";
 
-import Search from "../../components/homeauth/Search"; 
-import CaloriesResults from '../../components/homeauth/CaloriesResults'; 
+import Search from '../../../components/homeauth/Search/Search';
+import CaloriesResults from '../../../components/homeauth/CaloriesResults/CaloriesResults';
 
-function Home() {
+function HomeAuthenticated() {
   const { userName } = useAuth();
   const { caloriesConsumed, addCalories} = useCalories();
   const [searchQuery, setSearchQuery] = useState("");
@@ -26,36 +26,36 @@ function Home() {
         </p>
       )}
 
-        <section>
-          <Search 
+      <section>
+        <Search 
           searchQuery={searchQuery} 
           setSearchQuery={setSearchQuery}
           isLoading={isLoading}
           errorMessage={errorMessage}
           handleSearch={handleSearch}
-          />
+        />
 
-          {nutritionData ? (
-            <CaloriesResults 
-              nutritionData={nutritionData} 
-              error={nutritionError} 
-              onAddCalories={addCalories}  // Usamos el contexto para agregar calorías
-              caloriesConsumed={caloriesConsumed}
-            />
+        {nutritionData ? (
+          <CaloriesResults 
+            nutritionData={nutritionData} 
+            error={nutritionError} 
+            onAddCalories={addCalories}  
+            caloriesConsumed={caloriesConsumed}
+          />
           ) : (
-            nutritionError && 
+          nutritionError && 
             <p className="error-message" role="alert">
               {nutritionError}
             </p>
           )}
-        </section>
+      </section>
       
       {errorMessage && 
-      <p className="error-message" role="alert">
-        {errorMessage}
-      </p>}
+        <p className="error-message" role="alert">
+          {errorMessage}
+        </p>}
     </section>
   );
 }
 
-export default Home;
+export default HomeAuthenticated;

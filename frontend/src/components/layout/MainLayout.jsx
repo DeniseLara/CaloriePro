@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+
 import Navbar from './navbar/Navbar';
 import Footer from './footer/Footer';
 import AuthFooter from './footer/AuthFooter';
@@ -10,13 +11,21 @@ function MainLayout({ showModal, setShowModal }) {
 
   return (
     <>
-      <Navbar showModal={showModal} setShowModal={setShowModal} closeModal={() => setShowModal(false)} />
+      <Navbar 
+        showModal={showModal} 
+        setShowModal={setShowModal} 
+        closeModal={() => setShowModal(false)} 
+      />
       <main className='main'>
         <Outlet />
       </main>
       {isAuthenticated ? <AuthFooter /> : <Footer />}
-      {!isAuthenticated && (
-        <Modal showModal={showModal} setShowModal={setShowModal} closeModal={() => setShowModal(false)}/>
+        {!isAuthenticated && (
+        <Modal 
+          showModal={showModal} 
+          setShowModal={setShowModal} 
+          closeModal={() => setShowModal(false)}
+        />
       )}
     </>
   );

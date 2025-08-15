@@ -9,7 +9,6 @@ import {
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 function NutritionChart({ totalNutrients }) {
-  
   const chartData = {
     labels: ['Proteins', 'Fats', 'Carbohydrates', 'Others'],
     datasets: [{
@@ -20,8 +19,8 @@ function NutritionChart({ totalNutrients }) {
         (
           (totalNutrients?.ENERC_KCAL?.quantity || 0) -
           (totalNutrients?.PROCNT?.quantity || 0 +
-           totalNutrients?.FAT?.quantity || 0 +
-           totalNutrients?.CHOCDF?.quantity || 0)
+            totalNutrients?.FAT?.quantity || 0 +
+            totalNutrients?.CHOCDF?.quantity || 0)
         ).toFixed(1),
       ],
       backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56', '#FF9F40'],

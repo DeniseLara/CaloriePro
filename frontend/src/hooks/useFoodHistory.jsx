@@ -15,14 +15,13 @@ export function useFoodHistory(user) {
   const [caloriesAction, setCaloriesAction] = useState(null);
   const { caloriesConsumed, addCalories } = useCalories();
 
-// Escuchar cambios en tiempo real en foodHistory
+  // Escuchar cambios en tiempo real en foodHistory
   useEffect(() => {
     const loadHistory = async () => {
     if (!user) return;
 
     try {
         const history = await getFoodHistoryFromFirestore(user.uid);
-
         // hacemos la conversión de Timestamp a Date para cada item
         const historyWithDates = history.map(item => ({
           ...item,
@@ -30,7 +29,7 @@ export function useFoodHistory(user) {
             ? item.date.toDate()
             : item.date instanceof Date
             ? item.date
-            : null, // si no es válido, deja null
+            : null, 
         }));
 
         setFoodHistory(historyWithDates); 
@@ -67,16 +66,15 @@ export function useFoodHistory(user) {
         await addFoodItemToHistory(user.uid, newFoodItem, caloriesConsumed + calories);
         setCaloriesAction("added");
         addCalories(calories);
-
         const updatedHistoryRaw = await getFoodHistoryFromFirestore(user.uid);
-
         // Aplicar conversión al actualizar el estado también
         const updatedHistory = updatedHistoryRaw.map(item => ({
           ...item,
           date: item.date instanceof Timestamp ? item.date.toDate() : item.date,
         }));
         
-        setFoodHistory(updatedHistory);      } catch (error) {
+        setFoodHistory(updatedHistory);      
+      } catch (error) {
       }
     } else {
       setCaloriesAction("already_added");

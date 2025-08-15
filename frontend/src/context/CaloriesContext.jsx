@@ -5,7 +5,6 @@ import { useAuth } from './AuthContext';
 
 const CaloriesContext = createContext();
 
-// Componente que proporciona el contexto de calorías a toda la aplicación
 export const CaloriesProvider = ({ children }) => {
   // Estado para las calorías consumidas
   const [caloriesConsumed, setCaloriesConsumed] = useState(0);
@@ -38,19 +37,18 @@ export const CaloriesProvider = ({ children }) => {
     const newCalories = caloriesConsumed + calories;
     setCaloriesConsumed(newCalories);
 
-    if (user) {
-      const userDoc = doc(db, 'users', user.uid);
-      try {
-        await updateDoc(userDoc, {
+      if (user) {
+        const userDoc = doc(db, 'users', user.uid);
+        try {
+          await updateDoc(userDoc, {
           caloriesConsumed: newCalories,
-      });
-    } catch (error) {
+        });
+        } catch (error) {
+      }
     }
-  }
-}  
+  }  
        
 
-  // Exportamos el contexto con los valores necesarios
   return (
     <CaloriesContext.Provider value={{ caloriesConsumed, addCalories }}>
       {children}
@@ -59,10 +57,9 @@ export const CaloriesProvider = ({ children }) => {
 };
 
 CaloriesProvider.propTypes = {
-  children: PropTypes.node.isRequired, // Aseguramos que 'children' sea un nodo válido
+  children: PropTypes.node.isRequired,
 };
 
-// Hook personalizado para acceder al contexto
 export const useCalories = () => {
-  return useContext(CaloriesContext); // Aquí accedemos al contexto de calorías
+  return useContext(CaloriesContext); 
 };

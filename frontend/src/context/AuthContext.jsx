@@ -3,31 +3,27 @@ import { onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndP
 import { auth } from '../firebaseconfig/firebase';
 import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';  // Importamos Firestore
 
-// Inicializamos Firestore
 const db = getFirestore();
 
 const AuthContext = createContext();
 
-// Hook personalizado para usar la autenticación
 export const useAuth = () => {
   return useContext(AuthContext);
 };
 
-// Componente que provee el contexto
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
-  const [error, setError] = useState(null);  // Añadimos el estado de error
+  const [error, setError] = useState(null);  
   const [userName, setUserName] = useState(() => {
-    // Intentar obtener userName cacheado en sessionStorage al iniciar (evita lectura)
+    // Intentar obtener userName cacheado en sessionStorage al iniciar 
     return sessionStorage.getItem('userName') || null;
   });  
   const [loading, setLoading] = useState(true);
   
   // Función para obtener el nombre de usuario desde Firestore
   const fetchUserName = async (userId) => {
-     if (sessionStorage.getItem('userName')) {
-      // Ya lo tenemos cacheado, no hacer nada
+    if (sessionStorage.getItem('userName')) {
       return;
     }
     try {
@@ -37,11 +33,11 @@ export const AuthProvider = ({ children }) => {
         const name = docSnap.data().userName;
         setUserName(name);  // Establece el nombre del usuario en el estado
         sessionStorage.setItem('userName', name); // Guardar en cache
-       } else {
+        } else {
         setUserName(null);
         sessionStorage.removeItem('userName');
-      }
-    } catch (error) {
+        }
+      } catch (error) {
     }
   };
 
@@ -51,11 +47,11 @@ export const AuthProvider = ({ children }) => {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       setIsAuthenticated(true);
       setUser(userCredential.user); // Guardamos al usuario autenticado
-      setError(null);  // Limpiamos el error
+      setError(null); 
       await fetchUserName(userCredential.user.uid);
       return userCredential.user;
     } catch (err) {
-      setError("Error al iniciar sesión: contraseña o correo electrónico incorrecto " /*+ err.message*/); 
+      setError("Error al iniciar sesión: contraseña o correo electrónico incorrecto"); 
       setIsAuthenticated(false);
       throw err;
     }
@@ -67,7 +63,7 @@ export const AuthProvider = ({ children }) => {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       setIsAuthenticated(true);
       setUser(userCredential.user); // Guardamos al usuario autenticado
-      setError(null);  // Limpiamos el error
+      setError(null);  
 
       // Guardamos el nombre de usuario en Firestore
       await setDoc(doc(db, "users", userCredential.user.uid), {
@@ -81,7 +77,7 @@ export const AuthProvider = ({ children }) => {
       return userCredential;
       
     } catch (err) {
-      setError("Error al registrarse: " + err.message); // Guardamos el mensaje de error
+      setError("Error al registrarse: " + err.message); 
       setIsAuthenticated(false);
       throw err;
     }
@@ -92,8 +88,8 @@ export const AuthProvider = ({ children }) => {
     try {
       await auth.signOut();
       setIsAuthenticated(false);
-      setUser(null);  // Elimina el usuario
-      setUserName(null);  // Elimina el nombre del usuario
+      setUser(null);  
+      setUserName(null);  
       sessionStorage.removeItem('userName'); // Limpieza explícita
     } catch (err) {
       setError("Error al cerrar sesión: " + err.message);
@@ -110,7 +106,7 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated(true);
       } else {
         setUser(null);  // Elimina el usuario si no está autenticado
-        setUserName(null);  // Elimina el nombre del usuario
+        setUserName(null);  
         setIsAuthenticated(false);
       }
       setLoading(false);
@@ -120,16 +116,16 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
 
-// limpia el error automáticamente
-useEffect(() => {
-  if (error) {
-    const timer = setTimeout(() => {
+  // limpia el error automáticamente
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
       setError(null);
     }, 5000); // oculta el error después de 5 segundos
 
     return () => clearTimeout(timer); // limpia el timeout si el error cambia antes
-  }
-}, [error]);
+    }
+  }, [error]);
 
 
   return (

@@ -1,9 +1,8 @@
 import './Hero.css'
 import PropTypes from 'prop-types';
-import FadeInSection from "../ui/FadeInSection";
+import FadeInSection from "../ui/Animation/FadeInSection";
 
 function Hero({openSignUpModal, benefitsRef}) {
-
   const handleGetStartedClick = () => {
     openSignUpModal(); 
   };
@@ -14,41 +13,43 @@ function Hero({openSignUpModal, benefitsRef}) {
   
   
   return (
-    <div className='hero container'>
+    <section className='hero container'>
       <FadeInSection>
-      <div className="hero-text">
-        <h1 className="hero-title">Keep track of your calorie intake</h1>
-        <p className="hero-subtitle">
-          CaloriePro will help you keep track of your daily calories and achieve your goals.
-        </p>
+        <header className="hero-text">
+          <h1 className="hero-title">Keep track of your calorie intake</h1>
+          <p className="hero-subtitle">
+            CaloriePro will help you keep track of your 
+            daily calories and achieve your goals.
+          </p>
+        </header>
+        
         <div className="hero-buttons">
           <button 
-          className='hero-button started' 
-          onClick={handleGetStartedClick}
-          type='button'
-          aria-label='go to sign up form'
+            className='hero-button started' 
+            onClick={handleGetStartedClick}
+            type='button'
+            aria-label='go to sign up form'
           >
             Get started
           </button>
 
           <button 
-          className='hero-button learn' 
-          onClick={handleLearnMoreClick}
-          type='button'
-          aria-label='learn more about caloriepro web app'
+            className='hero-button learn' 
+            onClick={handleLearnMoreClick}
+            type='button'
+            aria-label='learn more about caloriepro web app'
           >
-            <span className="arrow"><i className="ri-arrow-right-line"></i></span>
-            Learn more
+            <span className="arrow">
+              <i className="ri-arrow-right-line"></i>
+            </span>
+              Learn more
           </button>
-
         </div>
-      </div>
       </FadeInSection>
-    </div>
+    </section>
   );
 }
 
-// Validación de las props
 Hero.propTypes = {
   openSignUpModal:PropTypes.func.isRequired,
 };

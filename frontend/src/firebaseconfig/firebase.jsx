@@ -13,6 +13,8 @@ import {
   limit,
   addDoc,
   orderBy } from 'firebase/firestore'; 
+import { getUserDocData, updateUserDoc, getFoodHistoryCollectionRef } from './firestoreHelpers';
+
 
 // Configuración de Firebase
 const firebaseConfig = {
@@ -33,51 +35,20 @@ const db = getFirestore(app);
 
 // Función para obtener el perfil del usuario desde Firestore
 export const getUserProfileFromFirestore = async (userUid) => {
-  if (!userUid) return {};
-
-  try {
-      const docRef = doc(db, "users", userUid);
-      const docSnap = await getDoc(docRef);
-
-      if (docSnap.exists()) {
-        return docSnap.data(); 
-      } else {
-      }
-    } catch (error) {
-    }
-  
-  return {};  // Retornamos un objeto vacío si no hay perfil
-
+  return await getUserDocData(userUid, {});
 };
 
 
 // Función para obtener las calorías consumidas de Firestore
 export const getCaloriesFromFirestore = async (userUid) => {
-  if (!userUid) {
-    return 0;
-  }
-  try {
-    const docRef = doc(db, "users", userUid); // Referencia al documento del usuario
-    const docSnap = await getDoc(docRef); // Obtener el documento
-
-    if (docSnap.exists()) {
-      return docSnap.data().caloriesConsumed || 0;  // Retorna las calorías consumidas o 0 si no existe
-    } else {
-      return 0;  // Si no existe el documento, retornamos 0
-    }
-  } catch (error) {
-    return 0;  // En caso de error, retornar 0
-  }
+  const data = await getUserDocData(userUid, { caloriesConsumed: 0 });
+  return data.caloriesConsumed || 0;
 };
 
 
 // Función para guardar las calorías consumidas en Firestore
 export const saveCaloriesToFirestore = async (userUid, calories) => {
-  try {
-    const docRef = doc(db, "users", userUid); // Referencia al documento del usuario
-    await updateDoc(docRef, { caloriesConsumed: calories }); // Actualizamos las calorías en Firestore
-  } catch (error) {
-  }
+  return updateUserDoc(userUid, { caloriesConsumed: calories });
 };
 
 
@@ -100,63 +71,41 @@ export const getGreeting = async () => {
 
 
 export const getFoodHistoryFromFirestore = async (userUid) => {
-  if (!userUid) {
-    return [];
-  }
+  if (!userUid) return [];
 
   try {
-    const foodHistoryRef = collection(db, 'users', userUid, 'foodHistory');
-    const q = query(foodHistoryRef, orderBy('date', 'desc'), limit(20));
+    const q = query(getFoodHistoryCollectionRef(userUid), orderBy('date', 'desc'), limit(20));
     const snapshot = await getDocs(q);
 
-    const foodHistory = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-    return foodHistory;
-  } catch (error) {
+  } catch {
     return [];
   }
 };
 
 
 export const addFoodItemToHistory = async (userUid, newFoodItem, caloriesConsumed) => {
+  if (!userUid) return false;
+
   try {
     // Referencia a la subcolección foodHistory dentro del usuario
-    const foodHistoryCollectionRef = collection(db, 'users', userUid, 'foodHistory');
-
-    // Agregar nuevo documento con el alimento consumido
-    await addDoc(foodHistoryCollectionRef, newFoodItem);
-
-    // Actualizar total de calorías en documento usuario
-    const userDocRef = doc(db, 'users', userUid);
-    await updateDoc(userDocRef, {
-      caloriesConsumed: caloriesConsumed,
-    });
-
-  } catch (error) {
+    await addDoc(getFoodHistoryCollectionRef(userUid), newFoodItem);
+    return updateUserDoc(userUid, { caloriesConsumed });
+  } catch {
+    return false;
   }
 };
 
 
 // Función para guardar o actualizar el perfil del usuario en Firestore
 export const saveUserProfileToFirestore = async (userProfileData) => {
-  try {
-    const userUid = auth.currentUser?.uid; // Obtiene el UID directamente desde auth
-    if (!userUid) {
-      return;
-    }
-
-    const userDocRef = doc(db, 'users', userUid);
-
-    if (userProfileData && typeof userProfileData === 'object' && Object.keys(userProfileData).length > 0) {
-      await updateDoc(userDocRef, userProfileData);  // Solo llamamos a updateDoc una vez
-    } else {
-    }
-    
-  } catch (error) {
+  const userUid = auth.currentUser?.uid; 
+  if (!userUid || !userProfileData || typeof userProfileData !== 'object' || Object.keys(userProfileData).length === 0) {
+    return false;
   }
+
+  return updateUserDoc(userUid, userProfileData);
 };
 
 

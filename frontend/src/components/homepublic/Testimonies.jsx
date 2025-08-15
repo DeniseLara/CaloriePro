@@ -46,17 +46,24 @@ function Testimonies() {
 
   return (
     <section className="services__swiper container">
-        <h2 className="services__principal">User Testimonials</h2>
+      <h2 className="services__principal">User Testimonials</h2>
         <Slider {...settings}>
-          {testimonials.map((testimonial, index) => (
-            <div key={index} className="services__card">
-              <div className="services__icon">
-                <img className="services__image" loading="lazy" src={testimonial.photo} alt={testimonial.author} />
-              </div>
-              <h3 className="services__title">{testimonial.author}</h3>
-              <p className="services__description">&quot;{testimonial.text}&quot;</p>
+        {testimonials.map((testimonial, index) => (
+          <article key={index} className="services__card">
+            <div className="services__icon">
+              <img 
+                className="services__image" 
+                loading="lazy" 
+                src={testimonial.photo} 
+                alt={testimonial.author} 
+              />
             </div>
-          ))}
+            <h3 className="services__title">{testimonial.author}</h3>
+            <p className="services__description">
+              &quot;{testimonial.text}&quot;
+            </p>
+          </article>
+        ))}
         </Slider>
     </section>
   );

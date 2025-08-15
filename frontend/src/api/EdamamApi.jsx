@@ -4,7 +4,7 @@ const appId = import.meta.env.VITE_EDAMAM_APP_ID;
 const apiKey = import.meta.env.VITE_EDAMAM_API_KEY;
 
 export const useEdamamApi = () => {
-  const [nutritionData, setNutritionData] = useState(null); // Mejor usar null por claridad
+  const [nutritionData, setNutritionData] = useState(null);
   const [error, setError] = useState("");
   const [searchedItems, setSearchedItems] = useState(new Set()); // Guardar alimentos buscados
 
@@ -19,7 +19,6 @@ export const useEdamamApi = () => {
     
     const url = `https://api.edamam.com/api/nutrition-details?app_id=${appId}&app_key=${apiKey}`;
 
-  
     try {
       const response = await fetch(url, {
         method: "POST",
@@ -33,7 +32,6 @@ export const useEdamamApi = () => {
 
       const data = await response.json();
 
-    
       if (!response.ok) {
         throw new Error(`Error ${response.status}: ${data.message || "Solicitud rechazada"}`);
       }
@@ -52,7 +50,7 @@ export const useEdamamApi = () => {
       }
     } catch (err) {
       setError("Ocurrió un error al conectar con la API.");
-      setNutritionData(null); // Establecer null en lugar de un objeto vacío.
+      setNutritionData(null); 
     }
   };
 

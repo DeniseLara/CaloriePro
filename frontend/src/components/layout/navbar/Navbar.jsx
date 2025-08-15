@@ -1,10 +1,9 @@
 import './Navbar.css';
 import { useEffect } from 'react';
-
 import { useNavbar } from '../../../hooks/useNavbar'
 
 import Modal from '../../auth/Modal'; 
-import LogoButton from '../../ui/LogoButton';
+import LogoButton from '../../ui/Button/LogoButton'
 import NavbarMenu from './NavbarMenu';
 import NavbarToggleButtons from './NavbarToggleButtons';
 
@@ -21,7 +20,7 @@ function Navbar() {
     getLinkClass
   } = useNavbar();
   
-  // Este useEffect bloquea o libera el scroll del body
+  // bloquea el scroll del body
   useEffect(() => {
   function handleResize() {
     // Si el menú está abierto y la pantalla es pequeña, bloquea scroll
@@ -39,7 +38,7 @@ function Navbar() {
   // Ejecuta al montar y cuando menuOpen cambie
   handleResize();
 
-  // Agrega listener para cambios de tamaño de ventana
+  // listener para cambios de tamaño de ventana
   window.addEventListener('resize', handleResize);
 
   return () => {
@@ -64,19 +63,21 @@ function Navbar() {
         handleLogout={handleLogout}
       />
       
-      {/*Aquí va el overlay */}
-      <div className={`menu-overlay ${menuOpen ? 'visible' : ''}`} onClick={closeMenu}></div>
+      <div 
+        className={`menu-overlay ${menuOpen ? 'visible' : ''}`} 
+        onClick={closeMenu}>
+      </div>
 
       <NavbarToggleButtons
         toggleMenu={toggleMenu}
       />
       
-    {showModal && (
+      {showModal && (
       <Modal 
-      showModal={showModal} 
-      closeModal={() => setShowModal(false)} 
+        showModal={showModal} 
+        closeModal={() => setShowModal(false)} 
       />
-    )}
+      )}
     </nav>
   );
 }

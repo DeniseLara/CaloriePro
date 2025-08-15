@@ -1,8 +1,6 @@
 import './Search.css';  
 import { FaSearch } from 'react-icons/fa';  
-
-import LoaderSearch from '../ui/LoaderSearch'
-
+import LoaderSearch from '../../ui/Loader/LoaderSearch'
 
 function Search({ searchQuery, setSearchQuery, isLoading, errorMessage, handleSearch }) {  
   
@@ -15,7 +13,7 @@ function Search({ searchQuery, setSearchQuery, isLoading, errorMessage, handleSe
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Enter a food name (50g bread, 1 apple, 2 eggs...)"
-            onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(e) }}  // Ejecutar búsqueda con "Enter"
+            onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(e) }}  
           />
           <button type="submit" className="search-btn">
             <FaSearch className="search-icon" />
@@ -23,14 +21,12 @@ function Search({ searchQuery, setSearchQuery, isLoading, errorMessage, handleSe
         </div>
       </form>
 
-      {/* Mostrar el spinner de loading cuando isLoading es true */}
       {isLoading && (
         <div className="loading-container">
           <LoaderSearch/>
         </div>
       )}
 
-      {/* Mostramos el mensaje de error si lo hay */}
       {errorMessage && <p className="error-message">{errorMessage}</p>}
     </div>
   );

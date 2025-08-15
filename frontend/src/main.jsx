@@ -9,12 +9,12 @@ import { AuthProvider } from './context/AuthContext.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <StrictMode>
-  <Router>
-    <AuthProvider>
-    <CaloriesProvider> 
-      <App />
-      </CaloriesProvider>
-    </AuthProvider>
+    <Router>
+      <AuthProvider>
+        <CaloriesProvider> 
+          <App/>
+        </CaloriesProvider>
+      </AuthProvider>
     </Router>
-    </StrictMode>
+  </StrictMode>
 );

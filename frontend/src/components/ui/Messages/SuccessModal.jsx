@@ -10,7 +10,7 @@ function SuccessModal({ message, onClose }) {
       onClose();
     }, 3000);
 
-    // Limpiar el timer cuando el componente se desmonte
+    // Limpia el timer cuando el componente se desmonta
     return () => clearTimeout(timer);
   }, [onClose]);
 
@@ -18,7 +18,9 @@ function SuccessModal({ message, onClose }) {
     <div className="modal-overlay-user">
       <div className="modal-content-user">
         <p>{message}</p>
-        <button className="close-btn" onClick={onClose}><IoCloseOutline /></button>
+        <button className="close-btn" onClick={onClose}>
+          <IoCloseOutline />
+        </button>
       </div>
     </div>
   );

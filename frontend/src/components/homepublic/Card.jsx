@@ -3,17 +3,17 @@ import { FaUtensils, FaChartPie, FaClipboardList } from "react-icons/fa";
 
 const features = [
   {
-    icon: <span className="card-icon"><FaUtensils /></span>,
+    icon: <FaUtensils />,
     title: "Calorie tracker",
     description: "Keep precise track of your daily calorie intake with just a few clicks."
   },
   {
-    icon: <span className="card-icon"><FaChartPie /></span>,
+    icon: <FaChartPie />,
     title: "Personalized Dashboard",
     description: "View your progress and set goals easily."
   },
   {
-    icon: <span className="card-icon"><FaClipboardList /></span>,
+    icon: <FaClipboardList />,
     title: "Food History",
     description: "Review all the foods you've logged and track your calorie intake."
   }
@@ -22,18 +22,18 @@ const features = [
 
 function Card() {
 
-    return(
-    <div className="card container">
-           {features.map((feature, index) => (
-    <div key={index} className="card-content">
-      <div className="card-title">
-        {feature.icon}
-        {feature.title}
-      </div>
-      <p className="card-description">{feature.description}</p>
-    </div>
-    ))}
-    </div>
+  return(
+    <section className="card container">
+      {features.map((feature, index) => (
+        <article key={index} className="card-content">
+          <header className="card-title">
+            <span className="card-icon">{feature.icon}</span>
+            {feature.title}
+          </header>
+          <p className="card-description">{feature.description}</p>
+        </article>
+      ))}
+    </section>
   )
 };
 

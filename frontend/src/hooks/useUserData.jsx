@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   getUserProfileFromFirestore,
   saveUserProfileToFirestore,
@@ -14,7 +14,9 @@ export const useUserData = () => {
   const [editedData, setEditedData] = useState(null);
   const [dailyGoal, setDailyGoal] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [showModalUser, setShowModalUser] = useState(false); // Estado para controlar el modal
+  const [showModalUser, setShowModalUser] = useState(false); 
+  const [saveError, setSaveError] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     if (!user || userData !== null) return; // evita lecturas duplicadas
@@ -22,26 +24,24 @@ export const useUserData = () => {
     const fetchUserData = async () => {
       try {
         const profileData = await getUserProfileFromFirestore(user.uid); 
-
           if (profileData) {
             setUserData(profileData);
             setEditedData(profileData);
           } else {
-            // Si no hay perfil, reiniciamos el estado de usuario
+            // Si no hay perfil, reiniciar el estado de usuario
             setUserData(null);
             setEditedData(null);
-            setDailyGoal(0); // Establecemos 0 como objetivo diario si no hay perfil
+            setDailyGoal(0); // Establecer 0 como objetivo diario si no hay perfil
           }
       } catch (error) {
         setUserData(null);
-      }
-      finally {
+      } finally {
       setIsLoading(false);
     }
   };
 
   fetchUserData();
-}, [user]); 
+}, [user, userData]); 
 
 
   useEffect(() => {
@@ -57,24 +57,48 @@ export const useUserData = () => {
 
   // Función para guardar el perfil
   const saveUserProfile = async (updatedProfileData) => {
+    setIsSaving(true);
+    setSaveError(null);
     try {
       await saveUserProfileToFirestore(updatedProfileData);
       setUserData(updatedProfileData); // Guardamos los datos del perfil localmente
       setEditedData(updatedProfileData); // Actualizamos los datos editados también
       const calculatedCalories = calculateCalories(updatedProfileData);
       setDailyGoal(calculatedCalories); // Recalculamos el objetivo diario
-      // Mostrar el modal de éxito
       setShowModalUser(true); // Activar el modal
+      setSaveError(null);
+      setIsEditing(false);
     } catch (error) {
+      setSaveError("Error al guardar perfil. Intenta nuevamente")
+    } finally {
+      setIsSaving(false);
     }
   };
+
+
+  // toggle modo edición
+  const toggleEditing = useCallback(() => {
+    if (!isEditing && userData) {
+      setEditedData(userData);
+    }
+    setIsEditing(prev => !prev);
+  }, [isEditing, userData]);
+
 
   // Función para cerrar el modal
   const closeModal = () => {
     setShowModalUser(false);
   };
 
+
+  const handleInputChange = useCallback((e) => {
+    const { name, value } = e.target;
+    setEditedData(prev => ({ ...prev, [name]: value}));
+  }, [])
+  
+
   return {
+    handleInputChange,
     userData,
     isEditing,
     editedData,
@@ -86,5 +110,9 @@ export const useUserData = () => {
     saveUserProfile,
     showModalUser,
     closeModal,
+    toggleEditing,
+    saveError,
+    isSaving,
+    setSaveError,
   };
 };

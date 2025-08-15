@@ -1,14 +1,14 @@
 import './Historial.css';
 import { useState } from 'react';
 
-import Loader from '../ui/Loader';
+import Loader from '../../ui/Loader/Loader';
 import HistorialList from './HistorialList';
-import ToggleButton from '../ui/ToggleButton';
+import ToggleButton from '../../ui/Button/ToggleButton'
 
 
 function Historial({ foodHistory = [], loading = false, error = null }) {
-  const [visibleItems, setVisibleItems] = useState(5); // Inicialmente se mostrarán 5 elementos
-  const [showAll, setShowAll] = useState(false); // Estado para controlar si mostrar todos los elementos
+  const [visibleItems, setVisibleItems] = useState(5); 
+  const [showAll, setShowAll] = useState(false);
   
   if (error) {
     return <p>Error al cargar el historial de alimentos: {error.message}</p>;
@@ -18,9 +18,9 @@ function Historial({ foodHistory = [], loading = false, error = null }) {
     if (showAll) {
       setVisibleItems(5); // Vuelve a mostrar solo los primeros 5 elementos
     } else {
-      setVisibleItems(foodHistory.length); // Muestra todos los elementos
+      setVisibleItems(foodHistory.length); 
     }
-    setShowAll(!showAll); // Cambia el estado de mostrar todo a mostrar menos
+    setShowAll(!showAll); 
   };
   
 
@@ -43,7 +43,9 @@ function Historial({ foodHistory = [], loading = false, error = null }) {
             )}
           </>
       ) : (
-        <p className="historial-message" role="status">You don't have any food history for today.</p>
+        <p className="historial-message" role="status">
+          You don't have any food history for today.
+        </p>
       )}
     </section>
   );

@@ -1,10 +1,10 @@
 import './UserProfile.css';
 import PropTypes from "prop-types";
 
-import SuccessModal from '../ui/SuccessModal'
+import SuccessModal from '../../ui/Messages/SuccessModal'
 import UserProfileView from "./UserProfileView";
 import UserProfileForm from "./UserProfileForm";
-import LoadingOverlay from "../ui/LoadingOverlay";
+import LoadingOverlay from '../../ui/Loader/LoadingOverlay'
 
 
 function UserProfile({
@@ -43,9 +43,18 @@ function UserProfile({
           isSaving={isSaving}
           handleEditToggle={handleEditToggle}/>
         )}
-        {saveError && <p className="error-message" role="alert" aria-live="assertive">{saveError}</p>}
+        {saveError && 
+        <p className="error-message" role="alert" aria-live="assertive">
+          {saveError}
+        </p>}
 
-         {showModalUser && <SuccessModal message="Profile updated successfully" role="dialog" aria-modal="true" onClose={onCloseModal} />}
+        {showModalUser && 
+        <SuccessModal 
+        message="Profile updated successfully" 
+        role="dialog" 
+        aria-modal="true" 
+        onClose={onCloseModal} 
+        />}
       </article>
     </section>
   );

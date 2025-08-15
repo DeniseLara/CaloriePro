@@ -9,7 +9,7 @@ function Loader({size = 60, color="#4D7CFE"}) {
       aria-live="polite"
       aria-busy="true"
     >
-    <ClipLoader size={size} color={color} loading={true} />
+      <ClipLoader size={size} color={color} loading={true} />
     </div>
   );
 }

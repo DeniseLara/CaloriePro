@@ -1,21 +1,21 @@
 import { GiBodyBalance } from "react-icons/gi";
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../../context/AuthContext';
 
 function LogoButton() {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-const handleClick = () => {
+  const handleClick = () => {
     if (isAuthenticated) {
       navigate('/dashboard');
-     } else {
-    navigate('/'); 
-    setTimeout(() => {
+      } else {
+      navigate('/'); 
+      setTimeout(() => {
       window.location.hash = '#hero';  
-    }, 100);
-  }
-};
+      }, 100);
+    }
+  };
 
   return (
     <button
@@ -24,8 +24,10 @@ const handleClick = () => {
       type="button"
       aria-label="logo"
     >
-       <span className="part-1">Calorie<span className="part-2">Pro</span></span>
-       <GiBodyBalance className='logo-img'/>
+      <span className="part-1">
+        Calorie<span className="part-2">Pro</span>
+      </span>
+      <GiBodyBalance className='logo-img'/>
     </button>
   );
 }
