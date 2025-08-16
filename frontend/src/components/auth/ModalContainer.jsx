@@ -19,14 +19,14 @@ function ModalContainer({ showModal, closeModal, step, loading, error, formProps
   };
 
   const renderStep = () => {
-  if (loading) return <LoadingOverlay />
-  switch (step) {
-    case 1:
-      return <SignUpForm {...formProps} error={error} />
-    case 2:
-      return <LoginForm {...formProps} error={error} />
-    default:
-      return null
+    if (loading) return <LoadingOverlay />
+    switch (step) {
+      case 1:
+        return <SignUpForm {...formProps} error={error} />
+      case 2:
+        return <LoginForm {...formProps} error={error} />
+      default:
+        return null
     }
   }
 
@@ -41,29 +41,29 @@ function ModalContainer({ showModal, closeModal, step, loading, error, formProps
           exit="exit"
           variants={modalVariants}
         >
-          <motion.div
-            className="modal-overlay"
-            onClick={closeModal}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          />
-          <motion.div
-            className="modal-content"
-            id="get-started"
-            role="dialog"
-            variants={contentVariants}
-            aria-modal="true"
-            aria-labelledby="modal-title"
-            aria-describedby="modal-desc"
-          >
-            <span className="close" onClick={closeModal}>
-              &times;
-            </span>
+        <motion.div
+          className="modal-overlay"
+          onClick={closeModal}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+        />
+        <motion.div
+          className="modal-content"
+          id="get-started"
+          role="dialog"
+          variants={contentVariants}
+          aria-modal="true"
+          aria-labelledby="modal-title"
+          aria-describedby="modal-desc"
+        >
+          <span className="close" onClick={closeModal}>
+            &times;
+          </span>
 
-            {renderStep()}
-          </motion.div>
+          {renderStep()}
+        </motion.div>
         </motion.div>
       )}
     </AnimatePresence>

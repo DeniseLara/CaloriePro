@@ -13,7 +13,6 @@ logging.basicConfig(level=logging.DEBUG)
 
 app = FastAPI()
 
-# Configurar CORS
 origins = [
     "http://localhost",
     "http://localhost:3000",

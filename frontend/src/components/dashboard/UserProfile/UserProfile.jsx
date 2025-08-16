@@ -21,7 +21,6 @@ function UserProfile({
   onCloseModal   
 }) {
 
-  // Si los datos no están disponibles, mostrar un mensaje de carga
   if (!userData) {
     return <LoadingOverlay color="#000"/>;
   }
@@ -32,29 +31,31 @@ function UserProfile({
       <article className="userprofile-content">
         {!isEditing ? (
           <UserProfileView
-          userData={userData}
-          dailyGoal={dailyGoal}
-          handleEditToggle={handleEditToggle}/>
+            userData={userData}
+            dailyGoal={dailyGoal}
+            handleEditToggle={handleEditToggle}
+          />
         ) : (
           <UserProfileForm
-          editedData={editedData}
-          handleInputChange={handleChange}
-          handleProfileSubmit={handleSubmit}
-          isSaving={isSaving}
-          handleEditToggle={handleEditToggle}/>
+            editedData={editedData}
+            handleInputChange={handleChange}
+            handleProfileSubmit={handleSubmit}
+            isSaving={isSaving}
+            handleEditToggle={handleEditToggle}
+          />
         )}
         {saveError && 
-        <p className="error-message" role="alert" aria-live="assertive">
-          {saveError}
-        </p>}
+          <p className="error-message" role="alert" aria-live="assertive">
+            {saveError}
+          </p>}
 
         {showModalUser && 
-        <SuccessModal 
-        message="Profile updated successfully" 
-        role="dialog" 
-        aria-modal="true" 
-        onClose={onCloseModal} 
-        />}
+          <SuccessModal 
+            message="Profile updated successfully" 
+            role="dialog" 
+            aria-modal="true" 
+            onClose={onCloseModal} 
+          />}
       </article>
     </section>
   );
