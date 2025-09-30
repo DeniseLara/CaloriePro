@@ -6,7 +6,7 @@ function NavbarMenu({
   closeMenu,
   isAuthenticated,
   getLinkClass,
-  setShowModal,
+  openModal,
   handleLogout
 }) {
   
@@ -17,7 +17,7 @@ function NavbarMenu({
           isAuthenticated={isAuthenticated} 
           getLinkClass={getLinkClass} 
           closeMenu={closeMenu} 
-          setShowModal={setShowModal}
+          openModal={openModal}
           handleLogout={handleLogout}
         />
       </ul>

@@ -1,12 +1,19 @@
 import "./Modal.css";
-import PropTypes from "prop-types";
 import { motion, AnimatePresence } from "framer-motion";
+import { useModal } from "../../context/ModalContext";
 
 import SignUpForm from "./SignUpForm";
 import LoginForm from "./LoginForm";
 import LoadingOverlay from "../ui/Loader/LoadingOverlay";
 
-function ModalContainer({ showModal, closeModal, step, loading, error, formProps }) {
+function ModalContainer({ 
+  step, 
+  loading, 
+  error, 
+  formProps 
+}) {
+  const { showModal, closeModal } = useModal()
+
   const modalVariants = {
     hidden: { opacity: 0, scale: 0.8 },
     visible: { opacity: 1, scale: 1, transition: { duration: 0.4 } },
@@ -22,9 +29,9 @@ function ModalContainer({ showModal, closeModal, step, loading, error, formProps
     if (loading) return <LoadingOverlay />
     switch (step) {
       case 1:
-        return <SignUpForm {...formProps} error={error} />
+        return <SignUpForm {...formProps} error={error} isOpen={showModal}/>
       case 2:
-        return <LoginForm {...formProps} error={error} />
+        return <LoginForm {...formProps} error={error} isOpen={showModal}/>
       default:
         return null
     }
@@ -69,14 +76,5 @@ function ModalContainer({ showModal, closeModal, step, loading, error, formProps
     </AnimatePresence>
   );
 }
-
-ModalContainer.propTypes = {
-  showModal: PropTypes.bool.isRequired,
-  closeModal: PropTypes.func.isRequired,
-  step: PropTypes.number.isRequired,
-  loading: PropTypes.bool,
-  error: PropTypes.string,
-  formProps: PropTypes.object.isRequired,
-};
 
 export default ModalContainer;

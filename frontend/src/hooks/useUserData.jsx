@@ -56,16 +56,16 @@ export const useUserData = () => {
 
 
   // Función para guardar el perfil
-  const saveUserProfile = async (updatedProfileData) => {
+  const saveUserProfile = async (data) => {
     setIsSaving(true);
     setSaveError(null);
+
     try {
-      await saveUserProfileToFirestore(updatedProfileData);
-      setUserData(updatedProfileData); // Guardamos los datos del perfil localmente
-      setEditedData(updatedProfileData); // Actualizamos los datos editados también
-      const calculatedCalories = calculateCalories(updatedProfileData);
-      setDailyGoal(calculatedCalories); // Recalculamos el objetivo diario
-      setShowModalUser(true); // Activar el modal
+      await saveUserProfileToFirestore(data);
+      setUserData(data); // Guardamos los datos del perfil localmente
+      setEditedData(data); // Actualizamos los datos editados también
+      setDailyGoal(calculateCalories(data)); // Recalculamos el objetivo diario
+      setShowModalUser(true); 
       setSaveError(null);
       setIsEditing(false);
     } catch (error) {

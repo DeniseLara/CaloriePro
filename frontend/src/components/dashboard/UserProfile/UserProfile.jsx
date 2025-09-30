@@ -1,5 +1,4 @@
 import './UserProfile.css';
-import PropTypes from "prop-types";
 
 import SuccessModal from '../../ui/Messages/SuccessModal'
 import UserProfileView from "./UserProfileView";
@@ -60,18 +59,5 @@ function UserProfile({
     </section>
   );
 }
-
-UserProfile.propTypes = {
-  userData:PropTypes.object.isRequired,
-  isEditing:PropTypes.bool.isRequired,
-  handleEditToggle: PropTypes.func.isRequired,
-  editedData: PropTypes.object.isRequired,
-  handleChange: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  isSaving: PropTypes.bool.isRequired,
-  saveError: PropTypes.string,
-  showModalUser: PropTypes.bool,
-  onCloseModal: PropTypes.func,
-};
 
 export default UserProfile;

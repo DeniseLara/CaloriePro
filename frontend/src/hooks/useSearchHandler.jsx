@@ -3,7 +3,6 @@ import { useState } from "react";
 export function useSearchHandler({ searchQuery, analyzeNutrition }) {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  
 
   const handleSearch = async (e) => {
     e.preventDefault();

@@ -1,17 +1,22 @@
-import PropTypes from "prop-types";
+import { useEffect, useRef } from "react";
 
 function SignUpForm({ 
-  formUserName, 
-  setFormUserName,  
-  email, 
-  setEmail, 
-  password, 
-  setPassword, 
+  formData,
+  handleChange,
   handleSignUp, 
   setStep, 
   error,
-  loading 
+  loading,
+  isOpen, 
   }) {
+
+  const userNameRef = useRef(null);
+
+  useEffect(() => {
+    if (isOpen && userNameRef.current) {
+      userNameRef.current.focus()
+    }
+  }, [isOpen])
 
   return (
     <div>
@@ -22,27 +27,37 @@ function SignUpForm({
         Create an account to access all features
       </p>
       <form className="modal-form" onSubmit={handleSignUp}>
+        <label className="sr-only" htmlFor="username"></label>
         <input 
+          id="username"
+          name="username"
           type="text" 
-          placeholder="Username" 
-          value={formUserName} 
-          onChange={(e) => setFormUserName(e.target.value)}
+          placeholder="Username"
+          ref={userNameRef} 
+          value={formData.username} 
+          onChange={handleChange}
           required 
         />
 
+        <label className="sr-only" htmlFor="email"></label>
         <input 
+          id="email"
+          name="email"
           type="email" 
           placeholder="Email" 
-          value={email} 
-          onChange={(e) => setEmail(e.target.value)}
+          value={formData.email} 
+          onChange={handleChange}
           required 
         />
-
+        
+        <label className="sr-only" htmlFor="password"></label>
         <input 
+          id="password"
+          name="password"
           type="password" 
           placeholder="Password" 
-          value={password} 
-          onChange={(e) => setPassword(e.target.value)} 
+          value={formData.password} 
+          onChange={handleChange} 
           required 
         />
 
@@ -65,18 +80,5 @@ function SignUpForm({
     </div>
   );
 }
-
-SignUpForm.propTypes = {
-  formUserName: PropTypes.string.isRequired,
-  setFormUserName: PropTypes.func.isRequired,
-  email: PropTypes.string.isRequired,
-  setEmail: PropTypes.func.isRequired,
-  password: PropTypes.string.isRequired,
-  setPassword: PropTypes.func.isRequired,
-  handleSignUp: PropTypes.func.isRequired,
-  setStep: PropTypes.func.isRequired,
-  error: PropTypes.string,       
-  loading: PropTypes.bool,
-};
 
 export default SignUpForm;

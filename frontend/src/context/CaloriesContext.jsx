@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
 import { getFirestore, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { useAuth } from './AuthContext';
 
@@ -10,9 +9,6 @@ export const CaloriesProvider = ({ children }) => {
   const [caloriesConsumed, setCaloriesConsumed] = useState(0);
   const { user } = useAuth();
   const db = getFirestore();
-
-  const pendingCalories = useRef(0);
-  const timeoutId = useRef(null);
 
   // Cargar calorías desde Firestore cuando el usuario esté autenticado
   useEffect(() => {
@@ -54,10 +50,6 @@ export const CaloriesProvider = ({ children }) => {
       {children}
     </CaloriesContext.Provider>
   );
-};
-
-CaloriesProvider.propTypes = {
-  children: PropTypes.node.isRequired,
 };
 
 export const useCalories = () => {

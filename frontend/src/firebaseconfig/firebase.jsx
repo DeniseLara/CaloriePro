@@ -1,7 +1,9 @@
-import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth'; 
 import { 
-  getFirestore, 
+  signInWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged 
+} from 'firebase/auth'; 
+import { 
   doc, 
   setDoc, 
   getDoc, 
@@ -12,25 +14,10 @@ import {
   query, 
   limit,
   addDoc,
-  orderBy } from 'firebase/firestore'; 
+  orderBy 
+} from 'firebase/firestore'; 
+import { auth, db } from './firebaseConfig';
 import { getUserDocData, updateUserDoc, getFoodHistoryCollectionRef } from './firestoreHelpers';
-
-
-// Configuración de Firebase
-const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
-  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
-};
-
-// Inicializamos Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
 
 
 // Función para obtener el perfil del usuario desde Firestore
@@ -53,7 +40,7 @@ export const saveCaloriesToFirestore = async (userUid, calories) => {
 
 
 // Función para escuchar el estado de autenticación
-export const listenAuthState = (auth, callback) => {
+export const listenAuthState = (callback) => {
   const unsubscribe = onAuthStateChanged(auth, callback);
   return unsubscribe; // Retorna la función unsubscribe
 };

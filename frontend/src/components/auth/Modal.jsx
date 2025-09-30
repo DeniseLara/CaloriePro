@@ -1,14 +1,14 @@
 import "./Modal.css";
-import PropTypes from "prop-types";
 import { useAuthForm } from '../../hooks/useAuthForm'
+import { useModal } from "../../context/ModalContext";
 
 import ModalContainer from "./ModalContainer";
 
-function Modal({ closeModal, showModal }) {
+function Modal() {
+  const { closeModal } = useModal()
   const {
-    email, setEmail,
-    password, setPassword,
-    formUserName, setFormUserName,
+    handleChange,
+    formData, 
     step, setStep,
     loading,
     error,
@@ -17,18 +17,15 @@ function Modal({ closeModal, showModal }) {
   } = useAuthForm({ closeModal });
 
   const formProps = {
-    email, setEmail,
-    password, setPassword,
-    formUserName, setFormUserName,
+    formData,
+    handleChange,
     handleSignUp,
     handleLogin,
-    setStep
+    setStep,
   };
 
   return (
     <ModalContainer
-      showModal={showModal}
-      closeModal={closeModal}
       step={step}
       loading={loading}
       error={error}
@@ -36,10 +33,5 @@ function Modal({ closeModal, showModal }) {
     />
   );
 }
-
-Modal.propTypes = {
-  closeModal: PropTypes.func.isRequired,
-  showModal: PropTypes.bool.isRequired,
-};
 
 export default Modal;

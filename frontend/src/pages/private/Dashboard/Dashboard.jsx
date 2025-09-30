@@ -39,7 +39,7 @@ function Dashboard() {
     return (
     <div role="alert" aria-live="assertive" className="error-message">
       <p>
-        Error: No estás autenticado o no se pudo obtener tu correo electrónico.
+        No estás autenticado o no se pudo obtener tu correo electrónico.
       </p>
     </div>
     );

@@ -1,5 +1,4 @@
 import './CaloriesResults.css';
-import PropTypes from "prop-types";
 
 import { useAuth } from "../../../context/AuthContext.jsx";
 import { useFoodHistory } from '../../../hooks/useFoodHistory.jsx';
@@ -71,11 +70,5 @@ function CaloriesResults({ nutritionData, error }) {
     </section>
   );
 } 
-
-
-CaloriesResults.propTypes = {
-  nutritionData: PropTypes.object.isRequired, 
-  error: PropTypes.string,
-};
 
 export default CaloriesResults;

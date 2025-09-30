@@ -51,5 +51,4 @@ function Historial({ foodHistory = [], loading = false, error = null }) {
   );
 }
 
-
 export default Historial;

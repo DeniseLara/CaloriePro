@@ -1,59 +1,86 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
 
 const appId = import.meta.env.VITE_EDAMAM_APP_ID;
 const apiKey = import.meta.env.VITE_EDAMAM_API_KEY;
 
 export const useEdamamApi = () => {
-  const [nutritionData, setNutritionData] = useState(null);
+  const { user } = useAuth();
+  const userKey = user?.uid || "guest";
+
+  const [nutritionData, setNutritionData] = useState(() => {
+    const saved = localStorage.getItem(`lastFood-${userKey}`);
+    return saved ? JSON.parse(saved) : null;
+  });
   const [error, setError] = useState("");
-  const [searchedItems, setSearchedItems] = useState(new Set()); // Guardar alimentos buscados
+  const [searchedItems, setSearchedItems] = useState(new Set()); 
+  // Inicializar caché desde localStorage
+  const [cache, setCache] = useState(() => {
+    const saved = localStorage.getItem(`foodCache-${userKey}`);
+    return saved ? JSON.parse(saved) : {};
+  });
 
 
-  const analyzeNutrition = async (ingredients) => {
-    const ingredientsArray = ingredients.split(",").map(item => item.trim()).filter(item => item);
+  useEffect(() => {
+    // Guardar alimento en localstorage
+    localStorage.setItem(`foodCache-${userKey}`, JSON.stringify(cache));
 
-    if (ingredientsArray.length === 0) {
+    // Guardar última búsqueda solo si existe
+    if (nutritionData) {
+      localStorage.setItem(`lastFood-${userKey}`, JSON.stringify(nutritionData));
+    }
+
+  }, [cache, nutritionData, userKey]);
+
+  const analyzeNutrition = async (ingredient) => {
+    const query = ingredient.trim();
+    if (!query) {
       setError("Please enter at least one food.");
       return;
     }
-    
-    const url = `https://api.edamam.com/api/nutrition-details?app_id=${appId}&app_key=${apiKey}`;
+
+    // Revisar si ya tenemos los datos en caché
+    if (cache[query]) {
+      setNutritionData(cache[query]);
+      setSearchedItems((prev) => new Set(prev).add(query));
+      setError("");
+      return;
+    }
 
     try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: { 
-          "Content-Type": "application/json",
-           "Accept": "application/json",
-           "Accept-Language": "en" 
-         },
-        body: JSON.stringify({ ingr: ingredientsArray })
+      const parserUrl = `https://api.edamam.com/api/food-database/v2/parser?app_id=${appId}&app_key=${apiKey}&ingr=${encodeURIComponent(query)}`;
+      const res = await fetch(parserUrl);
+      const data = await res.json();
+
+      if (!data.parsed?.length) {
+        setError("No se encontró el alimento");
+        setNutritionData(null);
+        return;
+      }
+
+      const food = data.parsed[0].food;
+
+      // Guardar solo lo que necesitamos
+      const newData = ({
+        totalNutrients: {
+          ENERC_KCAL: { quantity: food.nutrients.ENERC_KCAL || 0 },
+          PROCNT: { quantity: food.nutrients.PROCNT || 0 },
+          FAT: { quantity: food.nutrients.FAT || 0 },
+          CHOCDF: { quantity: food.nutrients.CHOCDF || 0 },
+        },
+        ingredients: food.label,
       });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(`Error ${response.status}: ${data.message || "Solicitud rechazada"}`);
-      }
-
-      if (data.totalNutrients) {
-        setNutritionData({ ...data, ingredients });
-        setSearchedItems((prevItems) => {
-          const updatedItems = new Set(prevItems); // Copiar el Set anterior
-          updatedItems.add(ingredients); // Agregar el nuevo ingrediente
-          return updatedItems; // Retornar el Set actualizado
-        });
-        setError("");
-      } else {
-        setError("Sorry, no nutritional information found.");
-        setNutritionData(null); // Establecer null en lugar de un objeto vacío.
-      }
+      setCache((prev) => ({ ...prev, [query]: newData }));
+      setNutritionData(newData);
+      setSearchedItems((prev) => new Set(prev).add(query));
+      setError("");
     } catch (err) {
+      console.error(err);
       setError("Ocurrió un error al conectar con la API.");
-      setNutritionData(null); 
+      setNutritionData(null);
     }
   };
 
   return { nutritionData, error, analyzeNutrition, searchedItems };
-}
-
+};

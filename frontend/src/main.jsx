@@ -5,16 +5,18 @@ import { StrictMode } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom'; 
 import { CaloriesProvider } from './context/CaloriesContext.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
-
+import { ModalProvider } from './context/ModalContext.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Router>
-      <AuthProvider>
-        <CaloriesProvider> 
-          <App/>
-        </CaloriesProvider>
-      </AuthProvider>
+      <ModalProvider>
+        <AuthProvider>
+          <CaloriesProvider> 
+            <App/>
+          </CaloriesProvider>
+        </AuthProvider>
+      </ModalProvider>
     </Router>
   </StrictMode>
 );

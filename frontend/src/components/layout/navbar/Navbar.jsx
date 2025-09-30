@@ -1,8 +1,8 @@
 import './Navbar.css';
 import { useEffect } from 'react';
 import { useNavbar } from '../../../hooks/useNavbar'
+import { useModal } from '../../../context/ModalContext';
 
-import Modal from '../../auth/Modal'; 
 import LogoButton from '../../ui/Button/LogoButton'
 import NavbarMenu from './NavbarMenu';
 import NavbarToggleButtons from './NavbarToggleButtons';
@@ -10,15 +10,14 @@ import NavbarToggleButtons from './NavbarToggleButtons';
 function Navbar() {
   const {
     menuOpen,
-    showModal,
     isAuthenticated,
     toggleMenu,
     closeMenu,
-    setShowModal,
     handleLogout,
     scrollToHero,
     getLinkClass
   } = useNavbar();
+  const { openModal } = useModal();
   
   // bloquea el scroll del body
   useEffect(() => {
@@ -59,7 +58,7 @@ function Navbar() {
         closeMenu={closeMenu}
         isAuthenticated={isAuthenticated}
         getLinkClass={getLinkClass}
-        setShowModal={setShowModal}
+        openModal={openModal}
         handleLogout={handleLogout}
       />
       
@@ -71,13 +70,6 @@ function Navbar() {
       <NavbarToggleButtons
         toggleMenu={toggleMenu}
       />
-      
-      {showModal && (
-      <Modal 
-        showModal={showModal} 
-        closeModal={() => setShowModal(false)} 
-      />
-      )}
     </nav>
   );
 }

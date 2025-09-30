@@ -30,19 +30,29 @@ export function useAuthForm({ closeModal }) {
   const navigate = useNavigate();
   const { login, signUp } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [formUserName, setFormUserName] = useState("");
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+  })
   const [step, setStep] = useState(1);
   const [error, setError] = useState("");
   
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value}));
+  }
+  
+  // función para validar credenciales
   const validateSignUp = useCallback(() => {
-    if (!isValidEmail(email)) return "Por favor, introduce un email válido.";
-    if (formUserName.trim() === "") return "El nombre de usuario no puede estar vacío.";
-    if (password.length < 6) return "La contraseña debe tener al menos 6 caracteres.";
+    if (!isValidEmail(formData.email)) return "Por favor, introduce un email válido.";
+    if (formData.username.trim() === "") return "El nombre de usuario no puede estar vacío.";
+    if (formData.password.length < 6) return "La contraseña debe tener al menos 6 caracteres.";
     return null;
-  }, [email, formUserName, password]);
+  }, [formData]);
+  
 
+  // Manejo de formulario de registro
   const handleSignUp = async (e) => {
     e.preventDefault();
     setError(""); 
@@ -56,8 +66,13 @@ export function useAuthForm({ closeModal }) {
     }
 
     try {
-      const userCredential = await signUp(email, password, formUserName); // Usamos el servicio de registro
+      const userCredential = await signUp(
+        formData.username, 
+        formData.email,
+        formData.password,
+      ); 
       if (userCredential) {
+        setFormData({ username: "", email: "", password: "" })
         closeModal();
         navigate("/dashboard"); 
       }
@@ -68,36 +83,37 @@ export function useAuthForm({ closeModal }) {
     }
   };
 
+
   // Manejo del inicio de sesión
   const handleLogin = async (e) => {
     e.preventDefault(); 
     setError(""); 
     setLoading(true); 
 
-    if (!email || !password) {
+    if (!formData.email || !formData.password) {
       setError("Por favor, ingrese su correo y contraseña");
       setLoading(false);
       return;
     }
 
     try {
-    const userCredential = await login(email, password);
-    if (userCredential) {
-      closeModal();
-      navigate("/dashboard");
-    } 
-    } catch (err) {
-      setError(getErrorMessage(err.code));
-    } finally {
-      setLoading(false); 
+      const userCredential = await login(formData.email, formData.password);
+        if (userCredential) {
+          setFormData({ email: "", password: ""})
+          closeModal();
+          navigate("/dashboard");
+        } 
+      } catch (err) {
+        setError(getErrorMessage(err.code));
+      } finally {
+        setLoading(false); 
     }
   };
 
 
   return {
-    email, setEmail,
-    password, setPassword,
-    formUserName, setFormUserName,
+    handleChange,
+    formData,
     step, setStep,
     loading,
     error,

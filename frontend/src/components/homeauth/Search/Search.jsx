@@ -1,14 +1,30 @@
 import './Search.css';  
+import { useEffect, useRef } from 'react';
 import { FaSearch } from 'react-icons/fa';  
 import LoaderSearch from '../../ui/Loader/LoaderSearch'
 
-function Search({ searchQuery, setSearchQuery, isLoading, errorMessage, handleSearch }) {  
-  
+function Search({ 
+  searchQuery, 
+  setSearchQuery, 
+  isLoading, 
+  errorMessage, 
+  handleSearch,
+  autoFocus, 
+}) {  
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (autoFocus && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [autoFocus])
+
   return (
     <div className="search-container">
       <form className="search-input-container" onSubmit={handleSearch}>
         <div className="input-wrapper">
           <input
+            ref={inputRef}
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}

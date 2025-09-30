@@ -1,6 +1,11 @@
 // Calcular las calorías basadas en el perfil del usuario
 export const calculateCalories = (profileData) => {
-    if (!profileData || !profileData.age || !profileData.weight || !profileData.height || !profileData.activityLevel || !profileData.goal) {
+    if (!profileData 
+      || !profileData.age 
+      || !profileData.weight 
+      || !profileData.height 
+      || !profileData.activityLevel 
+      || !profileData.goal) {
       return 0;
     }
 

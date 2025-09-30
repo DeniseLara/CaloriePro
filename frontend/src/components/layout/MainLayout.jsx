@@ -6,27 +6,17 @@ import Footer from './footer/Footer';
 import AuthFooter from './footer/AuthFooter';
 import Modal from '../auth/Modal';
 
-function MainLayout({ showModal, setShowModal }) {
+function MainLayout() {
   const { isAuthenticated } = useAuth();
 
   return (
     <>
-      <Navbar 
-        showModal={showModal} 
-        setShowModal={setShowModal} 
-        closeModal={() => setShowModal(false)} 
-      />
+      <Navbar/>
       <main className='main'>
         <Outlet />
       </main>
       {isAuthenticated ? <AuthFooter /> : <Footer />}
-        {!isAuthenticated && (
-        <Modal 
-          showModal={showModal} 
-          setShowModal={setShowModal} 
-          closeModal={() => setShowModal(false)}
-        />
-      )}
+      {!isAuthenticated && <Modal/>}
     </>
   );
 }

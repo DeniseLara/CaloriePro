@@ -3,9 +3,8 @@ import { useAuth } from '../context/AuthContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 export function useNavbar() {
-  const { isAuthenticated, setIsAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [showModal, setShowModal] = useState(false);
   const [activeLink, setActiveLink] = useState("hero");
 
   const location = useLocation();
@@ -46,12 +45,10 @@ export function useNavbar() {
 
   return {
     menuOpen,
-    showModal,
     isAuthenticated,
     activeLink,
     toggleMenu,
     closeMenu,
-    setShowModal,
     handleLogout,
     scrollToHero,
     getLinkClass

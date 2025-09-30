@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext'
 
 import MainLayout from './components/layout/MainLayout';
@@ -12,8 +11,7 @@ import NotFound from './pages/public/Notfound';
 
 
 function App() {
-  const [showModal, setShowModal] = useState(false);
-  const { loading } = useAuth(); 
+  const { loading, isAuthenticated } = useAuth(); 
 
   if (loading) {
     return (
@@ -23,14 +21,13 @@ function App() {
 
   return (
     <Routes>
-      <Route element={<MainLayout showModal={showModal} setShowModal={setShowModal} />}>
-
       {/* Rutas públicas */}
+      <Route element={<MainLayout />}>
       <Route
         path="/"
-        element={
-        <HomePublic openSignUpModal={() => setShowModal(true)} />
-        }
+        element={!isAuthenticated 
+        ? <HomePublic />
+        : <Navigate to="/dashboard" replace/>}
       />
 
       {/* Rutas protegidas*/} 

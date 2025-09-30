@@ -1,7 +1,9 @@
+import { useModal } from '../../context/ModalContext';
 import './Start.css'; 
-import PropTypes from 'prop-types'; 
 
-function Start({ openSignUpModal }) {
+function Start() {
+  const { openModal } = useModal();
+
   return (
     <section className="cta">
       <div className="cta-content container">
@@ -12,7 +14,7 @@ function Start({ openSignUpModal }) {
         </p>
         <button 
           className="cta-button" 
-          onClick={openSignUpModal}
+          onClick={openModal}
           type='button'
           aria-label='go to sign up form'
         >
@@ -24,10 +26,5 @@ function Start({ openSignUpModal }) {
     </section>
   );
 }
-
-// Validación de las props
-Start.propTypes = {
-  openSignUpModal: PropTypes.func.isRequired,  
-};
 
 export default Start;

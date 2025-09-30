@@ -1,5 +1,5 @@
 import { doc, getDoc, updateDoc, collection } from 'firebase/firestore';
-import { db } from './firebase';
+import { db } from './firebaseConfig';
 
 export const getUserDocData = async (userUid, defaultValue = {}) => {
     if (!userUid) return defaultValue;

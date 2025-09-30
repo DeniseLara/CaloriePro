@@ -1,5 +1,4 @@
 import './RadialChart.css'
-import PropTypes from 'prop-types';
 import { useMemo } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { 
@@ -167,10 +166,5 @@ function RadialChart({ caloriesConsumed, dailyGoal }) {
     </section>
   );
 }
-
-RadialChart.propTypes = {
-  caloriesConsumed:PropTypes.number.isRequired,
-  dailyGoal:PropTypes.number.isRequired,
-};
 
 export default RadialChart;

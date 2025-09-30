@@ -8,14 +8,13 @@ import HowItWorks from "../../components/homepublic/HowItWorks";
 import Start from "../../components/homepublic/Start";
 import FadeInSection from "../../components/ui/Animation/FadeInSection";
 
-function HomePublic({ openSignUpModal }) {
+function HomePublic() {
   const benefitsRef = useRef();
 
   return (
     <>
       <div id="hero">
         <Hero 
-          openSignUpModal={openSignUpModal} 
           benefitsRef={benefitsRef}
         />
       </div>
@@ -43,7 +42,7 @@ function HomePublic({ openSignUpModal }) {
       </div>
 
       <FadeInSection>
-      <Start openSignUpModal={openSignUpModal} />
+      <Start />
       </FadeInSection>
     </>
   );

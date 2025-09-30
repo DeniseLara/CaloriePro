@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebaseconfig/firebase';
-import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';  // Importamos Firestore
+import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore'; 
 
 const db = getFirestore();
 
@@ -57,8 +57,8 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  //Función para registrar un nuevo usuario
-  const signUp = async (email, password, userName) => {
+  // Función para registrar un nuevo usuario
+  const signUp = async (userName, email, password) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       setIsAuthenticated(true);

@@ -5,7 +5,7 @@ function NavbarLinks({
   isAuthenticated, 
   getLinkClass, 
   closeMenu, 
-  setShowModal, 
+  openModal,
   handleLogout 
 }) {
 
@@ -69,7 +69,7 @@ function NavbarLinks({
           <li>
             <button
               className="btn-outline"
-              onClick={() => setShowModal(true)}
+              onClick={openModal}
               type='button'
               aria-label='Sign up'
             >

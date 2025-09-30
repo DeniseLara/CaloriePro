@@ -2,8 +2,8 @@ import './HomeAuthenticated.css';
 import { useState } from "react";
 import { useCalories } from "../../../context/CaloriesContext";
 import { useAuth } from "../../../context/AuthContext";
-import { useEdamamApi } from "../../../api/EdamamApi";
 import { useSearchHandler } from "../../../hooks/useSearchHandler";
+import { useEdamamApi } from '../../../api/EdamamApi';
 
 import Search from '../../../components/homeauth/Search/Search';
 import CaloriesResults from '../../../components/homeauth/CaloriesResults/CaloriesResults';
@@ -12,7 +12,7 @@ function HomeAuthenticated() {
   const { userName } = useAuth();
   const { caloriesConsumed, addCalories} = useCalories();
   const [searchQuery, setSearchQuery] = useState("");
-  const {nutritionData, analyzeNutrition, nutritionError} = useEdamamApi();
+  const {nutritionData, analyzeNutrition, error} = useEdamamApi();
   const { isLoading, errorMessage, handleSearch } = useSearchHandler({ searchQuery, analyzeNutrition });
 
 
@@ -33,19 +33,20 @@ function HomeAuthenticated() {
           isLoading={isLoading}
           errorMessage={errorMessage}
           handleSearch={handleSearch}
+          autoFocus={true}
         />
 
         {nutritionData ? (
           <CaloriesResults 
             nutritionData={nutritionData} 
-            error={nutritionError} 
+            error={error} 
             onAddCalories={addCalories}  
             caloriesConsumed={caloriesConsumed}
           />
           ) : (
-          nutritionError && 
+          error && 
             <p className="error-message" role="alert">
-              {nutritionError}
+              {error}
             </p>
           )}
       </section>

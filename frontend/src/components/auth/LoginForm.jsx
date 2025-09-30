@@ -1,13 +1,21 @@
-import PropTypes from "prop-types";
+import { useEffect, useRef } from "react";
 
 function LoginForm({ 
-  email, 
-  setEmail, 
-  password, 
-  setPassword, 
+  formData,
+  handleChange,
   handleLogin, 
   setStep, 
-  error }) {
+  error,
+  isOpen,
+ }) {
+
+  const emailRef = useRef(null);
+
+  useEffect(() => {
+    if (isOpen && emailRef.current) {
+      emailRef.current.focus()
+    }
+  }, [isOpen])
 
   return (
     <div>
@@ -15,16 +23,26 @@ function LoginForm({
         Login to CaloriePro
       </h2>
       <form className="modal-form" onSubmit={handleLogin}>
+        <label className="sr-only" htmlFor="email">Email</label>
         <input 
-          type="email" 
+          id="email"
+          name="email"
+          type="email"
+          ref={emailRef} 
           placeholder="Email" 
-          value={email} onChange={(e) => setEmail(e.target.value)} 
+          value={formData.email} 
+          onChange={handleChange} 
           required
         />
+
+        <label className="sr-only" htmlFor="password">Password</label>
         <input 
+          id="password"
+          name="password"
           type="password" 
           placeholder="Password" 
-          value={password} onChange={(e) => setPassword(e.target.value)} 
+          value={formData.password} 
+          onChange={handleChange} 
           required 
         />
         <button 
@@ -45,15 +63,5 @@ function LoginForm({
     </div>
   );
 }
-
-LoginForm.propTypes = {
-  email: PropTypes.string.isRequired,
-  setEmail: PropTypes.func.isRequired,
-  password: PropTypes.string.isRequired,
-  setPassword: PropTypes.func.isRequired,
-  handleLogin: PropTypes.func.isRequired,
-  setStep: PropTypes.func.isRequired,
-  error: PropTypes.string,
-};
 
 export default LoginForm;

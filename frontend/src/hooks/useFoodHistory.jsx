@@ -4,7 +4,7 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import { Timestamp } from 'firebase/firestore';
 
-import {  getFoodHistoryFromFirestore, addFoodItemToHistory } from '../firebaseconfig/firebase';
+import { getFoodHistoryFromFirestore, addFoodItemToHistory } from '../firebaseconfig/firebase';
 import { useCalories } from '../context/CaloriesContext'
 
 dayjs.extend(utc);

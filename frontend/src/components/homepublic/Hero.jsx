@@ -1,10 +1,11 @@
 import './Hero.css'
-import PropTypes from 'prop-types';
-import FadeInSection from "../ui/Animation/FadeInSection";
+import { useModal } from '../../context/ModalContext';
 
-function Hero({openSignUpModal, benefitsRef}) {
+function Hero({ benefitsRef}) {
+  const { openModal } = useModal();
+
   const handleGetStartedClick = () => {
-    openSignUpModal(); 
+    openModal(); 
   };
 
   const handleLearnMoreClick = () => {
@@ -14,7 +15,6 @@ function Hero({openSignUpModal, benefitsRef}) {
   
   return (
     <section className='hero container'>
-      <FadeInSection>
         <header className="hero-text">
           <h1 className="hero-title">Keep track of your calorie intake</h1>
           <p className="hero-subtitle">
@@ -45,13 +45,8 @@ function Hero({openSignUpModal, benefitsRef}) {
               Learn more
           </button>
         </div>
-      </FadeInSection>
     </section>
   );
 }
-
-Hero.propTypes = {
-  openSignUpModal:PropTypes.func.isRequired,
-};
 
 export default Hero;
