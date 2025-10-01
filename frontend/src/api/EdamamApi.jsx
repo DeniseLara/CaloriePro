@@ -8,10 +8,7 @@ export const useEdamamApi = () => {
   const { user } = useAuth();
   const userKey = user?.uid || "guest";
 
-  const [nutritionData, setNutritionData] = useState(() => {
-    const saved = localStorage.getItem(`lastFood-${userKey}`);
-    return saved ? JSON.parse(saved) : null;
-  });
+  const [nutritionData, setNutritionData] = useState(null);
   const [error, setError] = useState("");
   const [searchedItems, setSearchedItems] = useState(new Set()); 
   // Inicializar caché desde localStorage
@@ -24,11 +21,6 @@ export const useEdamamApi = () => {
   useEffect(() => {
     // Guardar alimento en localstorage
     localStorage.setItem(`foodCache-${userKey}`, JSON.stringify(cache));
-
-    // Guardar última búsqueda solo si existe
-    if (nutritionData) {
-      localStorage.setItem(`lastFood-${userKey}`, JSON.stringify(nutritionData));
-    }
 
   }, [cache, nutritionData, userKey]);
 
