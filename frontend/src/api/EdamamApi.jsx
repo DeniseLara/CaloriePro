@@ -22,7 +22,7 @@ export const useEdamamApi = () => {
     // Guardar alimento en localstorage
     localStorage.setItem(`foodCache-${userKey}`, JSON.stringify(cache));
 
-  }, [cache, nutritionData, userKey]);
+  }, [cache, userKey]);
 
   const analyzeNutrition = async (ingredient) => {
     const query = ingredient.trim();
@@ -67,6 +67,7 @@ export const useEdamamApi = () => {
       setNutritionData(newData);
       setSearchedItems((prev) => new Set(prev).add(query));
       setError("");
+      
     } catch (err) {
       console.error(err);
       setError("Ocurrió un error al conectar con la API.");

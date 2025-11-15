@@ -8,6 +8,7 @@ import HomePublic from './pages/public/HomePublic';
 import Loader from './components/ui/Loader/Loader'
 import PrivateRoute from './PrivateRoute';
 import NotFound from './pages/public/Notfound';
+import UserProfile from './pages/private/Profile/UserProfile';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
   }
 
   return (
+    <main className='main'>
     <Routes>
       {/* Rutas públicas */}
       <Route element={<MainLayout />}>
@@ -46,11 +48,20 @@ function App() {
           <Dashboard/>
         </PrivateRoute>}
       />
+
+      <Route 
+        path='/profile'
+        element={
+        <PrivateRoute>
+          <UserProfile/>
+        </PrivateRoute>}
+      />
       </Route>
 
       {/* Ruta para páginas no encontradas */}
       <Route path='*' element={<NotFound />} />
   </Routes>
+  </main>
   );
 }
 

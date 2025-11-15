@@ -50,6 +50,7 @@ function Navbar() {
 
 
   return (
+    <header className='header'>
     <nav className="navbar container">
       <LogoButton onClick={scrollToHero}/>
       
@@ -71,6 +72,7 @@ function Navbar() {
         toggleMenu={toggleMenu}
       />
     </nav>
+    </header>
   );
 }
 

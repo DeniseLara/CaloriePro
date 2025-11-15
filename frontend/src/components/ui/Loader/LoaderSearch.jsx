@@ -1,5 +1,5 @@
 import { ClipLoader } from 'react-spinners';
-import './Loaders.css'
+import './Loader.css'
 
 function Loader({size = 60, color="#4D7CFE"}) {
   return (

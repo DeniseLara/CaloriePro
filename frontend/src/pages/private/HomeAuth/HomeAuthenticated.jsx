@@ -1,6 +1,8 @@
 import './HomeAuthenticated.css';
+import { GiBodyBalance } from "react-icons/gi";
+
 import { useState } from "react";
-import { useCalories } from "../../../context/CaloriesContext";
+import { useNutrition } from "../../../context/NutritionContext";
 import { useAuth } from "../../../context/AuthContext";
 import { useSearchHandler } from "../../../hooks/useSearchHandler";
 import { useEdamamApi } from '../../../api/EdamamApi';
@@ -10,15 +12,19 @@ import CaloriesResults from '../../../components/homeauth/CaloriesResults/Calori
 
 function HomeAuthenticated() {
   const { userName } = useAuth();
-  const { caloriesConsumed, addCalories} = useCalories();
+  const { caloriesConsumed, addCalories} = useNutrition();
   const [searchQuery, setSearchQuery] = useState("");
   const {nutritionData, analyzeNutrition, error} = useEdamamApi();
   const { isLoading, errorMessage, handleSearch } = useSearchHandler({ searchQuery, analyzeNutrition });
 
 
   return (
-    <section className="home-container container">
-      <h1 className="home-title">Welcome to CaloriePro</h1>
+    <section className="home-container section">
+      <div className="home__container container">
+      <h1 className="home-title">Welcome to <span className="part-1">
+              Calorie<span className="part-2">Pro</span>
+            </span>
+            <GiBodyBalance className='logo-img'/></h1>
 
       {userName && (
         <p className="home-description">
@@ -55,6 +61,7 @@ function HomeAuthenticated() {
         <p className="error-message" role="alert">
           {errorMessage}
         </p>}
+        </div>
     </section>
   );
 }

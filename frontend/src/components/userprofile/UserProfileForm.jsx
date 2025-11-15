@@ -3,13 +3,13 @@ import { ClipLoader } from 'react-spinners';
 function UserProfileForm({
   editedData,
   handleInputChange,
-  handleProfileSubmit,
+  onSubmit,
   isSaving,
   handleEditToggle
 }) {
   
   return (
-    <form className="userprofile-form" onSubmit={handleProfileSubmit}>
+    <form className="userprofile-form" onSubmit={onSubmit}>
       <h2 className="userprofile-title">Edit your profile</h2>
         <label className="userprofile-label" htmlFor="age">
           Age

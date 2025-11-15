@@ -1,0 +1,82 @@
+.how {
+  margin-bottom: 1.8rem;
+  background-color:#f9fafb;
+}
+
+.howHeader {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+  
+.howTitle {
+  color: var(--heading-color);
+  margin-bottom: 1rem;
+}
+  
+.howHeader p {
+  font-size: var(--fs-base);
+  color: var(--text-secondary);
+}
+  
+.howList {
+  display: grid;
+  grid-template-columns:
+  repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  justify-content: center;
+}
+  
+.howCard {
+  border-radius: 1rem;
+  padding: 2rem 1.8rem;
+  background-color: var(--color-bg);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  position: relative;
+}
+  
+.howCard h3 {
+  font-size: var(--fs-3xl);
+  color: var(--accent-color-light);
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.howCard h4 {
+  font-size: var(--fs-md);
+  color: var(--heading-color);
+  margin-bottom: 0.75rem;
+}
+  
+.howCard p {
+  font-size: var(--fs-base);
+  color: var(--text-secondary);
+}
+
+
+/* === MEDIAS QUERYS === */
+@media (min-width:1150px) {
+  .howHeader p {
+    font-size: var(--fs-md);
+  }
+}
+
+@media (min-width:1280px){
+  .howCard {
+    padding: 2rem 2rem;
+  }
+
+  .howList {
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 1920px){
+  .howCard {
+    padding: 2.5rem 2rem;
+  }
+
+  .howList {
+    gap: 2.5rem;
+  }
+}
+  

@@ -28,7 +28,7 @@ function Search({
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Enter a food name (50g bread, 1 apple, 2 eggs...)"
+            placeholder="50g bread, 1 apple..."
             onKeyDown={(e) => { if (e.key === 'Enter') handleSearch(e) }}  
           />
           <button type="submit" className="search-btn">

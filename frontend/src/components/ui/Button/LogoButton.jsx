@@ -1,3 +1,4 @@
+import './LogoButton.css'
 import { GiBodyBalance } from "react-icons/gi";
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';

@@ -14,9 +14,9 @@ function HistorialItem({ item, index }) {
       tabIndex="0"
       aria-label={`Item ${index + 1}. Name: ${item.name}, Calories: ${roundedCalories}, Date: ${formattedDate}`}
     >
-      <span>{item.name}</span>
+      <span className="historial-item-name">{item.name}</span>
       <span className="historial-item-calories">{roundedCalories} kcal</span>
-      <span>{formattedDate}</span>
+      <span className="historial-item-date">{formattedDate}</span>
     </li>
   );
 }

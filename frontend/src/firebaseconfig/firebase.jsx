@@ -39,6 +39,16 @@ export const saveCaloriesToFirestore = async (userUid, calories) => {
 };
 
 
+// guardar macros en firestore
+export const saveMacrosToFirestore = async (userUid, newMacros) => {
+  return updateUserDoc(userUid, {
+    protein: newMacros.protein,
+    carbs: newMacros.carbs,
+    fats: newMacros.fats,
+  });
+};
+
+
 // Función para escuchar el estado de autenticación
 export const listenAuthState = (callback) => {
   const unsubscribe = onAuthStateChanged(auth, callback);

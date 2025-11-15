@@ -10,14 +10,14 @@ function MainLayout() {
   const { isAuthenticated } = useAuth();
 
   return (
-    <>
+    <div className="layout">
       <Navbar/>
-      <main className='main'>
+      <main className="main-content">
         <Outlet />
       </main>
       {isAuthenticated ? <AuthFooter /> : <Footer />}
       {!isAuthenticated && <Modal/>}
-    </>
+    </div>
   );
 }
 

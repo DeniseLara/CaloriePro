@@ -2,7 +2,7 @@ function UserProfileView({ userData, dailyGoal, handleEditToggle }) {
   
   return (
     <div className="userprofile-info">
-      <h2 className="userprofile-title">Your profile</h2>
+      <h1 className="userprofile-title">Your profile</h1>
         <ul className="userprofile-list">
           <li className="userprofile-description">
             <p>Age</p> {userData.age || "N/A"}

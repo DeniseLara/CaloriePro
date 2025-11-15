@@ -1,21 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&display=swap');
 @import url('https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css');
 
 :root{
-  --color-base:#ffffff;
-  --color-text: #4A4A4A;
-  --color-text-dark: #333333;
-  --color-text-secondary: #555555;
-  --color-text-tertiary: #777777;
+  --color-bg: #ffffff;
+  --heading-color: #111827;
+  --text-secondary: #6b7280;
+  --accent-color:  #10b981;
+  --accent-color-light: #d1fae5;
 
-  --gray-light: #E0E0E0;   
-  --gray-lighter: #F4F4F4;
-  --gray-offwhite: #FDFBF5; 
-   
-  --color-surface: #7BBE4A;
-  --color-success: #4fa94d;
-  --color-surface-hover:#6a9e3d;
-  --shadow-container: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;  
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  
+  --font-title: 'Montserrat', sans-serif;
+  --font-body: 'Roboto', sans-serif;
 
   --fx-xs: clamp(0.64rem, 0.608rem + 0.16vw, 0.8rem);
   --fs-sm: clamp(0.8rem, 0.76rem + 0.2vw, 1rem);
@@ -31,56 +30,125 @@ html {
   scroll-behavior: smooth;
 }
 
-*{
+html, body {
+  height: 100%;
+}
+
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins", serif;
 }
 
-body{
-  background-color: #FDFBF5;
-  height: 100%;
+body {
+  background-color: var(--color-bg);
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: var(--font-body);
 }
 
-/*nuevo*/
-.app{
+#root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.layout {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-.main{
-  flex: 1;
+.main-content {
+  flex: 1; /* <-- empuja el footer hacia abajo */
+}
+
+p {
+  font-family: var(--font-body);
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-title);
+  line-height: 1.3;
+}
+
+.section__title {
+  font-size: var(--fs-xl);
 }
 
 Link{
   -webkit-tap-highlight-color: transparent; /* quita el flash azul en móviles */
 }
 
-a{
+a {
   text-decoration: none;
-  color: #ffffff;
   cursor: pointer;
   line-height: 1;
-  -webkit-tap-highlight-color: transparent; 
 }
 
-button{
+button {
+  outline: none;
+  border: none;
+  font-family: var(--font-title);
   cursor: pointer;
-  -webkit-tap-highlight-color: transparent; 
 }
 
 ul{
   list-style: none;
 }
 
-/*todos los componentes tendrán una clase container las cuales 
-tendrán este padding*/
-.container{
-  padding-left: 8%;
-  padding-right: 8%;
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.container {
+  max-width: 1120px;
+  margin-inline: 1.5rem;
+}
+
+.grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.section {
+  padding-block: 5rem 1rem;
+}
+
+.main {
+  overflow: hidden;
+}
+
+
+@media screen and (max-width:320px) {
+  .container {
+    margin-inline: 1rem;
+  }
+}
+
+@media screen and (min-width:1023px) {
+  .section {
+    padding-block: 7rem 2rem;
+  }
+}
+
+@media screen and (min-width:1150px) {
+  .container {
+    margin-inline: auto;
+  }
+
+  .section__title {
+    font-size: var(--fs-2xl);
+  }
+
+  .footer {
+    padding-block: 4.5rem 4rem;
+  }
 }
 
 

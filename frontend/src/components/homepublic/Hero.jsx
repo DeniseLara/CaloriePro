@@ -1,7 +1,9 @@
-import './Hero.css'
+import styles from './Hero.module.css'
 import { useModal } from '../../context/ModalContext';
+import { IoFitnessOutline } from "react-icons/io5";
+import ProgressCard from './ProgressCard';
 
-function Hero({ benefitsRef}) {
+function Hero({ benefitsRef }) {
   const { openModal } = useModal();
 
   const handleGetStartedClick = () => {
@@ -14,18 +16,29 @@ function Hero({ benefitsRef}) {
   
   
   return (
-    <section className='hero container'>
-        <header className="hero-text">
-          <h1 className="hero-title">Keep track of your calorie intake</h1>
-          <p className="hero-subtitle">
+    <section className={`section ${styles.hero}`} id="hero">
+      <div className={`container grid ${styles.heroContainer}`}>
+        <div className={styles.heroContent}>
+        <header className={styles.heroHeader}>
+          <div className={styles.messageContainer}>
+            <span><IoFitnessOutline/></span>
+          <p className={styles.message}>
+            Your health is our priority
+          </p>
+          </div>
+          <h1 className={styles.heroTitle}>
+            {/*Keep track of your calorie intake*/}
+            Build healthy <span>habits</span>, every single day
+          </h1>
+          <p className={styles.heroSubtitle}>
             CaloriePro will help you keep track of your 
             daily calories and achieve your goals.
           </p>
         </header>
         
-        <div className="hero-buttons">
+        <div className={styles.heroActions}>
           <button 
-            className='hero-button started' 
+            className={`${styles.heroButton} ${styles.started}`} 
             onClick={handleGetStartedClick}
             type='button'
             aria-label='go to sign up form'
@@ -34,16 +47,21 @@ function Hero({ benefitsRef}) {
           </button>
 
           <button 
-            className='hero-button learn' 
+            className={`${styles.heroButton} ${styles.learn}`}
             onClick={handleLearnMoreClick}
             type='button'
             aria-label='learn more about caloriepro web app'
           >
-            <span className="arrow">
+            <span className={styles.arrow}>
               <i className="ri-arrow-right-line"></i>
             </span>
               Learn more
           </button>
+        </div>
+        </div>
+          
+          <ProgressCard/>
+
         </div>
     </section>
   );

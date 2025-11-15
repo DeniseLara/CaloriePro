@@ -1,16 +1,20 @@
-import { ClipLoader } from 'react-spinners';
-import './Loaders.css'
+import { GiBodyBalance } from "react-icons/gi";
+import "./Loader.css";
 
-function Loader({size = 60, color = "#4fa94d", text="Loading..."}) {
+function Loader({ text = "Cargando..." }) {
   return (
-    <div 
-      className="loading-container"
-      role="status"
-      aria-live="polite"
-      aria-busy="true"
-    >
-      <ClipLoader size={size} color={color} loading={true} />
-      <p>{text}</p>
+    <div className="loading-screen">
+      
+      <div className="loader-logo">
+        <span className="part-1">
+          Calorie<span className="part-2">Pro</span>
+        </span>
+        <GiBodyBalance className="logo-img" />
+      </div>
+
+      <div className="calorie-spinner"></div>
+
+      <p className="loading-text">{text}</p>
     </div>
   );
 }

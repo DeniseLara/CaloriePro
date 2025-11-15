@@ -1,5 +1,6 @@
 .search-container {
   text-align: center;
+  width: 100%;
   padding-top: 1.5rem;
 }
 
@@ -9,42 +10,56 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 2rem;
-  width: 100%;
 }
 
 .input-wrapper {
+  width: 100%;
+  max-width: 800px;
+  background: var(--color-bg);
+  border-radius: 1rem;
+  border: 1px solid var(--text-secondary);
+  box-shadow: var(--shadow-sm);
   position: relative;
   display: flex;
   align-items: center;
-  width: 100%;
-  margin-bottom: 1rem; 
+  margin-bottom: 1rem;
+  transition: all 0.25s ease;
 }
 
 .input-wrapper input {
-  padding: 0.75rem 2.5rem 0.75rem 1rem; 
   width: 100%;
-  border-radius: 1rem;
-  border: 1.5px solid var(--gray-light);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
-  transition: all 0.3s ease;
-  color: var(--color-text-dark);
+  padding: 0.9rem 1.2rem;
   font-size: var(--fs-base);
-  max-width: 100%; 
+  font-family: var(--font-body);
+  border: none;
+  outline: none;
+  border-radius: 1rem;
+  transition: all 0.25s ease;
+  color: var(--heading-color);
 }
 
 .input-wrapper input::placeholder {
-  color: var(--color-text-tertiary);
-  font-style: italic;
+  color: var(--text-secondary);
 }
 
 .input-wrapper input:focus {
-  outline: none;
-  border-color: var(--color-surface);
-  background-color: var(--color-base);
-  box-shadow: 0 0 0 3px rgba(123, 190, 74, 0.25);
+  background-color: var(--color-bg);
+  border: none;
+}
+
+/* Glow + borde verde cuando está activo */
+.input-wrapper:focus-within {
+  border: 1.5px solid var(--accent-color);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.25);
+}
+
+/* Icono activo en focus */
+.input-wrapper:focus-within .search-icon {
+  color: var(--accent-color);
 }
 
 .search-btn {
+  color: var(--accent-color);
   position: absolute;
   right: 10px;  
   top: 50%;
@@ -57,7 +72,7 @@
 
 .search-icon {
   font-size: var(--fs-lg);
-  color: var(--color-surface);
+color: var(--text-secondary);
 }
 
 .select-wrapper {
@@ -68,13 +83,13 @@
   padding: 0.75rem;
   width: 100%;
   border-radius: 1rem;
-  border: 1px solid var(--gray-light);
-  background-color: var(--color-base);
+  border: 1px solid rgba(0,0,0,0.08);
+  background-color: var(--color-bg);
   font-size: 1rem;
 }
 
 .error-message {
-  color: #E74C3C;
+  color: #e74c3c;
   text-align: center;
   margin-top: 1rem;
   font-size: var(--fs-base);
@@ -104,7 +119,6 @@
   align-items: center;
   height: 50%; 
 }
-
 
 
 @media (min-width: 600px) {
@@ -155,18 +169,3 @@
   }
 }
 
-
-@media (min-width: 1024px){
-  .search-input-container{
-    padding-left: 12%;
-    padding-right: 12%;
-  }
-}
-
-
-@media (min-width:1920px){
-  .search-input-container{
-    padding-left: 16%;
-    padding-right: 16%;
-  }
-}

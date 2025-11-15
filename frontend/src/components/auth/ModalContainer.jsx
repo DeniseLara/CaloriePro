@@ -4,7 +4,7 @@ import { useModal } from "../../context/ModalContext";
 
 import SignUpForm from "./SignUpForm";
 import LoginForm from "./LoginForm";
-import LoadingOverlay from "../ui/Loader/LoadingOverlay";
+import LoaderModal from "../ui/Loader/LoaderModal";
 
 function ModalContainer({ 
   step, 
@@ -26,7 +26,7 @@ function ModalContainer({
   };
 
   const renderStep = () => {
-    if (loading) return <LoadingOverlay />
+    if (loading) return <LoaderModal />
     switch (step) {
       case 1:
         return <SignUpForm {...formProps} error={error} isOpen={showModal}/>

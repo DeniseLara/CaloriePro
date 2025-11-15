@@ -40,20 +40,6 @@ function NavbarLinks({
         <>
           <li>
             <Link
-              to="testimonials"
-              smooth={true}
-              offset={-70}
-              duration={200}
-              aria-label='go to testimonials section'
-              className={getLinkClass('testimonials')}
-              onSetActive={() => {}}
-              onClick={closeMenu}
-            >
-              Testimonials
-            </Link>
-          </li>
-          <li>
-            <Link
               to="howitworks"
               smooth={true}
               offset={-70}
@@ -66,6 +52,22 @@ function NavbarLinks({
               How it Works
             </Link>
           </li>
+
+          <li>
+            <Link
+              to="testimonials"
+              smooth={true}
+              offset={-70}
+              duration={200}
+              aria-label='go to testimonials section'
+              className={getLinkClass('testimonials')}
+              onSetActive={() => {}}
+              onClick={closeMenu}
+            >
+              Testimonials
+            </Link>
+          </li>
+          
           <li>
             <button
               className="btn-outline"
@@ -89,6 +91,18 @@ function NavbarLinks({
               Dashboard
             </RouterLink>
           </li>
+
+          <li>
+            <RouterLink
+              className={getLinkClass('profile')}
+              to="/profile"
+              aria-label='go to dashboard page'
+              onClick={closeMenu}
+            >
+              Profile
+            </RouterLink>
+          </li>
+
           <li>
             <button
               className="btn-outline"

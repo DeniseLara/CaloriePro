@@ -1,11 +1,10 @@
 import './Dashboard.css';
-import { useCallback } from "react";
 import { useUserData } from '../../../hooks/useUserData.jsx';
-import { useCalories } from '../../../context/CaloriesContext.jsx';
 import { useAuth } from '../../../context/AuthContext.jsx';
 import { useFoodHistory } from '../../../hooks/useFoodHistory.jsx';
+import { useNutrition } from '../../../context/NutritionContext.jsx';
 
-import UserProfile from '../../../components/dashboard/UserProfile/UserProfile.jsx';
+import MacroPanel from '../../../components/dashboard/Macros/MacroPanel.jsx';
 import Historial from '../../../components/dashboard/Historial/Historial.jsx';
 import RadialChart from '../../../components/dashboard/Charts/RadialChart.jsx';
 import SkeletonDashboard from '../../../components/ui/Skeleton/Skeleton.jsx'
@@ -13,7 +12,7 @@ import SkeletonDashboard from '../../../components/ui/Skeleton/Skeleton.jsx'
 
 function Dashboard() {
   const { user } = useAuth();
-  const { caloriesConsumed } = useCalories(); 
+  const { macros, caloriesConsumed } = useNutrition();
   const { foodHistory, handleAdd} = useFoodHistory(user);
 
   const {
@@ -44,19 +43,6 @@ function Dashboard() {
     </div>
     );
   };
-  
-
-  // Manejo del envío del perfil editado
-  const handleProfileSubmit = useCallback(async (e) => {
-    e.preventDefault();
-    setSaveError(null);
-    
-    try {
-      await saveUserProfile(editedData, user.uid); 
-    } catch (error) {
-      setSaveError("No se pudo guardar el perfil. Intenta nuevamente")
-    }
-  }, [editedData, saveUserProfile, setIsEditing, setSaveError, user.uid]);
 
 
   // Si está cargando los datos
@@ -69,11 +55,13 @@ function Dashboard() {
   }
 
   return (
-    <section className="dashboard container" aria-live="polite" aria-busy={isSaving}>
+    <section className="dashboard section" aria-live="polite" aria-busy={isSaving}>
+      <div className="dashboard__container container">
       <header className="dashboard-container" role="banner">
         <h1 tabIndex={-1} className="dashboard-container-title">
           Welcome to your Dashboard
         </h1>
+
         <section 
           className="dashboard-container-descrip" 
           aria-label="Resume of your goals and daily consume of calories"
@@ -96,7 +84,10 @@ function Dashboard() {
           fats={userData.fats || 60}
         />
 
-        <UserProfile
+        <MacroPanel macros={macros}/>
+        </section>
+
+        {/*<UserProfile
           userData={userData}
           isEditing={isEditing}
           editedData={editedData}
@@ -115,7 +106,7 @@ function Dashboard() {
       <section role="alert" aria-live="assertive" className="error-message">
         <p>{saveError}</p>
       </section>
-      } 
+      } */}
       
       <section aria-label="Food history">
       <Historial 
@@ -125,6 +116,7 @@ function Dashboard() {
         error={null}
       />
       </section>
+      </div>
   </section>
   );
 }

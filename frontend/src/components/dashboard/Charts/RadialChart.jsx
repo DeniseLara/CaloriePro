@@ -16,10 +16,10 @@ ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale, LinearScale,
 
 // Colores personalizados para el gráfico
 const COLORS = {
-  over: '#FF5722',
-  achieved: '#4FA94D',
-  inProgress: '#81C784',
-  remaining: '#E0E0E0'
+  over: '#ef4444',           // Rojo para exceso
+  achieved: '#10b981',       // Verde accent para meta alcanzada
+  inProgress: '#34d399',     // Verde más claro para progreso
+  remaining: '#e5e7eb'       // Gris claro para restante
 };
 
 // Utilidades
@@ -123,7 +123,7 @@ function RadialChart({ caloriesConsumed, dailyGoal }) {
       {dailyGoal > 0 && (
         <figure className="radial-chart-wrapper">
           <figcaption className="radial-chart-legend">
-            <ul>
+            <ul className='legend-list'>
               <li className="legend-item">
                 <span
                   className="legend-color"

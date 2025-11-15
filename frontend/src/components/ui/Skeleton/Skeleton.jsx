@@ -4,7 +4,7 @@ import './Skeleton.css';
 
 function SkeletonDashboard() {
   return (
-    <section className="skeleton-dashboard">
+    <section className="skeleton-dashboard section container">
       <header className="skeleton-box welcome-box">
         <Skeleton height={60} width="60%" className='skeleton-item'/>
         <div className="skeleton-side">

@@ -1,12 +1,14 @@
-import Slider from "react-slick";
-import "./Testimonies.css";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import styles from "./Testimonies.module.css";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
+import { PiStarFill, PiStarThin } from "react-icons/pi";
 
-import Ana from '../../assets/ana.jpg';
-import Carla from '../../assets/carla.jpg';
-import Juan from '../../assets/juan.jpg';
-import Luis from '../../assets/luis.jpg';
+import Ana from '../../assets/testimonie1.webp';
+import Carla from '../../assets/testimonie3.webp';
+import Juan from '../../assets/testimonie2.webp';
+import Luis from '../../assets/testimonie4.webp';
 
 
 function Testimonies() {
@@ -14,57 +16,104 @@ function Testimonies() {
     {
       text: "CaloriePro helped me stay on track with my weight goals! It's incredibly easy to use.",
       author: "Ana Rodríguez",
+      occupation: "Fitness Coach",
       photo: Ana,
-    },
-    {
-      text: "The control of my food and calories has been amazing. Now I can easily track and see my progress every day.",
-      author: "Juan Pérez",
-      photo: Juan,
+      avatar: "bg-pink-500",
+      rating: 5
     },
     {
       text: "The personalized dashboard is exactly what I needed to track my progress.",
       author: "Carla Gómez",
+      occupation: "Nutritionist",
       photo: Carla,
+      avatar: "bg-purple-500",
+      rating: 4
+    },
+    {
+      text: "The control of my food and calories has been amazing. Now I can easily track and see my progress every day.",
+      author: "Juan Pérez",
+      occupation: "Student",
+      photo: Juan,
+      avatar: "bg-blue-500",
+      rating: 5
     },
     {
       text: "It's the best app to maintain a healthy lifestyle!",
       author: "Luis García",
+      occupation: "Office Worker",
       photo: Luis,
+      avatar: "bg-orange-500",
+      rating: 4
     },
   ];
 
   const settings = {
-    dots: true, // Agregar puntos de navegación
-    infinite: true, // Carrusel infinito
-    speed: 500, // Velocidad de transición
-    slidesToShow: 1, // Mostrar un testimonio a la vez
-    slidesToScroll: 1, // Deslizar un testimonio a la vez
-    autoplay: true, // Hacer autoplay
-    autoplaySpeed: 3000, // Tiempo de transición entre slides (3 segundos)
+    dots: true, 
+    infinite: true, 
+    speed: 500, 
+    slidesToShow: 1, 
+    slidesToScroll: 1, 
+    autoplay: true, 
+    autoplaySpeed: 3000, 
     arrows: false, 
   };
 
   return (
-    <section className="services__swiper container">
-      <h2 className="services__principal">User Testimonials</h2>
-        <Slider {...settings}>
-        {testimonials.map((testimonial, index) => (
-          <article key={index} className="services__card">
-            <div className="services__icon">
-              <img 
-                className="services__image" 
-                loading="lazy" 
-                src={testimonial.photo} 
-                alt={testimonial.author} 
-              />
-            </div>
-            <h3 className="services__title">{testimonial.author}</h3>
-            <p className="services__description">
-              &quot;{testimonial.text}&quot;
+    <section className={`section ${styles.services}`} id="testimonials">
+      <div className={`container ${styles.servicesContainer}`}>
+        <header className={styles.testimoniesHeader}>
+      <h2 className={`section__title ${styles.servicesTitle}`}>
+        What The People Thinks About Us
+      </h2>
+      <p>
+        Your journey starts here. See how CaloriePro is transforming 
+        daily habits and real lives.
+      </p>
+      </header>
+         <Swiper
+          modules={[Autoplay, Pagination]}
+          spaceBetween={20}
+          slidesPerView={1}
+          autoplay={{ delay: 3500 }}
+          pagination={{ clickable: true }}
+          loop={true}
+          className={styles.slider}
+        >
+        
+        {testimonials.map((t, i) => (
+          <SwiperSlide key={i}>
+          <article className={styles.servicesCard}>
+              <div className={styles.servicesHeader}>
+                  <img 
+                    className={styles.servicesImage} 
+                    loading="lazy" 
+                    src={t.photo} 
+                    alt={t.author} 
+                  />
+                  <div className={styles.authorInfo}>
+                  <h4 className={styles.author}>{t.author}</h4>
+                  <p>{t.occupation}</p>
+                  </div>
+              </div>
+
+              <div className={styles.rating}>
+                        {[...Array(5)].map((_, i) =>
+                          i < t.rating ? (
+                            <PiStarFill key={i} className={styles.starActive} />
+                          ) : (
+                            <PiStarThin key={i} className={styles.starInactive} />
+                          )
+                        )}
+              </div>
+
+            <p className={styles.servicesDescription}>
+              "{t.text}"
             </p>
           </article>
+        </SwiperSlide>
         ))}
-        </Slider>
+         </Swiper>
+        </div>
     </section>
   );
 }

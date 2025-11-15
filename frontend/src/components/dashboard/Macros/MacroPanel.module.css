@@ -1,0 +1,47 @@
+.panel {
+  border-radius: 1.5rem;
+  background-color: #f8fafc;
+  color: #374151;
+  border: 1px solid rgba(16, 185, 129, 0.08);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; 
+}
+
+.title {
+  font-size: var(--fs-lg);
+  font-family: var(--font-title);
+  margin-bottom: 4rem;
+  color: var(--heading-color, #111827);
+  font-weight: 700;
+  text-align: center;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.summary {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: var(--accent-color-light, rgba(16,185,129,0.05));
+  border-radius: 0.75rem;
+  border: 1px solid rgba(16, 185, 129, 0.1);
+}
+
+.summaryText {
+  font-size: var(--fx-xs);
+  color: var(--text-secondary, #6b7280);
+  text-align: center;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.summaryText strong {
+  color: var(--heading-color, #111827);
+}

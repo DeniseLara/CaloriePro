@@ -13,36 +13,26 @@ function HomePublic() {
 
   return (
     <>
-      <div id="hero">
-        <Hero 
-          benefitsRef={benefitsRef}
-        />
-      </div>
+      <Hero benefitsRef={benefitsRef}/>
 
-      <div id="benefits" ref={benefitsRef}>
-        <FadeInSection>
-        <Card />
-        </FadeInSection>
-      </div>
-    
-      <div id="testimonials">
-        <FadeInSection>
-        <Testimonies />
-        </FadeInSection>
-      </div>
-    
       <FadeInSection>
-      <Counter />
+        <Counter />
       </FadeInSection>
 
-      <div id="howitworks">
-        <FadeInSection>
-        <HowItWorks />
-        </FadeInSection>
-      </div>
+      <FadeInSection>
+        <Card ref={benefitsRef}/>
+      </FadeInSection>
 
       <FadeInSection>
-      <Start />
+        <HowItWorks />
+      </FadeInSection>
+    
+      <FadeInSection>
+        <Testimonies />
+      </FadeInSection>
+
+      <FadeInSection>
+        <Start />
       </FadeInSection>
     </>
   );

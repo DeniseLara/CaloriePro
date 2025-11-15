@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import LogoButton from "../ui/Button/LogoButton";
 
 function SignUpForm({ 
   formData,
@@ -21,7 +22,7 @@ function SignUpForm({
   return (
     <div>
       <h2 className="modal-title" id="modal-title">
-        Welcome to CaloriePro
+        Welcome to <LogoButton/>
       </h2>
       <p className="modal-description" id="modal-desc">
         Create an account to access all features

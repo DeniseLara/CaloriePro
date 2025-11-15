@@ -1,4 +1,4 @@
-import './Counter.css'
+import styles from './Counter.module.css'
 
 function Counter() {
   const foodCount = 1000;
@@ -6,24 +6,30 @@ function Counter() {
   const caloriesTracked = 300000;
   
   return (
-    <section className="dynamic-counter">
-      <h2 className="dynamic-title">Global Statistics</h2>
+    <section className={`section ${styles.stats}`}>
+      <div className={`${styles.statsContainer}`}>
 
-      <div className="counter-grid container">
-        <article className="counter-card" role="region" aria-label="Food count">
-          <h3>+ {foodCount}</h3>
-          <p>Foods in our database</p>
+      <div className={`container ${styles.statsGrid}`}>
+        <article className={styles.statsCard} role="region" aria-label="Food count">
+          <h3>{foodCount}+</h3>
+          <h4>Foods in Database</h4>
         </article>
 
-        <article className="counter-card" role="region" aria-label="User count">
-          <h3>+ {userCount}</h3>
-          <p>Registered users</p>
+        <article className={styles.statsCard} role="region" aria-label="User count">
+          <h3>{userCount}+</h3>
+          <h4>Active Users</h4>
         </article>
 
-        <article className="counter-card" role="region" aria-label="Calories tracked count">
-          <h3>+ {caloriesTracked.toLocaleString()}</h3>
-          <p>Calories recorded by users</p>
+        <article className={styles.statsCard} role="region" aria-label="Calories tracked count">
+          <h3>{caloriesTracked.toLocaleString()}+</h3>
+          <h4>Calories Tracked</h4>
         </article>
+
+        <article className={styles.statsCard} role="region" aria-label="Calories tracked count">
+          <h3>4.8 ★</h3>
+          <h4>Rating</h4>
+        </article>
+      </div>
       </div>
     </section>
   );

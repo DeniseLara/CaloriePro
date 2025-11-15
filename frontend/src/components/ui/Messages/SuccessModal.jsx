@@ -1,5 +1,4 @@
 import './successModal.css'; 
-import PropTypes from 'prop-types';
 import  { useEffect } from 'react';
 import { IoCloseOutline } from "react-icons/io5";
 
@@ -25,10 +24,5 @@ function SuccessModal({ message, onClose }) {
     </div>
   );
 }
-
-SuccessModal.propTypes = {
-  message:PropTypes.string.isRequired,
-  onClose:PropTypes.func.isRequired,
-};
 
 export default SuccessModal;

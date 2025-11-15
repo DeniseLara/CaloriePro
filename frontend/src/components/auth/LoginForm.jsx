@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import LogoButton from '../ui/Button/LogoButton'
 
 function LoginForm({ 
   formData,
@@ -20,7 +21,7 @@ function LoginForm({
   return (
     <div>
       <h2 className="modal-title login" id="modal-title">
-        Login to CaloriePro
+        Login to <LogoButton/>
       </h2>
       <form className="modal-form" onSubmit={handleLogin}>
         <label className="sr-only" htmlFor="email">Email</label>

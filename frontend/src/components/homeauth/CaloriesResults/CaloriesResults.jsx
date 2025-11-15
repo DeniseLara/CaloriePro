@@ -23,39 +23,63 @@ function CaloriesResults({ nutritionData, error }) {
   
 
   return (
-    <section className="results-container container">
-      <div className="results-content">
-        <header className="heading-container">
-        <h3 className="heading-title">Nutrition facts</h3>
-          <p className="heading-description">
-            <strong>Food:</strong> {nutritionData?.ingredients || "No disponible"}
-          </p>
+  <section className="results-container">
+    <div className="results-content">
+      <header className="heading-container">
+        <h3 className="heading-title">Nutrition Facts</h3>
+        <p className="heading-description">
+          <strong>Food</strong>
+          <span>{nutritionData?.ingredients || "No disponible"}</span>
+        </p>
+        <p className="heading-description">
+          <strong>Calories</strong>
+          <span>{calories.toFixed(0)} kcal</span>
+        </p>
+      </header>
 
-          <p className="heading-description">
-            <strong>Calories:</strong> {calories.toFixed(1)} kcal
-          </p>
-        </header>
-
-        <article className="chart-container">
-          <NutritionChart totalNutrients={totalNutrients} />
-        </article>
+      <div className="chart-and-nutrients">
+        <div className="chart-wrapper">
+          <article className="chart-container">
+            <NutritionChart totalNutrients={totalNutrients} />
+          </article>
+          <span className="chart-label">Macronutrient Distribution</span>
+        </div>
       
         <section className="nutrient-details">
           <ul className='nutrient-list'>
-            <li className="nutrient"><strong>Proteins:</strong> 
-              {(totalNutrients?.PROCNT?.quantity || 0).toFixed(1)} g
+            <li className="nutrient">
+              <strong>Proteins</strong>
+              <div className="nutrient-value">
+                <span className="nutrient-amount">
+                  {(totalNutrients?.PROCNT?.quantity || 0).toFixed(1)}
+                </span>
+                <span className="nutrient-unit">grams</span>
+              </div>
             </li>
-            <li className="nutrient"><strong>Fats:</strong> 
-              {(totalNutrients?.FAT?.quantity || 0).toFixed(1)} g
+            <li className="nutrient">
+              <strong>Fats</strong>
+              <div className="nutrient-value">
+                <span className="nutrient-amount">
+                  {(totalNutrients?.FAT?.quantity || 0).toFixed(1)}
+                </span>
+                <span className="nutrient-unit">grams</span>
+              </div>
             </li>
-            <li className="nutrient"><strong>Carbohydrates:</strong> 
-              {(totalNutrients?.CHOCDF?.quantity || 0).toFixed(1)} g
+            <li className="nutrient">
+              <strong>Carbs</strong>
+              <div className="nutrient-value">
+                <span className="nutrient-amount">
+                  {(totalNutrients?.CHOCDF?.quantity || 0).toFixed(1)}
+                </span>
+                <span className="nutrient-unit">grams</span>
+              </div>
             </li>
           </ul>
         </section>
       </div>
+    </div>
 
-      {caloriesAction === null ? (
+    {caloriesAction === null ? (
         <button 
           className="nutrient-add-btn" 
           onClick={() => handleAdd(nutritionData)}

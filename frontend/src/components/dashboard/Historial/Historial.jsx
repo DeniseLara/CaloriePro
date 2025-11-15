@@ -27,7 +27,7 @@ function Historial({ foodHistory = [], loading = false, error = null }) {
   return (
     <section className="historial-container" aria-labelledby="history-title">
       <h2 className="historial-title" id="history-title">Added calories history</h2>
-      <ul className="historial-subtitle" aria-hidden="true">
+      <ul className="historial-list" aria-hidden="true">
         <li className="historial-name">Name</li>
         <li className="historial-calories">Calories</li>
         <li className="historial-date">Date</li>

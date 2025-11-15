@@ -5,7 +5,7 @@ import timezone from 'dayjs/plugin/timezone';
 import { Timestamp } from 'firebase/firestore';
 
 import { getFoodHistoryFromFirestore, addFoodItemToHistory } from '../firebaseconfig/firebase';
-import { useCalories } from '../context/CaloriesContext'
+import { useNutrition } from '../context/NutritionContext'
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -13,7 +13,7 @@ dayjs.extend(timezone);
 export function useFoodHistory(user) {
   const [foodHistory, setFoodHistory] = useState([]);
   const [caloriesAction, setCaloriesAction] = useState(null);
-  const { caloriesConsumed, addCalories } = useCalories();
+  const { caloriesConsumed, addCalories, updateMacros } = useNutrition();
 
   // Escuchar cambios en tiempo real en foodHistory
   useEffect(() => {
@@ -49,6 +49,11 @@ export function useFoodHistory(user) {
     const foodName = nutritionData?.ingredients || "Desconocido";
     const rawCalories = nutritionData?.totalNutrients?.ENERC_KCAL?.quantity || 0;
     const calories = Math.round(rawCalories);
+
+    const protein = nutritionData?.totalNutrients?.PROCNT?.quantity || 0;
+    const fats = nutritionData?.totalNutrients?.FAT?.quantity || 0;
+    const carbs = nutritionData?.totalNutrients?.CHOCDF?.quantity || 0;
+
     const currentDate = Timestamp.now();
     
     const alreadyAddedToday = foodHistory.some(
@@ -66,6 +71,11 @@ export function useFoodHistory(user) {
         await addFoodItemToHistory(user.uid, newFoodItem, caloriesConsumed + calories);
         setCaloriesAction("added");
         addCalories(calories);
+        updateMacros({
+          protein,
+          carbs,
+          fats,
+        });
         const updatedHistoryRaw = await getFoodHistoryFromFirestore(user.uid);
         // Aplicar conversión al actualizar el estado también
         const updatedHistory = updatedHistoryRaw.map(item => ({
