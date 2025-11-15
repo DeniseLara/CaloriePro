@@ -1,4 +1,10 @@
-## 🔥 CaloriePro
+## 🍎 CaloriePro — Complete Redesign (2025)
+
+Esta web app fue completamente rediseñada.
+Mejoré el diseño, la arquitectura del código, los colores, la experiencia de usuario y el rendimiento general.
+Si deseas ver la versión anterior, está disponible en la sección Branches de este repositorio bajo el nombre v1.
+
+## CaloriePro
 
 **CaloriePro** es una aplicación web hecha para ayudarte a llevar un control diario de tus calorías consumidas y alcanzar tus objetivos personales de salud. Está construida con **React**, **Vite**, **CSS** y **FastAPI**, y utiliza **Firebase** para el manejo de usuarios y almacenamiento de datos.
 
