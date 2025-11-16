@@ -15,22 +15,26 @@ Si deseas ver la versión anterior, está disponible en la sección Branches de 
 
 
 ### 🧭 Home pública:
-- Página accesible para cualquier visitante. Explica cómo funciona la aplicación, sus beneficios y características. Incluye un modal para registrarse o iniciar sesión.
+- Explica cómo funciona la aplicación, sus beneficios y características.
+- Incluye un modal para registrarse o iniciar sesión.
 
 
 ### 👤 Home para usuarios autenticados:
-Después de iniciar sesión, los usuarios acceden a una página personalizada con una bienvenida. Allí pueden:
+- Muestra una bienvenida personalizada.
+- Permite buscar alimentos mediante el buscador de calorías.
+- Los usuarios pueden agregar las calorías de los alimentos y estas se suman al total diario y al historial.
 
-- Buscar alimentos usando el buscador de calorías.
-- Agregar las calorías de los alimentos buscados con un botón.
-Estas calorías se suman al total diario y se guardan en el historial del usuario.
+
+### 🆕 Nueva página de Profile:
+- Los usuarios pueden ver y editar sus datos personales: peso, altura, edad, nivel de actividad diaria, género, objetivo y más.
+- La información del perfil se utiliza para personalizar el cálculo de calorías objetivo.
 
 
 ### 📊 Dashboard del usuario:
-- Página con información personalizada del usuario. Muestra:
-- Datos del perfil (edad, peso, objetivo, etc.).
+Página con información personalizada del usuario. Muestra:
 - Calorías objetivo del día.
 - Calorías consumidas hasta el momento.
+- Gramos de proteínas, grasas y carbohidratos obtenidos a partir de los alimentos agregados.
 - Historial de alimentos agregados.
 
 
@@ -84,6 +88,7 @@ La tarea de reseteo de calorías y limpieza del historial se ejecuta automática
 - Calorías consumidas
 - Historial de alimentos
 - Perfil del usuario
+- Gramos de proteínas, grasas y carbohidratos calculados por cada alimento agregado
 
 ---
 
