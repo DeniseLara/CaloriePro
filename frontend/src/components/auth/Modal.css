@@ -133,7 +133,7 @@
   font-weight: 600;
   width: 100%;
   margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .btn:hover {
@@ -149,7 +149,6 @@
   cursor: wait;
 }
   
-/* Botón Close dentro del modal */
 .modal-content .close {
   font-size: var(--fs-xl);
   cursor: pointer;
@@ -161,7 +160,6 @@
   -webkit-tap-highlight-color: transparent; /* quita el flash azul en móviles */
 }
   
-/* Enlace para cambiar entre Login y Signup */
 .link-switch {
   font-size: var(--fs-sm);
   color: var(--accent-color);
@@ -173,7 +171,6 @@
   text-decoration: underline;
 }
   
-/* Mensajes de error */
 .error {
   font-size: var(--fs-sm);
   color: #dc2626;

@@ -63,28 +63,28 @@ function RadialChart({ caloriesConsumed, dailyGoal }) {
       };
     }
     
-    return {
-      labels: ['Calories Consumed', 'Calories Left'],
-      datasets: [
-        {
-          label: 'Calories',
-          data: status === 'over' ? [caloriesConsumed, 0] : [caloriesConsumed, remaining],
-          backgroundColor: [
+  return {
+    labels: ['Calories Consumed', 'Calories Left'],
+    datasets: [
+      {
+        label: 'Calories',
+        data: status === 'over' ? [caloriesConsumed, 0] : [caloriesConsumed, remaining],
+        backgroundColor: [
           status === 'over' 
             ? COLORS.over 
             : status === 'achieved'
             ? COLORS.achieved
             : COLORS.inProgress,
           COLORS.remaining,
-          ],
-          borderColor: [
-            status === 'over' 
+        ],
+        borderColor: [
+          status === 'over' 
             ? COLORS.over
             : status === 'achieved' 
             ? COLORS.achieved
             : COLORS.inProgress,
           COLORS.remaining,
-          ],
+        ],
           borderWidth: 0.5,
           cutout: '70%',
         },
@@ -116,7 +116,7 @@ function RadialChart({ caloriesConsumed, dailyGoal }) {
     },
   };
 
-   return (
+  return (
     <section className="radial-chart-container">
       <h2 className="radial-title">Progress of the Day</h2>
 
@@ -149,21 +149,21 @@ function RadialChart({ caloriesConsumed, dailyGoal }) {
         <Doughnut data={chartData} options={chartOptions} />
         <div className="radial-chart-text">
           {dailyGoal > 0 ? (
-      <p
-        className={`radial-chart-goal ${
-          status === 'over' ? 'exced' : status === 'achieved' ? 'archived' : ''
-        }`}
-      >
-        {getMessage(status, percentage)}
-      </p>
-    ) : (
-      <p className="radial-chart-goal no-data">
-        Please complete your profile to start tracking.
-      </p>
-    )}
-        </div>
+          <p
+            className={`radial-chart-goal ${
+            status === 'over' ? 'exced' : status === 'achieved' ? 'archived' : ''
+            }`}
+          >
+            {getMessage(status, percentage)}
+          </p>
+        ) : (
+          <p className="radial-chart-goal no-data">
+            Please complete your profile to start tracking.
+          </p>
+        )}
       </div>
-    </section>
+    </div>
+  </section>
   );
 }
 

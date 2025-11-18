@@ -1,4 +1,5 @@
 import styles from './Counter.module.css'
+import { StatCard, StatCardSimple } from '../ui/Animation/StatsSection';
 
 function Counter() {
   const foodCount = 1000;
@@ -10,25 +11,33 @@ function Counter() {
       <div className={`${styles.statsContainer}`}>
 
       <div className={`container ${styles.statsGrid}`}>
+        <StatCardSimple>
         <article className={styles.statsCard} role="region" aria-label="Food count">
           <h3>{foodCount}+</h3>
           <h4>Foods in Database</h4>
         </article>
-
+        </StatCardSimple>
+         
+        <StatCardSimple>
         <article className={styles.statsCard} role="region" aria-label="User count">
           <h3>{userCount}+</h3>
           <h4>Active Users</h4>
         </article>
+        </StatCardSimple>
 
+        <StatCardSimple>
         <article className={styles.statsCard} role="region" aria-label="Calories tracked count">
           <h3>{caloriesTracked.toLocaleString()}+</h3>
           <h4>Calories Tracked</h4>
         </article>
+        </StatCardSimple>
 
+        <StatCardSimple>
         <article className={styles.statsCard} role="region" aria-label="Calories tracked count">
           <h3>4.8 ★</h3>
           <h4>Rating</h4>
         </article>
+        </StatCardSimple>
       </div>
       </div>
     </section>

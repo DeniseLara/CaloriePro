@@ -54,13 +54,15 @@ function LoginForm({
           Login
         </button>
       </form>
-        <p className="modal-signup">
-          Don't have an account?{" "}
-          <span className="link-switch" onClick={() => setStep(1)}>
-            Sign Up
-          </span>
-        </p>
-        {error && <p className="error">{error}</p>}
+        
+      <p className="modal-signup">
+        Don't have an account?{" "}
+        <span className="link-switch" onClick={() => setStep(1)}>
+          Sign Up
+        </span>
+      </p>
+        
+      {error && <p className="error">{error}</p>}
     </div>
   );
 }

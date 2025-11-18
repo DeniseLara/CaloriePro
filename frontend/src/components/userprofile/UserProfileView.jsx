@@ -1,5 +1,4 @@
 function UserProfileView({ userData, dailyGoal, handleEditToggle }) {
-  
   return (
     <div className="userprofile-info">
       <h1 className="userprofile-title">Your profile</h1>
@@ -26,10 +25,12 @@ function UserProfileView({ userData, dailyGoal, handleEditToggle }) {
             <p>Required calories</p> {dailyGoal || "N/A"} calories.
           </li>
         </ul>
+        
         <button 
-        className="userprofile-btn edit" 
-        aria-label="Edit your profile" 
-        onClick={handleEditToggle}>
+          className="userprofile-btn edit" 
+          aria-label="Edit your profile" 
+          onClick={handleEditToggle}
+        >
           Edit
         </button>
     </div>

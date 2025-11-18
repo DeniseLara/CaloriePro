@@ -23,12 +23,6 @@ export default function MacroPanel() {
         <MacroCard name="Fats" amount={fats} unit="g" icon="🥑"
           color="#10b981"/>
       </div>
-
-      {/*<div className={styles.summary}>
-        <p className={styles.summaryText}>
-          <strong>Total consumed:</strong> {total} g
-        </p>
-      </div>*/}
     </div>
   );
 }

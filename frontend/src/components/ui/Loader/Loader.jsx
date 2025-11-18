@@ -1,7 +1,7 @@
 import { GiBodyBalance } from "react-icons/gi";
 import "./Loader.css";
 
-function Loader({ text = "Cargando..." }) {
+function Loader({ text = "LOADING..." }) {
   return (
     <div className="loading-screen">
       

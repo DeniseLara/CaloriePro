@@ -11,20 +11,19 @@ import Loader from '../../../components/ui/Loader/LoaderSearch';
 function UserProfile() {
   const { user } = useAuth();
   const {
-      userData,
-      isEditing,
-      editedData,
-      toggleEditing,
-      handleInputChange,
-      closeModal,
-      dailyGoal,
-      isLoading,
-      setIsEditing,
-      saveUserProfile,
-      showModalUser,
-      saveError,
-      setSaveError,
-      isSaving,  
+    userData,
+    isEditing,
+    editedData,
+    toggleEditing,
+    handleInputChange,
+    closeModal,
+    dailyGoal,
+    setIsEditing,
+    saveUserProfile,
+    showModalUser,
+    saveError,
+    setSaveError,
+    isSaving,  
   } = useUserData(); 
 
   // Manejo del envío del perfil editado
@@ -46,7 +45,6 @@ function UserProfile() {
 
   return (
     <section className="userprofile-container section">
-
       <div className="userprofile-content container">
         {!isEditing ? (
           <UserProfileView

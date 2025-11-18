@@ -3,7 +3,6 @@ import {
   getUserProfileFromFirestore,
   saveUserProfileToFirestore,
 } from '../firebaseconfig/firebase'
-
 import { calculateCalories } from "../utils/calculateCalories";
 import { useAuth } from "../context/AuthContext";
 

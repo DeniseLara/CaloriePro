@@ -15,53 +15,60 @@ function HomeAuthenticated() {
   const { caloriesConsumed, addCalories} = useNutrition();
   const [searchQuery, setSearchQuery] = useState("");
   const {nutritionData, analyzeNutrition, error} = useEdamamApi();
-  const { isLoading, errorMessage, handleSearch } = useSearchHandler({ searchQuery, analyzeNutrition });
+  const { 
+    isLoading, 
+    errorMessage, 
+    handleSearch 
+  } = useSearchHandler({ searchQuery, analyzeNutrition });
 
 
   return (
     <section className="home-container section">
       <div className="home__container container">
-      <h1 className="home-title">Welcome to <span className="part-1">
-              Calorie<span className="part-2">Pro</span>
-            </span>
-            <GiBodyBalance className='logo-img'/></h1>
+        <h1 className="home-title">
+          Welcome to 
+          <span className="part-1">
+            Calorie<span className="part-2">Pro</span>
+          </span>
+          <GiBodyBalance className='logo-img'/>
+        </h1>
 
-      {userName && (
-        <p className="home-description">
-          ¡Hi, {userName}! Keep track of what you consume with just a search.
-        </p>
-      )}
+        {userName && (
+          <p className="home-description">
+            ¡Hi, {userName}! Keep track of what you consume with just a search.
+          </p>
+        )}
 
-      <section>
-        <Search 
-          searchQuery={searchQuery} 
-          setSearchQuery={setSearchQuery}
-          isLoading={isLoading}
-          errorMessage={errorMessage}
-          handleSearch={handleSearch}
-          autoFocus={true}
-        />
-
-        {nutritionData ? (
-          <CaloriesResults 
-            nutritionData={nutritionData} 
-            error={error} 
-            onAddCalories={addCalories}  
-            caloriesConsumed={caloriesConsumed}
+        <section>
+          <Search 
+            searchQuery={searchQuery} 
+            setSearchQuery={setSearchQuery}
+            isLoading={isLoading}
+            errorMessage={errorMessage}
+            handleSearch={handleSearch}
+            autoFocus={true}
           />
+
+          {nutritionData ? (
+            <CaloriesResults 
+              nutritionData={nutritionData} 
+              error={error} 
+              onAddCalories={addCalories}  
+              caloriesConsumed={caloriesConsumed}
+            />
           ) : (
-          error && 
-            <p className="error-message" role="alert">
-              {error}
-            </p>
+            error && 
+              <p className="error-message" role="alert">
+                {error}
+              </p>
           )}
-      </section>
+        </section>
       
-      {errorMessage && 
-        <p className="error-message" role="alert">
-          {errorMessage}
-        </p>}
-        </div>
+        {errorMessage && 
+          <p className="error-message" role="alert">
+            {errorMessage}
+          </p>}
+      </div>
     </section>
   );
 }

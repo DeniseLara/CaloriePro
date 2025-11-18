@@ -7,7 +7,6 @@ import {
 } from "react-icons/ri";
 
 function AuthFooter() {
-
   return (
     <footer className="footer section" role="contentinfo">
       <div className="footer__container container grid">

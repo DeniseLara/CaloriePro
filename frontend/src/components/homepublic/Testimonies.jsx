@@ -4,6 +4,7 @@ import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import { PiStarFill, PiStarThin } from "react-icons/pi";
+import { TestimoniesHeader, TestimoniesSlider } from '../ui/Animation/TestimoniesSection';
 
 import Ana from '../../assets/testimonie1.webp';
 import Carla from '../../assets/testimonie3.webp';
@@ -61,16 +62,20 @@ function Testimonies() {
   return (
     <section className={`section ${styles.services}`} id="testimonials">
       <div className={`container ${styles.servicesContainer}`}>
+        <TestimoniesHeader>
         <header className={styles.testimoniesHeader}>
-      <h2 className={`section__title ${styles.servicesTitle}`}>
-        What The People Thinks About Us
-      </h2>
-      <p>
-        Your journey starts here. See how CaloriePro is transforming 
-        daily habits and real lives.
-      </p>
-      </header>
-         <Swiper
+          <h2 className={`section__title ${styles.servicesTitle}`}>
+            What The People Thinks About Us
+          </h2>
+          <p>
+            Your journey starts here. See how CaloriePro is transforming 
+            daily habits and real lives.
+          </p>
+        </header>
+        </TestimoniesHeader>
+         
+        <TestimoniesSlider>
+        <Swiper
           modules={[Autoplay, Pagination]}
           spaceBetween={20}
           slidesPerView={1}
@@ -80,10 +85,10 @@ function Testimonies() {
           className={styles.slider}
         >
         
-        {testimonials.map((t, i) => (
-          <SwiperSlide key={i}>
-          <article className={styles.servicesCard}>
-              <div className={styles.servicesHeader}>
+          {testimonials.map((t, i) => (
+            <SwiperSlide key={i}>
+              <article className={styles.servicesCard}>
+                <div className={styles.servicesHeader}>
                   <img 
                     className={styles.servicesImage} 
                     loading="lazy" 
@@ -91,28 +96,29 @@ function Testimonies() {
                     alt={t.author} 
                   />
                   <div className={styles.authorInfo}>
-                  <h4 className={styles.author}>{t.author}</h4>
-                  <p>{t.occupation}</p>
+                    <h4 className={styles.author}>{t.author}</h4>
+                    <p>{t.occupation}</p>
                   </div>
-              </div>
+                </div>
 
-              <div className={styles.rating}>
-                        {[...Array(5)].map((_, i) =>
-                          i < t.rating ? (
-                            <PiStarFill key={i} className={styles.starActive} />
-                          ) : (
-                            <PiStarThin key={i} className={styles.starInactive} />
-                          )
-                        )}
-              </div>
+                <div className={styles.rating}>
+                {[...Array(5)].map((_, i) =>
+                  i < t.rating ? (
+                    <PiStarFill key={i} className={styles.starActive} />
+                  ) : (
+                    <PiStarThin key={i} className={styles.starInactive} />
+                  )
+                )}
+                </div>
 
-            <p className={styles.servicesDescription}>
-              "{t.text}"
-            </p>
-          </article>
-        </SwiperSlide>
-        ))}
-         </Swiper>
+                <p className={styles.servicesDescription}>
+                  "{t.text}"
+                </p>
+              </article>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+        </TestimoniesSlider>
         </div>
     </section>
   );

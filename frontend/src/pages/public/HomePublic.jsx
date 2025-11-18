@@ -6,7 +6,6 @@ import Testimonies from "../../components/homepublic/Testimonies";
 import Counter from "../../components/homepublic/Counter";
 import HowItWorks from "../../components/homepublic/HowItWorks";
 import Start from "../../components/homepublic/Start";
-import FadeInSection from "../../components/ui/Animation/FadeInSection";
 
 function HomePublic() {
   const benefitsRef = useRef();
@@ -15,25 +14,15 @@ function HomePublic() {
     <>
       <Hero benefitsRef={benefitsRef}/>
 
-      <FadeInSection>
         <Counter />
-      </FadeInSection>
 
-      <FadeInSection>
         <Card ref={benefitsRef}/>
-      </FadeInSection>
 
-      <FadeInSection>
         <HowItWorks />
-      </FadeInSection>
     
-      <FadeInSection>
         <Testimonies />
-      </FadeInSection>
 
-      <FadeInSection>
         <Start />
-      </FadeInSection>
     </>
   );
 }

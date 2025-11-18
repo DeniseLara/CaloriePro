@@ -8,7 +8,6 @@ import LogoButton from '../../ui/Button/LogoButton'
 
 
 function Footer() {
-  
   return (
     <footer className="footer section" role="contentinfo">
       <div className="footer__container container grid">

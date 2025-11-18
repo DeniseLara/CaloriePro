@@ -27,6 +27,7 @@ function SignUpForm({
       <p className="modal-description" id="modal-desc">
         Create an account to access all features
       </p>
+
       <form className="modal-form" onSubmit={handleSignUp}>
         <label className="sr-only" htmlFor="username"></label>
         <input 
@@ -71,13 +72,15 @@ function SignUpForm({
           {loading ? "Signing up..." : "Sign Up"}
         </button>
       </form>
-        <p className="modal-login">
-          Already have an account?{" "}
-          <span className="link-switch" onClick={() => setStep(2)}>
-            Login
-          </span>
-        </p>
-        {error && <p className="error">{error}</p>}
+        
+      <p className="modal-login">
+        Already have an account?{" "}
+        <span className="link-switch" onClick={() => setStep(2)}>
+        Login
+        </span>
+      </p>
+        
+      {error && <p className="error">{error}</p>}
     </div>
   );
 }

@@ -17,18 +17,8 @@ function Dashboard() {
 
   const {
     userData,
-    isEditing,
-    editedData,
-    toggleEditing,
-    handleInputChange,
-    closeModal,
     dailyGoal,
     isLoading,
-    setIsEditing,
-    saveUserProfile,
-    showModalUser,
-    saveError,
-    setSaveError,
     isSaving,  
   } = useUserData(); 
 
@@ -57,67 +47,46 @@ function Dashboard() {
   return (
     <section className="dashboard section" aria-live="polite" aria-busy={isSaving}>
       <div className="dashboard__container container">
-      <header className="dashboard-container" role="banner">
-        <h1 tabIndex={-1} className="dashboard-container-title">
-          Welcome to your Dashboard
-        </h1>
+        <header className="dashboard-container" role="banner">
+          <h1 tabIndex={-1} className="dashboard-container-title">
+            Welcome to your Dashboard
+          </h1>
 
-        <section 
-          className="dashboard-container-descrip" 
-          aria-label="Resume of your goals and daily consume of calories"
-        >
-          <p className="dashboard-container-number">
-            Goal of the day <strong>{dailyGoal}</strong>
-          </p>
-          <p className="dashboard-container-cal">
-            Calories consumed <strong>{caloriesToDisplay}</strong>
-          </p>
+          <div 
+            className="dashboard-container-descrip" 
+            aria-label="Resume of your goals and daily consume of calories"
+          >
+            <p className="dashboard-container-number">
+              Goal of the day <strong>{dailyGoal}</strong>
+            </p>
+            <p className="dashboard-container-cal">
+              Calories consumed <strong>{caloriesToDisplay}</strong>
+            </p>
+          </div>
+        </header>
+
+        <section className="flex-container"aria-label="Charts and user profile">
+          <RadialChart
+            caloriesConsumed={caloriesConsumed} 
+            dailyGoal={dailyGoal}
+            protein={userData.protein || 120}  
+            carbs={userData.carbs || 250}
+            fats={userData.fats || 60}
+          />
+
+          <MacroPanel macros={macros}/>
         </section>
-      </header>
-
-      <section className="flex-container"aria-label="Charts and user profile">
-        <RadialChart
-          caloriesConsumed={caloriesConsumed} 
-          dailyGoal={dailyGoal}
-          protein={userData.protein || 120}  
-          carbs={userData.carbs || 250}
-          fats={userData.fats || 60}
-        />
-
-        <MacroPanel macros={macros}/>
-        </section>
-
-        {/*<UserProfile
-          userData={userData}
-          isEditing={isEditing}
-          editedData={editedData}
-          handleEditToggle={toggleEditing}
-          handleChange={handleInputChange}
-          handleSubmit={handleProfileSubmit}
-          dailyGoal={dailyGoal}
-          isSaving={isSaving}
-          userUid={user.uid}
-          showModalUser={showModalUser}
-          onCloseModal={closeModal}
-        />
-      </section>
-
-      {saveError && 
-      <section role="alert" aria-live="assertive" className="error-message">
-        <p>{saveError}</p>
-      </section>
-      } */}
       
-      <section aria-label="Food history">
-      <Historial 
-        foodHistory={foodHistory} 
-        handleAdd={handleAdd} 
-        loading={isLoading}
-        error={null}
-      />
-      </section>
+        <section aria-label="Food history">
+          <Historial 
+            foodHistory={foodHistory} 
+            handleAdd={handleAdd} 
+            loading={isLoading}
+            error={null}
+          />
+        </section>
       </div>
-  </section>
+    </section>
   );
 }
 

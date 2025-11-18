@@ -21,6 +21,8 @@ function UserProfileForm({
             value={editedData.age}
             onChange={handleInputChange}
             required
+            min="13"
+            max="120"
           />
         </label>
     
@@ -65,6 +67,8 @@ function UserProfileForm({
             value={editedData.weight}
             onChange={handleInputChange}
             required
+            min="30"
+            max="300"
           />
         </label>
     
@@ -78,6 +82,8 @@ function UserProfileForm({
             value={editedData.height}
             onChange={handleInputChange}
             required
+            min="120"
+            max="230"
           />
         </label>
     

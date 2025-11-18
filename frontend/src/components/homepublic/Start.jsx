@@ -1,5 +1,6 @@
 import { useModal } from '../../context/ModalContext';
 import styles from './Start.module.css'; 
+import { CTAContent } from '../ui/Animation/StartSection';
 
 function Start() {
   const { openModal } = useModal();
@@ -7,6 +8,7 @@ function Start() {
   return (
     <section className={`section ${styles.start}`}>
       <div className={`container ${styles.startContainer}`}>
+        <CTAContent>
         <div className={styles.startContent}>
           <h2 className={`section__title ${styles.startTitle}`}>
             ¡Start now and improve your lifestyle!
@@ -26,6 +28,7 @@ function Start() {
             </span>
           </button>
         </div>
+        </CTAContent>
       </div>
     </section>
   );

@@ -1,8 +1,6 @@
 import './CaloriesResults.css';
-
 import { useAuth } from "../../../context/AuthContext.jsx";
 import { useFoodHistory } from '../../../hooks/useFoodHistory.jsx';
-
 import NutritionChart from "./NutritionChart.jsx";
 
 
@@ -23,75 +21,77 @@ function CaloriesResults({ nutritionData, error }) {
   
 
   return (
-  <section className="results-container">
-    <div className="results-content">
-      <header className="heading-container">
-        <h3 className="heading-title">Nutrition Facts</h3>
-        <p className="heading-description">
-          <strong>Food</strong>
-          <span>{nutritionData?.ingredients || "No disponible"}</span>
-        </p>
-        <p className="heading-description">
-          <strong>Calories</strong>
-          <span>{calories.toFixed(0)} kcal</span>
-        </p>
-      </header>
+    <section className="results-container">
+      <div className="results-content">
+        <header className="heading-container">
+          <h3 className="heading-title">Nutrition Facts</h3>
+          <p className="heading-description">
+            <strong>Food</strong>
+            <span>{nutritionData?.ingredients || "No disponible"}</span>
+          </p>
+          <p className="heading-description">
+            <strong>Calories</strong>
+            <span>{calories.toFixed(0)} kcal</span>
+          </p>
+        </header>
 
-      <div className="chart-and-nutrients">
-        <div className="chart-wrapper">
-          <article className="chart-container">
-            <NutritionChart totalNutrients={totalNutrients} />
-          </article>
-          <span className="chart-label">Macronutrient Distribution</span>
-        </div>
+        <div className="chart-and-nutrients">
+          <div className="chart-wrapper">
+            <article className="chart-container">
+              <NutritionChart totalNutrients={totalNutrients} />
+            </article>
+            <span className="chart-label">Macronutrient Distribution</span>
+          </div>
       
-        <section className="nutrient-details">
-          <ul className='nutrient-list'>
-            <li className="nutrient">
-              <strong>Proteins</strong>
-              <div className="nutrient-value">
-                <span className="nutrient-amount">
-                  {(totalNutrients?.PROCNT?.quantity || 0).toFixed(1)}
-                </span>
-                <span className="nutrient-unit">grams</span>
-              </div>
-            </li>
-            <li className="nutrient">
-              <strong>Fats</strong>
-              <div className="nutrient-value">
-                <span className="nutrient-amount">
-                  {(totalNutrients?.FAT?.quantity || 0).toFixed(1)}
-                </span>
-                <span className="nutrient-unit">grams</span>
-              </div>
-            </li>
-            <li className="nutrient">
-              <strong>Carbs</strong>
-              <div className="nutrient-value">
-                <span className="nutrient-amount">
-                  {(totalNutrients?.CHOCDF?.quantity || 0).toFixed(1)}
-                </span>
-                <span className="nutrient-unit">grams</span>
-              </div>
-            </li>
-          </ul>
-        </section>
-      </div>
-    </div>
+          <section className="nutrient-details">
+            <ul className='nutrient-list'>
+              <li className="nutrient">
+                <strong>Proteins</strong>
+                <div className="nutrient-value">
+                  <span className="nutrient-amount">
+                    {(totalNutrients?.PROCNT?.quantity || 0).toFixed(1)}
+                  </span>
+                  <span className="nutrient-unit">grams</span>
+                </div>
+              </li>
 
-    {caloriesAction === null ? (
+              <li className="nutrient">
+                <strong>Fats</strong>
+                <div className="nutrient-value">
+                  <span className="nutrient-amount">
+                    {(totalNutrients?.FAT?.quantity || 0).toFixed(1)}
+                  </span>
+                  <span className="nutrient-unit">grams</span>
+                </div>
+              </li>
+
+              <li className="nutrient">
+                <strong>Carbs</strong>
+                <div className="nutrient-value">
+                  <span className="nutrient-amount">
+                    {(totalNutrients?.CHOCDF?.quantity || 0).toFixed(1)}
+                  </span>
+                  <span className="nutrient-unit">grams</span>
+                </div>
+              </li>
+            </ul>
+          </section>
+        </div>
+      </div>
+
+      {caloriesAction === null ? (
         <button 
           className="nutrient-add-btn" 
           onClick={() => handleAdd(nutritionData)}
-          >
-            Add calories
+        >
+          Add calories
         </button>
-        ) : caloriesAction === "added" ? (
-          <p className="success-message">¡Food added!</p>
-        ) : (
-          <p className="error-message">¡This food has already been added!</p>
-        )}
-    </section>
+      ) : caloriesAction === "added" ? (
+        <p className="success-message">¡Food added!</p>
+      ) : (
+        <p className="error-message">¡This food has already been added!</p>
+      )}
+  </section>
   );
 } 
 
