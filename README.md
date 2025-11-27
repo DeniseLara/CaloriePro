@@ -1,4 +1,4 @@
-## 🍎 CaloriePro — Complete Redesign (2025)
+## CaloriePro — Complete Redesign (2025)
 
 Esta web app fue completamente rediseñada.
 Mejoré el diseño, la arquitectura del código, los colores, la experiencia de usuario y el rendimiento general.
@@ -11,26 +11,26 @@ Si deseas ver la versión anterior, está disponible en la sección Branches de 
 
 ---
 
-## 📌 Características principales
+## Características principales
 
 
-### 🧭 Home pública:
+### Home pública:
 - Explica cómo funciona la aplicación, sus beneficios y características.
 - Incluye un modal para registrarse o iniciar sesión.
 
 
-### 👤 Home para usuarios autenticados:
+### Home para usuarios autenticados:
 - Muestra una bienvenida personalizada.
 - Permite buscar alimentos mediante el buscador de calorías.
 - Los usuarios pueden agregar las calorías de los alimentos y estas se suman al total diario y al historial.
 
 
-### 🆕 Nueva página de Profile:
+### Nueva página de Profile:
 - Los usuarios pueden ver y editar sus datos personales: peso, altura, edad, nivel de actividad diaria, género, objetivo y más.
 - La información del perfil se utiliza para personalizar el cálculo de calorías objetivo.
 
 
-### 📊 Dashboard del usuario:
+### Dashboard del usuario:
 Página con información personalizada del usuario. Muestra:
 - Calorías objetivo del día.
 - Calorías consumidas hasta el momento.
@@ -38,7 +38,7 @@ Página con información personalizada del usuario. Muestra:
 - Historial de alimentos agregados.
 
 
-### 🕛 Tarea programada automática:
+### Tarea programada automática:
 Cada día a la medianoche, una tarea programada externa hace una petición HTTP al backend desarrollado con FastAPI (y desplegado en Render), el cual accede a Firestore para:
 
 - Resetear el total de calorías consumidas (caloriesConsumed).
@@ -46,7 +46,7 @@ Cada día a la medianoche, una tarea programada externa hace una petición HTTP 
 
 ---
 
-## 🛠️ Tecnologías utilizadas
+## Tecnologías utilizadas
 
 ### Frontend
 - React
@@ -63,7 +63,7 @@ Cada día a la medianoche, una tarea programada externa hace una petición HTTP 
 
 ---
 
-## ⚙️ Funcionalidades
+## Funcionalidades
 - Autenticación de usuarios con Firebase (registro y login).
 - Perfil editable: los usuarios pueden definir sus datos (edad, peso, objetivo, etc.).
 - Consumo de calorías en tiempo real: al buscar y agregar alimentos, se actualiza el total diario.
@@ -72,7 +72,7 @@ Cada día a la medianoche, una tarea programada externa hace una petición HTTP 
 
 ---
 
-## 🗓️ Automatización diaria
+## Automatización diaria
 La tarea de reseteo de calorías y limpieza del historial se ejecuta automáticamente todos los días a la medianoche gracias a:
 - **cron-job.org**, que programa la ejecución periódica y hace la petición HTTP al backend.
 - **FastAPI**, que gestiona la lógica.
@@ -81,7 +81,7 @@ La tarea de reseteo de calorías y limpieza del historial se ejecuta automática
 
 ---
 
-## 🔐 Autenticación y base de datos
+## Autenticación y base de datos
 **Firebase Authentication** para registrar, loguear y gestionar usuarios.
 
 **Firebase Firestore** para guardar:
@@ -92,7 +92,7 @@ La tarea de reseteo de calorías y limpieza del historial se ejecuta automática
 
 ---
 
-## 🚀 Despliegue
+## Despliegue
 El frontend y backend están desplegados en producción usando **Render**.  
 La tarea automática diaria es gestionada por **cron-job.org**, que invoca una ruta del backend desplegado.
 
@@ -100,7 +100,7 @@ La tarea automática diaria es gestionada por **cron-job.org**, que invoca una r
 
 ---
 
-✨ **Autor**  
+**Autor**  
 Proyecto desarrollado por **Denise Lara** — *Frontend Developer*.  
 Forma parte de mi portafolio personal. ¡Gracias por visitarlo!
 
