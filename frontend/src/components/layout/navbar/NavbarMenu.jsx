@@ -3,23 +3,13 @@ import NavbarLinks from './NavbarLinks';
 
 function NavbarMenu({
   menuOpen,
-  closeMenu,
-  isAuthenticated,
-  getLinkClass,
-  openModal,
-  handleLogout
+  closeMenu
 }) {
   
   return (
     <div className={`navbar-menu ${menuOpen ? 'show' : ''}`}>
       <ul className="navbar-list">
-        <NavbarLinks 
-          isAuthenticated={isAuthenticated} 
-          getLinkClass={getLinkClass} 
-          closeMenu={closeMenu} 
-          openModal={openModal}
-          handleLogout={handleLogout}
-        />
+        <NavbarLinks />
       </ul>
       <button 
         className="nav-close" 

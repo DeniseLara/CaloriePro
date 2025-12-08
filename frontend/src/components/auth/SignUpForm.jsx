@@ -2,15 +2,13 @@ import { useEffect, useRef } from "react";
 import LogoButton from "../ui/Button/LogoButton";
 
 function SignUpForm({ 
-  formData,
-  handleChange,
-  handleSignUp, 
-  setStep, 
   error,
-  loading,
-  isOpen, 
+  isOpen,
+  handleChange,
+  handleSubmit,
+  formData,
+  switchToLogin
   }) {
-
   const userNameRef = useRef(null);
 
   useEffect(() => {
@@ -28,7 +26,7 @@ function SignUpForm({
         Create an account to access all features
       </p>
 
-      <form className="modal-form" onSubmit={handleSignUp}>
+      <form className="modal-form" onSubmit={handleSubmit}>
         <label className="sr-only" htmlFor="username"></label>
         <input 
           id="username"
@@ -67,15 +65,14 @@ function SignUpForm({
           type="submit" 
           className="btn" 
           aria-label="sign up to your account"
-          disabled={loading}
         >
-          {loading ? "Signing up..." : "Sign Up"}
+          Sign Up
         </button>
       </form>
         
       <p className="modal-login">
         Already have an account?{" "}
-        <span className="link-switch" onClick={() => setStep(2)}>
+        <span className="link-switch" onClick={switchToLogin}>
         Login
         </span>
       </p>

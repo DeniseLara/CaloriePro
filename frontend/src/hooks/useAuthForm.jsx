@@ -1,6 +1,7 @@
 import { useAuth } from '../context/AuthContext'
 import { useState, useCallback } from 'react';
-import { useNavigate } from "react-router-dom"; 
+import { useModal } from '../context/ModalContext';
+import { useNavigate } from 'react-router-dom';
 
 // Regex simple para validar email
 const isValidEmail = (email) => /\S+@\S+\.\S+/.test(email);
@@ -26,8 +27,8 @@ const getErrorMessage = (code) => {
   }
 };
 
-export function useAuthForm({ closeModal }) {
-  const navigate = useNavigate();
+export function useAuthForm() {
+  const { closemodal } = useModal()
   const { login, signUp } = useAuth();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -37,6 +38,7 @@ export function useAuthForm({ closeModal }) {
   })
   const [step, setStep] = useState(1);
   const [error, setError] = useState("");
+  const navigate = useNavigate()
   
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,7 +52,7 @@ export function useAuthForm({ closeModal }) {
     if (formData.password.length < 6) return "La contraseña debe tener al menos 6 caracteres.";
     return null;
   }, [formData]);
-  
+
 
   // Manejo de formulario de registro
   const handleSignUp = async (e) => {
@@ -73,9 +75,9 @@ export function useAuthForm({ closeModal }) {
       ); 
       if (userCredential) {
         setFormData({ username: "", email: "", password: "" })
-        closeModal();
-        navigate("/dashboard"); 
       }
+      closemodal()
+      navigate("/dashboard")
     } catch (err) {
       setError(getErrorMessage(err.code));
     } finally {
@@ -100,9 +102,9 @@ export function useAuthForm({ closeModal }) {
       const userCredential = await login(formData.email, formData.password);
         if (userCredential) {
           setFormData({ email: "", password: ""})
-          closeModal();
-          navigate("/dashboard");
         } 
+        closemodal()
+        navigate("/dashboard")
       } catch (err) {
         setError(getErrorMessage(err.code));
       } finally {
@@ -110,11 +112,16 @@ export function useAuthForm({ closeModal }) {
     }
   };
 
+  // Función controlada para cambiar de paso
+  const switchToLogin = () => setStep(2);
+  const switchToSignUp = () => setStep(1);
 
   return {
     handleChange,
     formData,
-    step, setStep,
+    step,
+    switchToLogin,
+    switchToSignUp,
     loading,
     error,
     handleSignUp,

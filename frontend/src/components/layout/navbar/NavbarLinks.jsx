@@ -1,13 +1,17 @@
 import { Link } from 'react-scroll';
 import { Link as RouterLink } from 'react-router-dom';
+import { useNavbar } from '../../../hooks/useNavbar';
+import { useModal } from '../../../context/ModalContext';
+import { useAuth } from '../../../context/AuthContext';
 
-function NavbarLinks({ 
-  isAuthenticated, 
-  getLinkClass, 
-  closeMenu, 
-  openModal,
-  handleLogout 
-}) {
+function NavbarLinks() {
+  const { isAuthenticated } = useAuth()
+  const { 
+    getLinkClass, 
+    handleLogout, 
+    closeMenu 
+  } = useNavbar()
+  const { openModal } = useModal()
 
   return (
     <>

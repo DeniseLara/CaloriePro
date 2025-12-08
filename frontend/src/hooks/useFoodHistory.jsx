@@ -6,11 +6,13 @@ import { Timestamp } from 'firebase/firestore';
 
 import { getFoodHistoryFromFirestore, addFoodItemToHistory } from '../firebaseconfig/firebase';
 import { useNutrition } from '../context/NutritionContext'
+import { useAuth } from '../context/AuthContext';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-export function useFoodHistory(user) {
+export function useFoodHistory() {
+  const { user } = useAuth()
   const [foodHistory, setFoodHistory] = useState([]);
   const [caloriesAction, setCaloriesAction] = useState(null);
   const { caloriesConsumed, addCalories, updateMacros } = useNutrition();

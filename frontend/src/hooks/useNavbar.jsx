@@ -45,7 +45,6 @@ export function useNavbar() {
 
   return {
     menuOpen,
-    isAuthenticated,
     activeLink,
     toggleMenu,
     closeMenu,

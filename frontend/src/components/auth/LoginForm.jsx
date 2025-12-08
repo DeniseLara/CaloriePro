@@ -2,12 +2,12 @@ import { useEffect, useRef } from "react";
 import LogoButton from '../ui/Button/LogoButton'
 
 function LoginForm({ 
-  formData,
-  handleChange,
-  handleLogin, 
-  setStep, 
   error,
   isOpen,
+  handleChange,
+  handleSubmit,
+  formData,
+  switchToSignUp
  }) {
 
   const emailRef = useRef(null);
@@ -23,7 +23,7 @@ function LoginForm({
       <h2 className="modal-title login" id="modal-title">
         Login to <LogoButton/>
       </h2>
-      <form className="modal-form" onSubmit={handleLogin}>
+      <form className="modal-form" onSubmit={handleSubmit}>
         <label className="sr-only" htmlFor="email">Email</label>
         <input 
           id="email"
@@ -57,7 +57,7 @@ function LoginForm({
         
       <p className="modal-signup">
         Don't have an account?{" "}
-        <span className="link-switch" onClick={() => setStep(1)}>
+        <span className="link-switch" onClick={switchToSignUp}>
           Sign Up
         </span>
       </p>

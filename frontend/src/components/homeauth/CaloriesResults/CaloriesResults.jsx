@@ -1,12 +1,10 @@
 import './CaloriesResults.css';
-import { useAuth } from "../../../context/AuthContext.jsx";
 import { useFoodHistory } from '../../../hooks/useFoodHistory.jsx';
 import NutritionChart from "./NutritionChart.jsx";
 
 
 function CaloriesResults({ nutritionData, error }) {
-  const { user } = useAuth();
-  const { caloriesAction, handleAdd } = useFoodHistory(user);
+  const { caloriesAction, handleAdd } = useFoodHistory();
 
   if (error) {
     return <p className="error-message">{error}</p>;

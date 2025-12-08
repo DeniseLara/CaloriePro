@@ -14,15 +14,15 @@ function HomePublic() {
     <>
       <Hero benefitsRef={benefitsRef}/>
 
-        <Counter />
+      <Counter />
 
-        <Card ref={benefitsRef}/>
+      <Card ref={benefitsRef}/>
 
-        <HowItWorks />
+      <HowItWorks />
     
-        <Testimonies />
+      <Testimonies />
 
-        <Start />
+      <Start />
     </>
   );
 }
