@@ -1,6 +1,6 @@
+import styles from './Card.module.css'
 import { forwardRef } from 'react';
 import { FaUtensils, FaChartPie, FaClipboardList } from "react-icons/fa";
-import styles from './Card.module.css'
 import { BenefitsHeader, BenefitCard } from '../ui/Animation/BenefitsSection';
 
 const features = [

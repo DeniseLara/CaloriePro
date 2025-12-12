@@ -6,7 +6,7 @@ import {
 import { calculateCalories } from "../utils/calculateCalories";
 import { useAuth } from "../context/AuthContext";
 
-export const useUserData = () => {
+export function useUserData() {
   const { user } = useAuth();
   const [userData, setUserData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);

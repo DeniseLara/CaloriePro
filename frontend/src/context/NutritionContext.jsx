@@ -4,7 +4,7 @@ import { useAuth } from './AuthContext';
 
 const NutritionContext = createContext();
 
-export const NutritionProvider = ({ children }) => {
+export function NutritionProvider({ children }) {
   // Estado para las calorías consumidas
   const { user } = useAuth();
   const db = getFirestore();

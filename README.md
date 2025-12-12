@@ -103,4 +103,3 @@ La tarea automática diaria es gestionada por **cron-job.org**, que invoca una r
 **Autor**  
 Proyecto desarrollado por **Denise Lara** — *Frontend Developer*.  
 Forma parte de mi portafolio personal. ¡Gracias por visitarlo!
-

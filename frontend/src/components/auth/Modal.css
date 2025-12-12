@@ -96,6 +96,12 @@
     opacity: 1;
   }
 }
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
   
 .modal-form input {
   width: 100%;
@@ -171,10 +177,10 @@
   text-decoration: underline;
 }
   
-.error {
+.error-auth-message {
   font-size: var(--fs-sm);
   color: #dc2626;
-  margin-top: 1rem;
+  margin: 1rem 0;
 }
 
 .modal-login{

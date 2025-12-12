@@ -1,8 +1,13 @@
 import "./Modal.css";
 import { useAuthForm } from '../../hooks/useAuthForm'
 import { useModal } from "../../context/ModalContext";
-import { overlayVariants, modalVariants, contentVariants } from "../ui/Animation/ModalAnimations";
+import { 
+  overlayVariants, 
+  modalVariants, 
+  contentVariants 
+} from "../ui/Animation/ModalAnimations";
 import { motion, AnimatePresence } from "framer-motion";
+
 import SignUpForm from "./SignUpForm";
 import LoginForm from "./LoginForm"
 import LoaderModal from "../ui/Loader/LoaderModal";
@@ -11,14 +16,11 @@ import LoaderModal from "../ui/Loader/LoaderModal";
 function Modal() {
   const {
     step,
-    loading,
-    error,
-    handleChange,
-    handleSignUp,
-    handleLogin,
-    formData,
     switchToLogin,
-    switchToSignUp
+    switchToSignUp,
+    handleSubmit,
+    loading,
+    serverError
   } = useAuthForm();
   const { showModal, closeModal } = useModal()
 
@@ -26,23 +28,23 @@ function Modal() {
     if (loading) return <LoaderModal />
     switch (step) {
       case 1:
-        return <SignUpForm 
-                  error={error} 
-                  isOpen={showModal}
-                  formData={formData}
-                  handleChange={handleChange}
-                  handleSubmit={handleSignUp}
-                  switchToLogin={switchToLogin}
-                />
+        return (
+          <SignUpForm 
+            isOpen={showModal} 
+            switchToLogin={switchToLogin}
+            handleSubmit={handleSubmit}
+            serverError={serverError}
+          />
+        )
       case 2:
-        return <LoginForm 
-                  error={error} 
-                  isOpen={showModal}
-                  formData={formData}
-                  handleChange={handleChange}
-                  handleSubmit={handleLogin}
-                  switchToSignUp={switchToSignUp}
-                />
+        return (
+          <LoginForm 
+            isOpen={showModal} 
+            switchToSignUp={switchToSignUp}
+            handleSubmit={handleSubmit}
+            serverError={serverError}
+          />
+        )
       default:
         return null
     }

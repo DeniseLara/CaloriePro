@@ -1,5 +1,5 @@
 import styles from './Counter.module.css'
-import { StatCard, StatCardSimple } from '../ui/Animation/StatsSection';
+import { StatCardSimple } from '../ui/Animation/StatsSection';
 
 function Counter() {
   const foodCount = 1000;

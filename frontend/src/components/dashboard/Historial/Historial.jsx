@@ -1,12 +1,11 @@
 import './Historial.css';
 import { useState } from 'react';
-
 import Loader from '../../ui/Loader/Loader';
 import HistorialList from './HistorialList';
 import ToggleButton from '../../ui/Button/ToggleButton'
 
 
-function Historial({ foodHistory = [], loading = false, error = null }) {
+function Historial({ foodHistory, error, loading }) {
   const [visibleItems, setVisibleItems] = useState(5); 
   const [showAll, setShowAll] = useState(false);
   
@@ -37,17 +36,17 @@ function Historial({ foodHistory = [], loading = false, error = null }) {
 
       {loading ? (
         <Loader/>
-      ) : foodHistory.length > 0 ? (
-        <>
-           <HistorialList foodHistory={foodHistory} visibleItems={visibleItems} />
-          {(foodHistory.length > visibleItems || showAll) && (
-            <ToggleButton showAll={showAll} onToggle={handleToggle} />
-            )}
-          </>
-      ) : (
+      ) : foodHistory.length === 0 ? (
         <p className="historial-message" role="status">
           You don't have any food history for today.
         </p>
+      ) : (
+        <>
+          <HistorialList foodHistory={foodHistory} visibleItems={visibleItems} />
+          {(foodHistory.length > visibleItems || showAll) && (
+            <ToggleButton showAll={showAll} onToggle={handleToggle} />
+          )}
+        </>
       )}
     </section>
   );

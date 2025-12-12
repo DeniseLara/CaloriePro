@@ -1,5 +1,5 @@
-import { useModal } from '../../context/ModalContext';
 import styles from './Start.module.css'; 
+import { useModal } from '../../context/ModalContext';
 import { CTAContent } from '../ui/Animation/StartSection';
 
 function Start() {

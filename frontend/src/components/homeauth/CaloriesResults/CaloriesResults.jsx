@@ -2,7 +2,6 @@ import './CaloriesResults.css';
 import { useFoodHistory } from '../../../hooks/useFoodHistory.jsx';
 import NutritionChart from "./NutritionChart.jsx";
 
-
 function CaloriesResults({ nutritionData, error }) {
   const { caloriesAction, handleAdd } = useFoodHistory();
 

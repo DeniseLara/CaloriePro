@@ -1,8 +1,8 @@
 import styles from "./Testimonies.module.css";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination } from "swiper/modules";
 import { PiStarFill, PiStarThin } from "react-icons/pi";
 import { TestimoniesHeader, TestimoniesSlider } from '../ui/Animation/TestimoniesSection';
 
@@ -10,7 +10,6 @@ import Ana from '../../assets/testimonie1.webp';
 import Carla from '../../assets/testimonie3.webp';
 import Juan from '../../assets/testimonie2.webp';
 import Luis from '../../assets/testimonie4.webp';
-
 
 function Testimonies() {
   const testimonials = [
@@ -47,17 +46,6 @@ function Testimonies() {
       rating: 4
     },
   ];
-
-  const settings = {
-    dots: true, 
-    infinite: true, 
-    speed: 500, 
-    slidesToShow: 1, 
-    slidesToScroll: 1, 
-    autoplay: true, 
-    autoplaySpeed: 3000, 
-    arrows: false, 
-  };
 
   return (
     <section className={`section ${styles.services}`} id="testimonials">

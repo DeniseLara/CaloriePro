@@ -9,15 +9,14 @@ function Search({
   isLoading, 
   errorMessage, 
   handleSearch,
-  autoFocus, 
 }) {  
   const inputRef = useRef(null);
 
   useEffect(() => {
-    if (autoFocus && inputRef.current) {
+    if (inputRef.current) {
       inputRef.current.focus();
     }
-  }, [autoFocus])
+  }, [])
 
   return (
     <div className="search-container">

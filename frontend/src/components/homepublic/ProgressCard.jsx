@@ -1,6 +1,5 @@
-import { Target, TrendingUp } from "lucide-react";
 import styles from "./ProgressCard.module.css";
-
+import { Target, TrendingUp } from "lucide-react";
 
 export default function ProgressCard() {
   return (

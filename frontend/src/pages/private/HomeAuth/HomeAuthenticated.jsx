@@ -1,8 +1,5 @@
 import './HomeAuthenticated.css';
 import { GiBodyBalance } from "react-icons/gi";
-
-import { useState } from "react";
-import { useNutrition } from "../../../context/NutritionContext";
 import { useAuth } from "../../../context/AuthContext";
 import { useSearchHandler } from "../../../hooks/useSearchHandler";
 import { useEdamamApi } from '../../../api/EdamamApi';
@@ -12,15 +9,14 @@ import CaloriesResults from '../../../components/homeauth/CaloriesResults/Calori
 
 function HomeAuthenticated() {
   const { userName } = useAuth();
-  const { caloriesConsumed, addCalories} = useNutrition();
-  const [searchQuery, setSearchQuery] = useState("");
-  const {nutritionData, analyzeNutrition, error} = useEdamamApi();
+  const { nutritionData, analyzeNutrition, error } = useEdamamApi();
   const { 
     isLoading, 
     errorMessage, 
-    handleSearch 
-  } = useSearchHandler({ searchQuery, analyzeNutrition });
-
+    handleSearch,
+    searchQuery,
+    setSearchQuery
+  } = useSearchHandler({ analyzeNutrition });
 
   return (
     <section className="home-container section">
@@ -46,15 +42,12 @@ function HomeAuthenticated() {
             isLoading={isLoading}
             errorMessage={errorMessage}
             handleSearch={handleSearch}
-            autoFocus={true}
           />
 
           {nutritionData ? (
             <CaloriesResults 
               nutritionData={nutritionData} 
               error={error} 
-              onAddCalories={addCalories}  
-              caloriesConsumed={caloriesConsumed}
             />
           ) : (
             error && 

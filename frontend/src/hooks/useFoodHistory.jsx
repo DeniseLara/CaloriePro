@@ -14,19 +14,29 @@ dayjs.extend(timezone);
 export function useFoodHistory() {
   const { user } = useAuth()
   const [foodHistory, setFoodHistory] = useState([]);
+  const [loadingHistory, setLoadingHistory] = useState(true);
+  const [error, setError] = useState(null);
   const [caloriesAction, setCaloriesAction] = useState(null);
-  const { caloriesConsumed, addCalories, updateMacros } = useNutrition();
+  const { addCalories, updateMacros } = useNutrition();
 
   // Escuchar cambios en tiempo real en foodHistory
   useEffect(() => {
     const loadHistory = async () => {
-    if (!user) return;
+    if (!user) {
+      setLoadingHistory(false);
+      setError(null);
+      return
+    }
 
     try {
+        setLoadingHistory(true)
+        setError(null);
+
         const history = await getFoodHistoryFromFirestore(user.uid);
         // hacemos la conversión de Timestamp a Date para cada item
         const historyWithDates = history.map(item => ({
           ...item,
+          id: item.id,
           date: item.date instanceof Timestamp
             ? item.date.toDate()
             : item.date instanceof Date
@@ -36,6 +46,9 @@ export function useFoodHistory() {
 
         setFoodHistory(historyWithDates); 
       } catch (error) {
+        setError(new Error('Failed to load food history'));
+      } finally {
+        setLoadingHistory(false)
       }
     };
 
@@ -45,6 +58,7 @@ export function useFoodHistory() {
 
   const handleAdd = async (nutritionData) => {
     if (!user) {
+      setError(new Error('User not authenticated'));
       return;
     }
 
@@ -57,41 +71,52 @@ export function useFoodHistory() {
     const carbs = nutritionData?.totalNutrients?.CHOCDF?.quantity || 0;
 
     const currentDate = Timestamp.now();
-    
-    const alreadyAddedToday = foodHistory.some(
-      (item) => item.name === foodName && dayjs(item.date).isSame(dayjs(), 'day')
-    );
 
-    if (!alreadyAddedToday) {
-      const newFoodItem = {
-        name: foodName,
-        calories,
-        date: currentDate,
-    };
+    const newFoodItem = {
+      name: foodName,
+      calories,
+      date: currentDate,
+      protein,
+      fats,
+      carbs
+    }
 
     try {
-        await addFoodItemToHistory(user.uid, newFoodItem, caloriesConsumed + calories);
-        setCaloriesAction("added");
-        addCalories(calories);
-        updateMacros({
-          protein,
-          carbs,
-          fats,
-        });
-        const updatedHistoryRaw = await getFoodHistoryFromFirestore(user.uid);
-        // Aplicar conversión al actualizar el estado también
-        const updatedHistory = updatedHistoryRaw.map(item => ({
-          ...item,
-          date: item.date instanceof Timestamp ? item.date.toDate() : item.date,
-        }));
+        setError(null);
+        const result = await addFoodItemToHistory(
+          user.uid, 
+          newFoodItem, 
+        );
+
+        if (result.success && result.id) {
+          // Actualizar estado LOCALMENTE sin refetch
+          const newItemWithId = {
+            id: result.id,
+            ...newFoodItem,
+            date: newFoodItem.date.toDate() 
+          };
         
-        setFoodHistory(updatedHistory);      
+          // Agregar al inicio del array (orden descendente)
+          setFoodHistory(prev => [newItemWithId, ...prev]);
+        
+          // Actualizar contexto de nutrición
+          addCalories(calories);
+          updateMacros({ protein, carbs, fats });
+          setCaloriesAction("added");
+        } else {
+          setError(new Error('Failed to add food item'));
+        }          
       } catch (error) {
+        setError(new Error('Failed to add food item'));
+        setCaloriesAction("error");
       }
-    } else {
-      setCaloriesAction("already_added");
-    }
   };
 
-  return { foodHistory, caloriesAction, handleAdd };
+  return { 
+    foodHistory, 
+    caloriesAction, 
+    handleAdd, 
+    loadingHistory,
+    error,
+  };
 }

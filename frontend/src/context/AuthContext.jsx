@@ -1,5 +1,9 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { 
+  onAuthStateChanged, 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword 
+} from 'firebase/auth';
 import { auth } from '../firebaseconfig/firebase';
 import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore'; 
 
@@ -11,7 +15,7 @@ export const useAuth = () => {
   return useContext(AuthContext);
 };
 
-export const AuthProvider = ({ children }) => {
+export function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);  
@@ -33,6 +37,7 @@ export const AuthProvider = ({ children }) => {
         const name = docSnap.data().userName;
         setUserName(name);  // Establece el nombre del usuario en el estado
         sessionStorage.setItem('userName', name); // Guardar en cache
+        return name
         } else {
         setUserName(null);
         sessionStorage.removeItem('userName');
@@ -96,7 +101,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-
   // Efecto que escucha el estado de autenticación
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -114,7 +118,6 @@ export const AuthProvider = ({ children }) => {
 
     return () => unsubscribe();  // Limpiar el listener al desmontar el componente
   }, []);
-
 
   // limpia el error automáticamente
   useEffect(() => {

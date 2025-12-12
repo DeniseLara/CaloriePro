@@ -1,8 +1,8 @@
 import styles from './Hero.module.css'
-import { useModal } from '../../context/ModalContext';
 import { IoFitnessOutline } from "react-icons/io5";
-import ProgressCard from './ProgressCard';
+import { useModal } from '../../context/ModalContext';
 import { HeroCard, HeroContent } from '../ui/Animation/HeroSection';
+import ProgressCard from './ProgressCard';
 
 function Hero({ benefitsRef }) {
   const { openModal } = useModal();

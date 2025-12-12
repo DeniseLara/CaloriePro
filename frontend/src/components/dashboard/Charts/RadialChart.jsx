@@ -2,6 +2,13 @@ import './RadialChart.css'
 import { useMemo } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { 
+  COLORS, 
+  getStatus, 
+  getMessage, 
+  getChartData, 
+  getChartOptions 
+} from './chartUtils';
+import { 
   Chart as ChartJS, 
   Title, 
   Tooltip, 
@@ -12,109 +19,30 @@ import {
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels'; 
 
-ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale, LinearScale, ChartDataLabels);
-
-// Colores personalizados para el gráfico
-const COLORS = {
-  over: '#ef4444',           // Rojo para exceso
-  achieved: '#10b981',       // Verde accent para meta alcanzada
-  inProgress: '#34d399',     // Verde más claro para progreso
-  remaining: '#e5e7eb'       // Gris claro para restante
-};
-
-// Utilidades
-const getStatus = (goal, consumed) => {
-  if (consumed > goal) return 'over';
-  if (consumed === goal) return 'achieved';
-  return 'inProgress';
-};
-
-const getMessage = (status, percent) => {
-  switch (status) {
-    case 'over':
-      return "¡You've exceeded your limit!";
-    case 'achieved':
-      return '¡Goal achieved!';
-    default:
-      return `${percent.toFixed(1)}% Completed`;
-  }
-};
-
+ChartJS.register(
+  Title, 
+  Tooltip, 
+  Legend, 
+  ArcElement, 
+  CategoryScale, 
+  LinearScale, 
+  ChartDataLabels
+);
 
 function RadialChart({ caloriesConsumed, dailyGoal }) {
   const status = getStatus(dailyGoal, caloriesConsumed);
   const remaining = Math.max(dailyGoal - caloriesConsumed, 0);
   const percentage = (caloriesConsumed / dailyGoal) * 100;
 
-  // Si aún no hay datos, mostrar gráfico predeterminado
-  const chartData = useMemo(() => {
-  if (!dailyGoal || dailyGoal <= 0) {
-    return {
-        labels: ['No data'],
-        datasets: [
-          {
-            label: 'Calories',
-            data: [1],
-            backgroundColor: [COLORS.remaining],
-            borderWidth: 0.5,
-            cutout: '70%',
-          },
-        ],
-      };
-    }
-    
-  return {
-    labels: ['Calories Consumed', 'Calories Left'],
-    datasets: [
-      {
-        label: 'Calories',
-        data: status === 'over' ? [caloriesConsumed, 0] : [caloriesConsumed, remaining],
-        backgroundColor: [
-          status === 'over' 
-            ? COLORS.over 
-            : status === 'achieved'
-            ? COLORS.achieved
-            : COLORS.inProgress,
-          COLORS.remaining,
-        ],
-        borderColor: [
-          status === 'over' 
-            ? COLORS.over
-            : status === 'achieved' 
-            ? COLORS.achieved
-            : COLORS.inProgress,
-          COLORS.remaining,
-        ],
-          borderWidth: 0.5,
-          cutout: '70%',
-        },
-      ],
-    };
-  }, [dailyGoal, caloriesConsumed, status, remaining]);
+  const chartData = useMemo(
+    () => getChartData(caloriesConsumed, dailyGoal, status, remaining),
+    [caloriesConsumed, dailyGoal, status, remaining]
+  );
 
-    const chartOptions = {
-      responsive: true,
-      maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      title: { display: false },
-      datalabels: { display: false },
-      tooltip: {
-        enabled: dailyGoal > 0,
-        callbacks: {
-          label: (tooltipItem) => {
-            const { raw, label } = tooltipItem;
-            return label === 'Calories Consumed'
-              ? `Consumed: ${raw} kcal`
-              : `${label}: ${raw} kcal`;
-          },
-        },
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
-        bodyFont: { size: 14, color: '#4F4F4F' },
-        titleFont: { size: 16, weight: 'light', color: '#4F4F4F' },
-      },
-    },
-  };
+  const chartOptions = useMemo(
+    () => getChartOptions(dailyGoal),
+    [dailyGoal]
+  );
 
   return (
     <section className="radial-chart-container">

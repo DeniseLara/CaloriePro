@@ -1,6 +1,6 @@
 import { format, isValid } from 'date-fns';
 
-function HistorialItem({ item, index }) {
+function HistorialItem({ item }) {
   const roundedCalories = Math.round(item.calories);
   let formattedDate = 'Fecha no disponible';
   if (item.date instanceof Date && isValid(item.date)) {
@@ -12,7 +12,7 @@ function HistorialItem({ item, index }) {
       className="historial-item"
       role="listitem"
       tabIndex="0"
-      aria-label={`Item ${index + 1}. Name: ${item.name}, Calories: ${roundedCalories}, Date: ${formattedDate}`}
+      aria-label={`Item ${item.id}. Name: ${item.name}, Calories: ${roundedCalories}, Date: ${formattedDate}`}
     >
       <span className="historial-item-name">{item.name}</span>
       <span className="historial-item-calories">{roundedCalories} kcal</span>

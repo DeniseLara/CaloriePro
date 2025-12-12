@@ -83,14 +83,19 @@ export const getFoodHistoryFromFirestore = async (userUid) => {
 
 
 export const addFoodItemToHistory = async (userUid, newFoodItem, caloriesConsumed) => {
-  if (!userUid) return false;
+  if (!userUid) return { success: false, id: null };
 
   try {
     // Referencia a la subcolección foodHistory dentro del usuario
-    await addDoc(getFoodHistoryCollectionRef(userUid), newFoodItem);
-    return updateUserDoc(userUid, { caloriesConsumed });
+    const docRef = await addDoc(getFoodHistoryCollectionRef(userUid), newFoodItem);
+
+    return {
+      success: true,
+      id: docRef.id,
+      foodItem: { id: docRef.id, ...newFoodItem }
+    }
   } catch {
-    return false;
+    return { success: false, id: null };
   }
 };
 

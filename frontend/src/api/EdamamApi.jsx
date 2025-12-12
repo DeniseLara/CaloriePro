@@ -69,7 +69,6 @@ export const useEdamamApi = () => {
       setError("");
       
     } catch (err) {
-      console.error(err);
       setError("Ocurrió un error al conectar con la API.");
       setNutritionData(null);
     }

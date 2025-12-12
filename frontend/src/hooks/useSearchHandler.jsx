@@ -1,6 +1,7 @@
 import { useState } from "react";
 
-export function useSearchHandler({ searchQuery, analyzeNutrition }) {
+export function useSearchHandler({ analyzeNutrition }) {
+  const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -33,5 +34,7 @@ export function useSearchHandler({ searchQuery, analyzeNutrition }) {
     isLoading,
     errorMessage,
     handleSearch,
+    searchQuery,
+    setSearchQuery
   };
 }

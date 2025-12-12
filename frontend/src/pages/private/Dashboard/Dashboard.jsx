@@ -13,8 +13,7 @@ import SkeletonDashboard from '../../../components/ui/Skeleton/Skeleton.jsx'
 function Dashboard() {
   const { user } = useAuth();
   const { macros, caloriesConsumed } = useNutrition();
-  const { foodHistory, handleAdd} = useFoodHistory(user);
-
+  const { foodHistory, loadingHistory, error } = useFoodHistory();
   const {
     userData,
     dailyGoal,
@@ -33,7 +32,6 @@ function Dashboard() {
     </div>
     );
   };
-
 
   // Si está cargando los datos
   if (isLoading) {
@@ -80,9 +78,8 @@ function Dashboard() {
         <section aria-label="Food history">
           <Historial 
             foodHistory={foodHistory} 
-            handleAdd={handleAdd} 
-            loading={isLoading}
-            error={null}
+            error={error}
+            loading={loadingHistory}
           />
         </section>
       </div>
