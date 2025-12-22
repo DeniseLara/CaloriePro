@@ -1,5 +1,4 @@
 import { useRef } from "react";
-
 import Hero from "../../components/homepublic/Hero";
 import Card from "../../components/homepublic/Card";
 import Testimonies from "../../components/homepublic/Testimonies";
@@ -13,15 +12,10 @@ function HomePublic() {
   return (
     <>
       <Hero benefitsRef={benefitsRef}/>
-
       <Counter />
-
       <Card ref={benefitsRef}/>
-
       <HowItWorks />
-    
       <Testimonies />
-
       <Start />
     </>
   );

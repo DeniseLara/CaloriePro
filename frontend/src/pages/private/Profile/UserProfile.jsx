@@ -15,10 +15,8 @@ function UserProfile() {
     isEditing,
     editedData,
     toggleEditing,
-    handleInputChange,
     closeModal,
     dailyGoal,
-    setIsEditing,
     saveUserProfile,
     showModalUser,
     saveError,
@@ -27,16 +25,15 @@ function UserProfile() {
   } = useUserData(); 
 
   // Manejo del envío del perfil editado
-  const handleProfileSubmit = useCallback(async (e) => {
-    e.preventDefault();
+  const handleProfileSubmit = useCallback(async (formData) => {
     setSaveError(null);
         
     try {
-      await saveUserProfile(editedData, user.uid); 
+      await saveUserProfile(formData, user.uid); 
     } catch (error) {
       setSaveError("No se pudo guardar el perfil. Intenta nuevamente")
     }
-  }, [editedData, saveUserProfile, setIsEditing, setSaveError, user.uid]);
+  }, [saveUserProfile, setSaveError, user.uid]);
   
 
   if (!userData) {
@@ -55,7 +52,6 @@ function UserProfile() {
         ) : (
           <UserProfileForm
             editedData={editedData}
-            handleInputChange={handleInputChange}
             onSubmit={handleProfileSubmit}
             isSaving={isSaving}
             handleEditToggle={toggleEditing}

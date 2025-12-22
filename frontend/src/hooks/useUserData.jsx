@@ -39,9 +39,8 @@ export function useUserData() {
     }
   };
 
-  fetchUserData();
-}, [user, userData]); 
-
+    fetchUserData();
+  }, [user, userData]); 
 
   useEffect(() => {
     // Este useEffect se ejecutará cuando userData cambie, asegurando que dailyGoal se actualice.
@@ -52,7 +51,6 @@ export function useUserData() {
       setDailyGoal(0);
     }
   }, [userData]); // Esto hace que el dailyGoal se actualice cuando userData cambie
-
 
   // Función para guardar el perfil
   const saveUserProfile = async (data) => {
@@ -74,7 +72,6 @@ export function useUserData() {
     }
   };
 
-
   // toggle modo edición
   const toggleEditing = useCallback(() => {
     if (!isEditing && userData) {
@@ -83,21 +80,13 @@ export function useUserData() {
     setIsEditing(prev => !prev);
   }, [isEditing, userData]);
 
-
   // Función para cerrar el modal
   const closeModal = () => {
     setShowModalUser(false);
   };
-
-
-  const handleInputChange = useCallback((e) => {
-    const { name, value } = e.target;
-    setEditedData(prev => ({ ...prev, [name]: value}));
-  }, [])
   
 
   return {
-    handleInputChange,
     userData,
     isEditing,
     editedData,

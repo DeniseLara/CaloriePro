@@ -3,12 +3,8 @@ import { useAuth } from '../context/AuthContext'
 
 export function useAuthForm() {
   const { login, signUp } = useAuth();
-  const [step, setStep] = useState(1);
   const [serverError, setServerError] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  const switchToLogin = () => setStep(2);
-  const switchToSignUp = () => setStep(1);
 
   const handleSubmit = async (type, data) => {
     setLoading(true);
@@ -38,11 +34,8 @@ export function useAuthForm() {
   };
 
   return {
-    step,
-    switchToLogin,
     serverError,
     loading,
     handleSubmit,
-    switchToSignUp
   };
 }

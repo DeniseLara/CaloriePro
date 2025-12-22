@@ -1,5 +1,6 @@
 import "./Modal.css";
-import { useAuthForm } from '../../hooks/useAuthForm'
+import { useState } from "react";
+import { useAuthForm } from "../../hooks/useAuthForm";
 import { useModal } from "../../context/ModalContext";
 import { 
   overlayVariants, 
@@ -7,48 +8,21 @@ import {
   contentVariants 
 } from "../ui/Animation/ModalAnimations";
 import { motion, AnimatePresence } from "framer-motion";
-
-import SignUpForm from "./SignUpForm";
-import LoginForm from "./LoginForm"
-import LoaderModal from "../ui/Loader/LoaderModal";
-
+import AuthForm from "./AuthForm";
+import LoaderModal from '../ui/Loader/LoaderModal'
 
 function Modal() {
-  const {
-    step,
-    switchToLogin,
-    switchToSignUp,
-    handleSubmit,
-    loading,
-    serverError
-  } = useAuthForm();
   const { showModal, closeModal } = useModal()
+  const [formType, setFormType] = useState('login'); // 'login' o 'signup'
+  const { handleSubmit, loading, serverError } = useAuthForm();
 
-  const renderStep = () => {
-    if (loading) return <LoaderModal />
-    switch (step) {
-      case 1:
-        return (
-          <SignUpForm 
-            isOpen={showModal} 
-            switchToLogin={switchToLogin}
-            handleSubmit={handleSubmit}
-            serverError={serverError}
-          />
-        )
-      case 2:
-        return (
-          <LoginForm 
-            isOpen={showModal} 
-            switchToSignUp={switchToSignUp}
-            handleSubmit={handleSubmit}
-            serverError={serverError}
-          />
-        )
-      default:
-        return null
-    }
-  }
+  const switchToLogin = () => {
+    setFormType('login');
+  };
+
+  const switchToSignUp = () => {
+    setFormType('signup');
+  };
 
   return (
     <AnimatePresence mode="wait">
@@ -81,13 +55,24 @@ function Modal() {
             </span>
     
           <motion.div
-            key={step}
+            key={formType}
             variants={contentVariants}
             initial="hidden"
             animate="visible"
             exit="hidden"
           >
-            {renderStep()}
+          
+          {loading ? (
+            <LoaderModal />
+          ) : (
+            <AuthForm
+              type={formType}
+              onSwitch={formType === 'login' ? switchToSignUp : switchToLogin}
+              handleSubmit={handleSubmit}
+              isOpen={showModal}
+              serverError={serverError}
+          />
+          )}
           </motion.div>
           </motion.div>
         </div>
@@ -95,5 +80,6 @@ function Modal() {
     </AnimatePresence>
   );
 }
+
 
 export default Modal;
